@@ -1,0 +1,45 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+name: Create Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: rumblefrog/setup-sp@v1.0.0
+
+      - run: |
+          mkdir -p addons/sourcemod/plugins include
+
+          curl -o include/dhooks.inc \
+            https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod/scripting/include/dhooks.inc
+
+          spcomp \
+            -i include \
+            addons/sourcemod/scripting/tf2-comp-fixes.sp \
+            -o addons/sourcemod/plugins/tf2-comp-fixes.smx
+
+          zip tf2-comp-fixes $(find addons -type f)
+
+      - uses: actions/create-release@latest
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./tf2-comp-fixes.zip
+          asset_name: tf2-comp-fixes.zip
+          asset_content_type: application/zip
