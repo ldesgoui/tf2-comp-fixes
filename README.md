@@ -30,9 +30,12 @@ This plugin only support Linux servers.
 
 ## Installation
 
-Download [DHooks](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
-and https://github.com/ldesgoui/tf2-comp-fixes/archive/master.zip 
-to `steam/steamapps/common/Team Fortress 2 Dedicated Server/tf` and unzip them.
+This plugin depends on the [DHooks2 Extension](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
+
+Download the latest releases from the following links to 
+`steam/steamapps/common/Team Fortress 2 Dedicated Server/tf` and unzip them:
+- https://github.com/peace-maker/DHooks2/releases/latest
+- https://github.com/ldesgoui/tf2-comp-fixes/releases/latest
 
 ## Internals
 
