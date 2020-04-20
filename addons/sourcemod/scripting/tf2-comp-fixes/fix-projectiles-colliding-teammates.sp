@@ -4,9 +4,9 @@
 #include <dhooks>
 #include <sdktools>
 
+Address g_healingbolt_vtable;
 ConVar g_fix_ghost_crossbow_bolts;
 ConVar g_projectiles_ignore_teammates;
-Address g_healingbolt_vtable;
 
 void SetupRemoveProjectilesHittingTeammates(Handle game_config) {
     g_fix_ghost_crossbow_bolts = CreateConVar(

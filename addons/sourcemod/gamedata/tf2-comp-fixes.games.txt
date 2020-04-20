@@ -7,16 +7,15 @@
 			"CTFProjectile_HealingBolt::vtable"
 			{
 				"linux"
-                {
-                    "signature" "CTFProjectile_HealingBolt::vtable"
-                }
+				{
+					"signature" "CTFProjectile_HealingBolt::vtable"
+				}
 			}
 		}
 		"Offsets"
 		{
 			"CTFWeaponBase::SecondaryAttack"
 			{
-				"windows" "280"
 				"linux" "286"
 			}
 		}
@@ -26,14 +25,16 @@
 			{
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
 			}
+
 			"CBaseProjectile::CanCollideWithTeammates"
-            {
+			{
 				"linux" "@_ZNK15CBaseProjectile23CanCollideWithTeammatesEv"
-            }
-            "CTFProjectile_HealingBolt::vtable"
-            {
+			}
+
+			"CTFProjectile_HealingBolt::vtable"
+			{
 				"linux" "@_ZTV25CTFProjectile_HealingBolt"
-            }
+			}
 		}
 	}
 }

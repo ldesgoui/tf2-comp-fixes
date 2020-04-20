@@ -17,7 +17,8 @@ void SetupRemoveMedicAttachSpeed(Handle game_config) {
         SetFailState("Failed to create detour for CTFPlayer::TeamFortress_CalculateMaxSpeed");
     }
 
-    if (!DHookSetFromConf(detour, game_config, SDKConf_Signature, "CTFPlayer::TeamFortress_CalculateMaxSpeed")) {
+    if (!DHookSetFromConf(detour, game_config, SDKConf_Signature,
+                "CTFPlayer::TeamFortress_CalculateMaxSpeed")) {
         SetFailState("Failed to load CTFPlayer::TeamFortress_CalculateMaxSpeed signature from gamedata");
     }
 
@@ -28,8 +29,7 @@ void SetupRemoveMedicAttachSpeed(Handle game_config) {
     }
 }
 
-MRESReturn DetourCalculateMaxSpeed(Address self, Handle ret, Handle params)
-{
+MRESReturn DetourCalculateMaxSpeed(Address self, Handle ret, Handle params) {
     if (g_remove_medic_attach_speed.BoolValue
             && DHookGetParam(params, 1)) {
         DHookSetReturn(ret, 0.0);
