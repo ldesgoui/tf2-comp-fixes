@@ -35,6 +35,11 @@
 			{
 				"linux" "@_ZTV25CTFProjectile_HealingBolt"
 			}
+
+			"CTFGameRules::DropHalloweenSoulPack"
+			{
+				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
+			}
 		}
 	}
 }

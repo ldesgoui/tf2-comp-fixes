@@ -16,17 +16,22 @@ This plugin only support Linux servers.
     When enabled with `sm_fix_ghost_crossbow_bolts 1`,
     crossbow bolts will no longer pass through teammates when in close range.
 
-- **Removes Medic Attach Speed**
-
-    When enabled with `sm_remove_medic_attach_speed 1`,
-    the Medic will not run as fast as its target if the target is faster.
-
 - **Projectiles Ignore Teammates**
 
     When enabled with `sm_projectiles_ignore_teammates 1`,
     projectiles will pass through teammates (but not friendly buildings).
 
+- **Removes Halloween Souls**
+
+    When enabled with `sm_remove_halloween_souls 1`,
+    no souls will be spawned during the Halloween holiday events.
+
 - **Removes Upper Bound On `mp_bonusroundtime`**
+
+- **Removes Medic Attach Speed**
+
+    When enabled with `sm_remove_medic_attach_speed 1`,
+    the Medic will not run as fast as its target if the target is faster.
 
 ## Installation
 
