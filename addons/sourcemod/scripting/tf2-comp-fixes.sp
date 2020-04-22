@@ -11,7 +11,7 @@ public Plugin myinfo = {
 	name = "TF2 Competitive Fixes",
 	author = "ldesgoui",
 	description = "Various technical or gameplay altering changes catered towards competitive play",
-	version = "1.1.0",
+	version = "1.2.0",
 	url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 
