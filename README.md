@@ -26,12 +26,17 @@ This plugin only support Linux servers.
     When enabled with `sm_remove_halloween_souls 1`,
     no souls will be spawned during the Halloween holiday events.
 
-- **Removes Upper Bound On `mp_bonusroundtime`**
+- **Gunboats Always Apply**
+
+    When enabled with `sm_gunboats_always_apply 1`,
+    gunboats resistance will apply even if hitting an enemy.
 
 - **Removes Medic Attach Speed**
 
     When enabled with `sm_remove_medic_attach_speed 1`,
     the Medic will not run as fast as its target if the target is faster.
+
+- **Removes Upper Bound On `mp_bonusroundtime`**
 
 ## Installation
 
