@@ -12,6 +12,12 @@
 				}
 			}
 		}
+
+        "Keys"
+        {
+            "CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
+        }
+
 		"Offsets"
 		{
 			"CTFWeaponBase::SecondaryAttack"
@@ -19,6 +25,7 @@
 				"linux" "286"
 			}
 		}
+
 		"Signatures"
 		{
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed"
@@ -39,6 +46,11 @@
 			"CTFGameRules::DropHalloweenSoulPack"
 			{
 				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
+			}
+
+			"CTFGameRules::ApplyOnDamageAliveModifyRules"
+			{
+				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
 			}
 		}
 	}

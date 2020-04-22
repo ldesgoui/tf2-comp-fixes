@@ -3,6 +3,7 @@
 
 #include "tf2-comp-fixes/fix-projectiles-colliding-teammates.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
+#include "tf2-comp-fixes/gunboats-always-apply.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 
@@ -23,6 +24,7 @@ public void OnPluginStart() {
 
     RemoveBonusRoundTimeUpperBound();
     SetupFixStickyDelay(game_config);
+    SetupGunboatsAlwaysApply(game_config);
     SetupRemoveHalloweenSouls(game_config);
     SetupRemoveMedicAttachSpeed(game_config);
     SetupRemoveProjectilesHittingTeammates(game_config);
