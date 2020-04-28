@@ -19,7 +19,7 @@
 
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				// float ApplyOnDamageAliveModifyRules( const CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, DamageModifyExtras_t& outParams )
-				"signature" "CTFGameRules::DropHalloweenSoulPack"
+				"signature" "CTFGameRules::ApplyOnDamageAliveModifyRules"
 				"callconv" "thiscall"
 				"return" "float"
 				"this" "address"
