@@ -1,56 +1,106 @@
-"Games"
-{
-	"tf"
-	{
-		"Addresses"
-		{
-			"CTFProjectile_HealingBolt::vtable"
-			{
-				"linux"
-				{
+"Games" {
+	"tf" {
+		"Addresses" {
+			"CTFProjectile_HealingBolt::vtable" {
+				"linux" {
 					"signature" "CTFProjectile_HealingBolt::vtable"
 				}
 			}
 		}
 
-        "Keys"
-        {
-            "CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
-        }
+		"Functions" {
+			"CBaseProjectile::CanCollideWithTeammates" {
+				// virtual bool CanCollideWithTeammates() const
+				"signature" "CBaseProjectile::CanCollideWithTeammates"
+				"callconv" "thiscall"
+				"return" "bool"
+				"this" "address"
+			}
 
-		"Offsets"
-		{
-			"CTFWeaponBase::SecondaryAttack"
-			{
+			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
+				// float ApplyOnDamageAliveModifyRules( const CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, DamageModifyExtras_t& outParams )
+				"signature" "CTFGameRules::DropHalloweenSoulPack"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "address"
+				"arguments" {
+					"take_damage_info" {
+						"type" "objectptr"
+					}
+					"victim" {
+						"type" "cbaseentity"
+					}
+					"out_params" {
+						"type" "objectptr"
+					}
+				}
+			}
+
+			"CTFGameRules::DropHalloweenSoulPack" {
+				// void DropHalloweenSoulPack( int nAmount, const Vector& vecSource, CBaseEntity *pTarget, int nSourceTeam )
+				"signature" "CTFGameRules::DropHalloweenSoulPack"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "address"
+				"arguments" {
+					"amount" {
+						"type" "int"
+					}
+					"position" {
+						"type" "vectorptr"
+					}
+					"target" {
+						"type" "cbaseentity"
+					}
+					"source_team" {
+						"type" "int"
+					}
+				}
+			}
+
+			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
+				// float TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= false*/ ) const
+				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "address"
+				"arguments" {
+					"ignore_special_ability" {
+						"type" "bool"
+					}
+				}
+			}
+		}
+
+		"Keys" {
+			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
+		}
+
+		"Offsets" {
+			"CTFWeaponBase::SecondaryAttack" {
 				"linux" "286"
 			}
 		}
 
-		"Signatures"
-		{
-			"CTFPlayer::TeamFortress_CalculateMaxSpeed"
-			{
-				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
-			}
-
-			"CBaseProjectile::CanCollideWithTeammates"
-			{
+		"Signatures" {
+			"CBaseProjectile::CanCollideWithTeammates" {
 				"linux" "@_ZNK15CBaseProjectile23CanCollideWithTeammatesEv"
 			}
 
-			"CTFProjectile_HealingBolt::vtable"
-			{
-				"linux" "@_ZTV25CTFProjectile_HealingBolt"
+			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
+				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
 			}
 
-			"CTFGameRules::DropHalloweenSoulPack"
-			{
+			"CTFGameRules::DropHalloweenSoulPack" {
 				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
 			}
 
-			"CTFGameRules::ApplyOnDamageAliveModifyRules"
-			{
-				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
+			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
+				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
+			}
+
+			"CTFProjectile_HealingBolt::vtable" {
+				"linux" "@_ZTV25CTFProjectile_HealingBolt"
 			}
 		}
 	}

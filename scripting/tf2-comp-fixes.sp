@@ -10,7 +10,8 @@
 public Plugin myinfo = {
 	name = "TF2 Competitive Fixes",
 	author = "ldesgoui",
-	description = "Various technical or gameplay altering changes catered towards competitive play",
+	description = "Various technical or gameplay altering changes "
+        ... "catered towards competitive play",
 	version = "1.2.0",
 	url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
@@ -19,7 +20,8 @@ public void OnPluginStart() {
     Handle game_config = LoadGameConfigFile("tf2-comp-fixes.games");
 
     if (game_config == INVALID_HANDLE) {
-        SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
+        SetFailState("Failed to load "
+                ... "addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
 
     RemoveBonusRoundTimeUpperBound();

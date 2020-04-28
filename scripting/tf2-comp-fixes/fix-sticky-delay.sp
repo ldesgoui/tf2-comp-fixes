@@ -2,6 +2,7 @@
 #pragma newdecls required
 
 #include <tf2_stocks>
+#include "utils.sp"
 
 #define WEAPONSLOT_SECONDARY 1
 
@@ -9,13 +10,14 @@ ConVar g_fix_sticky_delay;
 Handle g_secondary_attack;
 
 void SetupFixStickyDelay(Handle game_config) {
-    g_fix_sticky_delay = CreateConVar(
-            "sm_fix_sticky_delay", "0", "", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_fix_sticky_delay = CreateBoolConVar("sm_fix_sticky_delay");
 
     StartPrepSDKCall(SDKCall_Entity);
 
-    if (!PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack")) {
-        SetFailState("Failed to load CTFWeaponBase::SecondaryAttack offset from gamedata");
+    if (!PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual,
+                "CTFWeaponBase::SecondaryAttack")) {
+        SetFailState("Failed to load CTFWeaponBase::SecondaryAttack offset "
+                ... "from gamedata");
     }
 
     g_secondary_attack = EndPrepSDKCall();
@@ -32,8 +34,10 @@ void FixStickyDelay(int client, int &buttons) {
             && buttons & IN_ATTACK2
             && IsPlayerAlive(client)
             && TF2_GetPlayerClass(client) == TFClass_DemoMan
-            && (weapon = GetPlayerWeaponSlot(client, WEAPONSLOT_SECONDARY)) != -1
-            && (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")) != -1
+            && (weapon = GetPlayerWeaponSlot(client, WEAPONSLOT_SECONDARY))
+            && weapon != -1
+            && (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"))
+            && item_id != -1
             && item_id != 131   // The Chargin' Targe
             && item_id != 406   // The Splendid Screen
             && item_id != 1099  // The Tide Turner

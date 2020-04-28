@@ -3,28 +3,22 @@
 
 #include <dhooks>
 #include <sdktools>
+#include "utils.sp"
 
 ConVar g_remove_halloween_souls;
 
 void SetupRemoveHalloweenSouls(Handle game_config) {
-    g_remove_halloween_souls = CreateConVar(
-            "sm_remove_halloween_souls", "0", "", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_remove_halloween_souls = CreateBoolConVar("sm_remove_halloween_souls");
 
-    Handle detour = DHookCreateDetour(
-        Address_Null, CallConv_THISCALL, ReturnType_Void, ThisPointer_Address);
+    Handle detour = DHookCreateFromConf(game_config,
+            "CTFGameRules::DropHalloweenSoulPack");
 
     if (detour == INVALID_HANDLE) {
         SetFailState("Failed to create detour for CTFGameRules::DropHalloweenSoulPack");
     }
 
-    if (!DHookSetFromConf(detour, game_config, SDKConf_Signature, "CTFGameRules::DropHalloweenSoulPack")) {
-        SetFailState("Failed to load CTFGameRules::DropHalloweenSoulPack signature from gamedata");
-    }
-
-    DHookAddParam(detour, HookParamType_Bool);
-
     if (!DHookEnableDetour(detour, false, DetourDropHalloweenSoulPack)) {
-        SetFailState("Failed to detour CTFGameRules::DropHalloweenSoulPack.");
+        SetFailState("Failed to enable detour CTFGameRules::DropHalloweenSoulPack.");
     }
 }
 

@@ -3,38 +3,34 @@
 
 #include <dhooks>
 #include <sdktools>
+#include "utils.sp"
 
 Address g_healingbolt_vtable;
 ConVar g_fix_ghost_crossbow_bolts;
 ConVar g_projectiles_ignore_teammates;
 
 void SetupRemoveProjectilesHittingTeammates(Handle game_config) {
-    g_fix_ghost_crossbow_bolts = CreateConVar(
-            "sm_fix_ghost_crossbow_bolts", "0", "", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_fix_ghost_crossbow_bolts = CreateBoolConVar("sm_fix_ghost_crossbow_bolts");
+    g_projectiles_ignore_teammates = CreateBoolConVar("sm_projectiles_ignore_teammates");
 
-    g_projectiles_ignore_teammates = CreateConVar(
-            "sm_projectiles_ignore_teammates", "0", "", FCVAR_NOTIFY, true, 0.0, true, 1.0);
-
-    g_healingbolt_vtable = GameConfGetAddress(game_config, "CTFProjectile_HealingBolt::vtable");
+    g_healingbolt_vtable = GameConfGetAddress(game_config,
+            "CTFProjectile_HealingBolt::vtable");
 
     if (g_healingbolt_vtable == Address_Null) {
-        SetFailState("Failed to load CTFProjectile_HealingBolt::vtable signature from gamedata");
+        SetFailState("Failed to load CTFProjectile_HealingBolt::vtable "
+                ... "signature from gamedata");
     }
 
-    Handle detour = DHookCreateDetour(
-            Address_Null, CallConv_THISCALL, ReturnType_Int, ThisPointer_Address);
+    Handle detour = DHookCreateFromConf(game_config,
+            "CBaseProjectile::CanCollideWithTeammates");
 
     if (detour == INVALID_HANDLE) {
-        SetFailState("Failed to create detour for CBaseProjectile::CanCollideWithTeammates");
-    }
-
-    if (!DHookSetFromConf(detour, game_config, SDKConf_Signature,
-                "CBaseProjectile::CanCollideWithTeammates")) {
-        SetFailState("Failed to load CBaseProjectile::CanCollideWithTeammates signature from gamedata");
+        SetFailState("Failed to create detour for "
+                ... "CBaseProjectile::CanCollideWithTeammates");
     }
 
     if (!DHookEnableDetour(detour, false, DetourCanCollideWithTeammates)) {
-        SetFailState("Failed to detour CBaseProjectile::CanCollideWithTeammates.");
+        SetFailState("Failed to enable detour CBaseProjectile::CanCollideWithTeammates.");
     }
 }
 
