@@ -5,9 +5,15 @@
 #include <sdktools>
 #include <tf2_stocks>
 
+#define HOOK_PRE  false
+#define HOOK_POST true
+
 #define WEAPONSLOT_SECONDARY 1
-#define HOOK_PRE             false
-#define HOOK_POST            true
+
+#define WEAPON_ID_THE_CHARGIN_TARGE   131
+#define WEAPON_ID_THE_SPLENDID_SCREEN 406
+#define WEAPON_ID_THE_TIDE_TURNER     1099
+#define WEAPON_ID_FESTIVE_TARGE       1144
 
 // Globals
 
@@ -314,11 +320,10 @@ stock void FixStickyDelay(int client, int &buttons) {
         (weapon = GetPlayerWeaponSlot(client, WEAPONSLOT_SECONDARY)) &&
         weapon != -1 &&
         (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")) &&
-        item_id != -1 && item_id != 131 /* The Chargin' Targe */
-        && item_id != 406               /* The Splendid Screen */
-        && item_id != 1099              /* The Tide Turner */
-        && item_id != 1144              /* Festive Targe */
-    ) {
+        item_id != -1 && item_id != WEAPON_ID_THE_CHARGIN_TARGE &&
+        item_id != WEAPON_ID_THE_SPLENDID_SCREEN &&
+        item_id != WEAPON_ID_THE_TIDE_TURNER &&
+        item_id != WEAPON_ID_FESTIVE_TARGE) {
         SDKCall(g_call_secondary_attack, weapon);
     }
 }
