@@ -38,6 +38,9 @@ public void OnPluginStart() {
     }
 
 
+    RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS,
+            "Batch update of TF2 Competitive Fixes cvars");
+
 
     g_detour_teamfortress_calculate_max_speed = CheckedDHookCreateFromConf(
             game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
@@ -99,6 +102,36 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse,
     FixStickyDelay(client, buttons);
 
     return Plugin_Continue;
+}
+
+// Commands
+
+Action CfCommand(int client, int args) {
+    char full[256];
+    bool everything = false;
+    bool fixes = false;
+
+    GetCmdArgString(full, sizeof(full));
+
+    if (StrEqual(full, "all")) {
+        everything = true;
+    } else if (StrEqual(full, "fixes")) {
+        fixes = true;
+    } else if (StrEqual(full, "none")) {
+    } else {
+        ReplyToCommand(client, "usage: sm_cf (all | fixes | none)");
+        return Plugin_Handled;
+    }
+
+    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(everything || fixes);
+    FindConVar("sm_fix_sticky_delay").SetBool(everything || fixes);
+    FindConVar("sm_projectiles_ignore_teammates").SetBool(everything || fixes);
+    FindConVar("sm_remove_halloween_souls").SetBool(everything || fixes);
+
+    FindConVar("sm_gunboats_always_apply").SetBool(everything);
+    FindConVar("sm_remove_medic_attach_speed").SetBool(everything);
+
+    return Plugin_Handled;
 }
 
 // ConVar Change Hooks
