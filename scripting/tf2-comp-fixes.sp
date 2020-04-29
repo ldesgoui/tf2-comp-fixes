@@ -23,14 +23,13 @@ Plugin myinfo = {
 };
 // clang-format on
 
-Address g_vtable_healingbolt;
-ConVar  g_cvar_fix_sticky_delay;
-Handle  g_call_secondary_attack;
-Handle  g_detour_apply_on_damage_alive_modify_rules;
-Handle  g_detour_can_collide_with_teammates;
-Handle  g_detour_drop_halloween_soul_pack;
-Handle  g_detour_teamfortress_calculate_max_speed;
-int     g_offset_damaged_other_players;
+ConVar g_cvar_fix_sticky_delay;
+Handle g_call_secondary_attack;
+Handle g_detour_apply_on_damage_alive_modify_rules;
+Handle g_detour_can_collide_with_teammates;
+Handle g_detour_drop_halloween_soul_pack;
+Handle g_detour_teamfortress_calculate_max_speed;
+int    g_offset_damaged_other_players;
 
 // Forwards
 
@@ -46,22 +45,21 @@ void OnPluginStart() {
     RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS,
                 "Batch update of TF2 Competitive Fixes cvars");
 
-    g_detour_teamfortress_calculate_max_speed = CheckedDHookCreateFromConf(
-        game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
     g_detour_apply_on_damage_alive_modify_rules = CheckedDHookCreateFromConf(
         game_config, "CTFGameRules::ApplyOnDamageAliveModifyRules");
     g_detour_can_collide_with_teammates = CheckedDHookCreateFromConf(
         game_config, "CBaseProjectile::CanCollideWithTeammates");
     g_detour_drop_halloween_soul_pack = CheckedDHookCreateFromConf(
         game_config, "CTFGameRules::DropHalloweenSoulPack");
+    g_detour_teamfortress_calculate_max_speed = CheckedDHookCreateFromConf(
+        game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
 
     CreateBoolConVar("sm_fix_ghost_crossbow_bolts")
-        .AddChangeHook(OnChangeCanCollideWithTeammates);
-    CreateBoolConVar("sm_projectiles_ignore_teammates")
-        .AddChangeHook(OnChangeCanCollideWithTeammates);
-
+        .AddChangeHook(OnChangeFixGhostCrossbowBolts);
     CreateBoolConVar("sm_gunboats_always_apply")
         .AddChangeHook(OnChangeGunboatsAlwaysApply);
+    CreateBoolConVar("sm_projectiles_ignore_teammates")
+        .AddChangeHook(OnChangeProjectilesIgnoreTeammates);
     CreateBoolConVar("sm_remove_halloween_souls")
         .AddChangeHook(OnChangeRemoveHalloweenSouls);
     CreateBoolConVar("sm_remove_medic_attach_speed")
@@ -71,9 +69,6 @@ void OnPluginStart() {
 
     g_offset_damaged_other_players = CheckedGameConfGetKeyValueInt(
         game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
-
-    g_vtable_healingbolt = CheckedGameConfGetAddress(
-        game_config, "CTFProjectile_HealingBolt::vtable");
 
     StartPrepSDKCall(SDKCall_Entity);
 
@@ -135,50 +130,14 @@ Action CfCommand(int client, int args) {
 
 // ConVar Change Hooks
 
-void OnChangeCanCollideWithTeammates(ConVar cvar, const char[] before,
-                                     const char[] after) {
-    bool previous = TruthyConVar(before);
-
-    if (previous == cvar.BoolValue) {
+void OnChangeFixGhostCrossbowBolts(ConVar cvar, const char[] before,
+                                   const char[] after) {
+    if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    bool fix_bolts = FindConVar("sm_fix_ghost_crossbow_bolts").BoolValue;
-    bool fix_projectiles =
-        FindConVar("sm_projectiles_ignore_teammates").BoolValue;
-    DHookCallback enable;
-    DHookCallback disable;
-
-    if (fix_bolts && fix_projectiles) {
-        enable = DetourCanCollideWithTeammates;
-    } else if (fix_bolts) {
-        enable = DetourFixGhostCrossbowBolts;
-    } else if (fix_projectiles) {
-        enable = DetourProjectilesIgnoreTeammates;
-    }
-
-    if (fix_bolts == fix_projectiles) {
-        char name[64];
-        cvar.GetName(name, sizeof(name));
-
-        disable = previous == StrEqual(name, "sm_fix_ghost_crossbow_bolts")
-                      ? DetourFixGhostCrossbowBolts
-                      : DetourProjectilesIgnoreTeammates;
-    } else if (previous) {
-        disable = DetourCanCollideWithTeammates;
-    }
-
-    if (disable && !DHookDisableDetour(g_detour_can_collide_with_teammates,
-                                       HOOK_PRE, disable)) {
-        SetFailState(
-            "Failed to disable detour on CBaseProjectile::CanCollideWithTeammates");
-    }
-
-    if (enable && !DHookEnableDetour(g_detour_can_collide_with_teammates,
-                                     HOOK_PRE, enable)) {
-        SetFailState(
-            "Failed to enable detour on CBaseProjectile::CanCollideWithTeammates");
-    }
+    DHookToggleEntityListener(ListenType_Created, ListenerFixGhostCrossbowBolts,
+                              cvar.BoolValue);
 }
 
 void OnChangeGunboatsAlwaysApply(ConVar cvar, const char[] before,
@@ -193,6 +152,16 @@ void OnChangeGunboatsAlwaysApply(ConVar cvar, const char[] before,
         SetFailState(
             "Failed to toggle detour CTFGameRules::ApplyOnDamageAliveModifyRules");
     }
+}
+
+void OnChangeProjectilesIgnoreTeammates(ConVar cvar, const char[] before,
+                                        const char[] after) {
+    if (cvar.BoolValue == TruthyConVar(before)) {
+        return;
+    }
+
+    DHookToggleEntityListener(
+        ListenType_Created, ListenerProjectilesIgnoreTeammates, cvar.BoolValue);
 }
 
 void OnChangeRemoveHalloweenSouls(ConVar cvar, const char[] before,
@@ -221,35 +190,33 @@ void OnChangeRemoveMedicAttachSpeed(ConVar cvar, const char[] before,
     }
 }
 
-// Detours
+// Entity Listeners
 
-MRESReturn DetourCanCollideWithTeammates(Address self, Handle ret,
-                                         Handle params) {
-    if (DetourFixGhostCrossbowBolts(self, ret, params) == MRES_Supercede) {
-        return MRES_Supercede;
+void ListenerFixGhostCrossbowBolts(int entity, const char[] classname) {
+    if (StrEqual(classname, "tf_projectile_healing_bolt")) {
+        DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
+                    DetourFixGhostCrossbowBolts);
     }
-
-    return DetourProjectilesIgnoreTeammates(self, ret, params);
 }
+
+void ListenerProjectilesIgnoreTeammates(int entity, const char[] classname) {
+    if (StrContains(classname, "tf_projectile_") != -1 &&
+        !StrEqual(classname, "tf_projectile_healing_bolt")) {
+        DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
+                    DetourProjectilesIgnoreTeammates);
+    }
+}
+
+// Detours
 
 MRESReturn DetourFixGhostCrossbowBolts(Address self, Handle ret,
                                        Handle params) {
-    int vtable = LoadFromAddress(self, NumberType_Int32);
-
-    if ((vtable - 8) == view_as<int>(g_vtable_healingbolt)) {
-        DHookSetReturn(ret, 1);
-        return MRES_Supercede;
-    }
-
-    return MRES_Ignored;
+    DHookSetReturn(ret, 1);
+    return MRES_Supercede;
 }
 
 MRESReturn DetourProjectilesIgnoreTeammates(Address self, Handle ret,
                                             Handle params) {
-    if (DetourFixGhostCrossbowBolts(self, ret, params) == MRES_Supercede) {
-        return MRES_Ignored;
-    }
-
     DHookSetReturn(ret, 0);
     return MRES_Supercede;
 }
@@ -324,6 +291,15 @@ stock bool DHookToggleDetour(Handle setup, bool post, DHookCallback callback,
         return DHookEnableDetour(setup, post, callback);
     } else {
         return DHookDisableDetour(setup, post, callback);
+    }
+}
+
+stock void DHookToggleEntityListener(ListenType listen_type, ListenCB callback,
+                                     bool enabled) {
+    if (enabled) {
+        DHookAddEntityListener(listen_type, callback);
+    } else {
+        DHookRemoveEntityListener(listen_type, callback);
     }
 }
 

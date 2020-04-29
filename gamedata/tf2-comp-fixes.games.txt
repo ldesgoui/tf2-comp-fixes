@@ -11,7 +11,7 @@
 		"Functions" {
 			"CBaseProjectile::CanCollideWithTeammates" {
 				// virtual bool CanCollideWithTeammates() const
-				"signature" "CBaseProjectile::CanCollideWithTeammates"
+				"offset" "CBaseProjectile::CanCollideWithTeammates"
 				"callconv" "thiscall"
 				"return" "bool"
 				"this" "address"
@@ -77,16 +77,18 @@
 		}
 
 		"Offsets" {
+			"CBaseProjectile::CanCollideWithTeammates" {
+				"linux" "223"
+				"windows" "222"
+			}
+
 			"CTFWeaponBase::SecondaryAttack" {
 				"linux" "286"
+				"windows" "280"
 			}
 		}
 
 		"Signatures" {
-			"CBaseProjectile::CanCollideWithTeammates" {
-				"linux" "@_ZNK15CBaseProjectile23CanCollideWithTeammatesEv"
-			}
-
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
 			}
@@ -97,10 +99,6 @@
 
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
-			}
-
-			"CTFProjectile_HealingBolt::vtable" {
-				"linux" "@_ZTV25CTFProjectile_HealingBolt"
 			}
 		}
 	}
