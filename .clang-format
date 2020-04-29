@@ -1,0 +1,7 @@
+---
+IndentWidth: 4
+AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+BreakStringLiterals: false
+...
