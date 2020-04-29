@@ -24,7 +24,7 @@ Plugin myinfo = {
     author = "ldesgoui",
     description = "Various technical or gameplay changes \
                    catered towards competitive play",
-    version = "1.2.0",
+    version = "1.3.0",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
