@@ -8,12 +8,12 @@
 #define HOOK_PRE  false
 #define HOOK_POST true
 
-#define WEAPONSLOT_SECONDARY 1
-
 #define WEAPON_ID_THE_CHARGIN_TARGE   131
 #define WEAPON_ID_THE_SPLENDID_SCREEN 406
 #define WEAPON_ID_THE_TIDE_TURNER     1099
 #define WEAPON_ID_FESTIVE_TARGE       1144
+
+#define WEAPON_SLOT_SECONDARY 1
 
 // Globals
 
@@ -77,13 +77,8 @@ void OnPluginStart() {
         game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
 
     StartPrepSDKCall(SDKCall_Entity);
-
-    if (!PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual,
-                                 "CTFWeaponBase::SecondaryAttack")) {
-        SetFailState(
-            "Failed to load CTFWeaponBase::SecondaryAttack offset from gamedata");
-    }
-
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual,
+                            "CTFWeaponBase::SecondaryAttack");
     if ((g_call_secondary_attack = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState(
             "Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
@@ -215,15 +210,13 @@ void ListenerProjectilesIgnoreTeammates(int entity, const char[] classname) {
 
 // Detours
 
-MRESReturn DetourFixGhostCrossbowBolts(Address self, Handle ret,
-                                       Handle params) {
-    DHookSetReturn(ret, 1);
+MRESReturn DetourFixGhostCrossbowBolts(int self, Handle ret) {
+    DHookSetReturn(ret, true);
     return MRES_Supercede;
 }
 
-MRESReturn DetourProjectilesIgnoreTeammates(Address self, Handle ret,
-                                            Handle params) {
-    DHookSetReturn(ret, 0);
+MRESReturn DetourProjectilesIgnoreTeammates(int self, Handle ret) {
+    DHookSetReturn(ret, false);
     return MRES_Supercede;
 }
 
@@ -234,7 +227,7 @@ MRESReturn DetourApplyOnDamageAliveModifyRules(Address self, Handle ret,
     return MRES_Handled;
 }
 
-MRESReturn DetourCalculateMaxSpeed(Address self, Handle ret, Handle params) {
+MRESReturn DetourCalculateMaxSpeed(int self, Handle ret, Handle params) {
     if (DHookGetParam(params, 1)) {
         DHookSetReturn(ret, 0.0);
         return MRES_Supercede;
@@ -246,6 +239,25 @@ MRESReturn DetourCalculateMaxSpeed(Address self, Handle ret, Handle params) {
 MRESReturn DetourDropHalloweenSoulPack(Address self, Handle ret,
                                        Handle params) {
     return MRES_Supercede;
+}
+
+// Function
+
+void FixStickyDelay(int client, int &buttons) {
+    int weapon, item_id;
+
+    if (g_cvar_fix_sticky_delay.BoolValue && buttons & IN_ATTACK2 &&
+        IsPlayerAlive(client) &&
+        TF2_GetPlayerClass(client) == TFClass_DemoMan &&
+        (weapon = GetPlayerWeaponSlot(client, WEAPON_SLOT_SECONDARY)) &&
+        weapon != -1 &&
+        (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")) &&
+        item_id != -1 && item_id != WEAPON_ID_THE_CHARGIN_TARGE &&
+        item_id != WEAPON_ID_THE_SPLENDID_SCREEN &&
+        item_id != WEAPON_ID_THE_TIDE_TURNER &&
+        item_id != WEAPON_ID_FESTIVE_TARGE) {
+        SDKCall(g_call_secondary_attack, weapon);
+    }
 }
 
 // Stocks
@@ -310,23 +322,6 @@ stock void DHookToggleEntityListener(ListenType listen_type, ListenCB callback,
 }
 
 stock bool TruthyConVar(const char[] val) { return StringToFloat(val) == 1.0; }
-
-stock void FixStickyDelay(int client, int &buttons) {
-    int weapon, item_id;
-
-    if (g_cvar_fix_sticky_delay.BoolValue && buttons & IN_ATTACK2 &&
-        IsPlayerAlive(client) &&
-        TF2_GetPlayerClass(client) == TFClass_DemoMan &&
-        (weapon = GetPlayerWeaponSlot(client, WEAPONSLOT_SECONDARY)) &&
-        weapon != -1 &&
-        (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")) &&
-        item_id != -1 && item_id != WEAPON_ID_THE_CHARGIN_TARGE &&
-        item_id != WEAPON_ID_THE_SPLENDID_SCREEN &&
-        item_id != WEAPON_ID_THE_TIDE_TURNER &&
-        item_id != WEAPON_ID_FESTIVE_TARGE) {
-        SDKCall(g_call_secondary_attack, weapon);
-    }
-}
 
 stock void RemoveBonusRoundTimeUpperBound() {
     SetConVarBounds(FindConVar("mp_bonusroundtime"), ConVarBound_Upper, false);

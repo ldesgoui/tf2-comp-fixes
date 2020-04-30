@@ -14,7 +14,7 @@
 				"offset" "CBaseProjectile::CanCollideWithTeammates"
 				"callconv" "thiscall"
 				"return" "bool"
-				"this" "address"
+				"this" "entity"
 			}
 
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
@@ -63,7 +63,7 @@
 				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
 				"callconv" "thiscall"
 				"return" "float"
-				"this" "address"
+				"this" "entity"
 				"arguments" {
 					"ignore_special_ability" {
 						"type" "bool"
