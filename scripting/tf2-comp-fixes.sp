@@ -5,6 +5,8 @@
 #include <sdktools>
 #include <tf2_stocks>
 
+#define DMG_GENERIC 0
+
 #define HOOK_PRE  false
 #define HOOK_POST true
 
@@ -30,10 +32,13 @@ Plugin myinfo = {
 // clang-format on
 
 ConVar g_cvar_fix_sticky_delay;
+ConVar g_cvar_syringes_heal_teammates;
 Handle g_call_secondary_attack;
+Handle g_call_take_health;
 Handle g_detour_apply_on_damage_alive_modify_rules;
 Handle g_detour_can_collide_with_teammates;
 Handle g_detour_drop_halloween_soul_pack;
+Handle g_detour_projectile_touch;
 Handle g_detour_teamfortress_calculate_max_speed;
 int    g_offset_damaged_other_players;
 
@@ -57,6 +62,8 @@ void OnPluginStart() {
         game_config, "CBaseProjectile::CanCollideWithTeammates");
     g_detour_drop_halloween_soul_pack = CheckedDHookCreateFromConf(
         game_config, "CTFGameRules::DropHalloweenSoulPack");
+    g_detour_projectile_touch = CheckedDHookCreateFromConf(
+        game_config, "CTFBaseProjectile::ProjectileTouch");
     g_detour_teamfortress_calculate_max_speed = CheckedDHookCreateFromConf(
         game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
 
@@ -73,6 +80,10 @@ void OnPluginStart() {
 
     g_cvar_fix_sticky_delay = CreateBoolConVar("sm_fix_sticky_delay");
 
+    g_cvar_syringes_heal_teammates = CreateConVar(
+        "sm_syringes_heal_teammates", "0", _, FCVAR_NOTIFY, true, 0.0);
+    g_cvar_syringes_heal_teammates.AddChangeHook(OnChangeSyringesHealTeammates);
+
     g_offset_damaged_other_players = CheckedGameConfGetKeyValueInt(
         game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
 
@@ -82,6 +93,16 @@ void OnPluginStart() {
     if ((g_call_secondary_attack = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState(
             "Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
+    }
+
+    StartPrepSDKCall(SDKCall_Entity);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual,
+                            "CBasePlayer::TakeHealth");
+    PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    if ((g_call_take_health = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CBasePlayer::TakeHealth");
     }
 
     RemoveBonusRoundTimeUpperBound();
@@ -125,6 +146,7 @@ Action CfCommand(int client, int args) {
 
     FindConVar("sm_gunboats_always_apply").SetBool(everything);
     FindConVar("sm_remove_medic_attach_speed").SetBool(everything);
+    FindConVar("sm_syringes_heal_teammates").SetInt(everything ? 5 : 0);
 
     return Plugin_Handled;
 }
@@ -191,9 +213,20 @@ void OnChangeRemoveMedicAttachSpeed(ConVar cvar, const char[] before,
     }
 }
 
+void OnChangeSyringesHealTeammates(ConVar cvar, const char[] before,
+                                   const char[] after) {
+    if ((cvar.IntValue > 0) == (StringToInt(before) > 0)) {
+        return;
+    }
+
+    DHookToggleEntityListener(ListenType_Created, ListenerSyringesHealTeammates,
+                              cvar.IntValue > 0);
+}
+
 // Entity Listeners
 
 void ListenerFixGhostCrossbowBolts(int entity, const char[] classname) {
+
     if (StrEqual(classname, "tf_projectile_healing_bolt")) {
         DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
                     DetourFixGhostCrossbowBolts);
@@ -205,6 +238,13 @@ void ListenerProjectilesIgnoreTeammates(int entity, const char[] classname) {
         !StrEqual(classname, "tf_projectile_healing_bolt")) {
         DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
                     DetourProjectilesIgnoreTeammates);
+    }
+}
+
+void ListenerSyringesHealTeammates(int entity, const char[] classname) {
+    if (StrEqual(classname, "tf_projectile_syringe")) {
+        DHookEntity(g_detour_projectile_touch, HOOK_PRE, entity, _,
+                    DetourProjectileTouch);
     }
 }
 
@@ -236,8 +276,58 @@ MRESReturn DetourCalculateMaxSpeed(int self, Handle ret, Handle params) {
     return MRES_Ignored;
 }
 
-MRESReturn DetourDropHalloweenSoulPack(Address self, Handle ret,
-                                       Handle params) {
+MRESReturn DetourDropHalloweenSoulPack(Address self, Handle params) {
+    return MRES_Supercede;
+}
+
+MRESReturn DetourProjectileTouch(int self, Handle params) {
+    int other = DHookGetParam(params, 1);
+
+    if (other == 0 || other > MaxClients || !IsPlayerAlive(other)) {
+        return MRES_Ignored;
+    }
+
+    int owner = GetEntPropEnt(self, Prop_Data, "m_hOwnerEntity");
+
+    if (TF2_GetClientTeam(owner) != TF2_GetClientTeam(other)) {
+        return MRES_Ignored;
+    }
+
+    // attribute weapon_blocks_healing
+    // attribute mult_healing_from_medic
+
+    int want_healed = g_cvar_syringes_heal_teammates.IntValue;
+
+    int actual_healed =
+        SDKCall(g_call_take_health, other, float(want_healed), DMG_GENERIC);
+
+    PrintToChatAll("trying to heal for %d, only did %d", want_healed,
+                   actual_healed);
+
+    if (actual_healed > 0) {
+        // CTF_GameStats.Event_PlayerHealedOther( pOwner, flHealth );
+        // (to show on scoreboard)
+
+        // play an impact sound
+
+        Event event = CreateEvent("player_healed", true);
+        event.SetInt("priority", 1);
+        event.SetInt("patient", GetClientUserId(other));
+        event.SetInt("healer", GetClientUserId(owner));
+        event.SetInt("amount", want_healed);
+        event.Fire(false);
+
+        // player_healonhit
+        // - amount want_healed
+        // - entindex other
+        // - weapon_def_index ?
+
+        // medigun->AddCharge( (actual_healed / 24.0) * gpGlobals->frametime );
+
+        // pOther->m_Shared.AddCond( TF_COND_HEALTH_OVERHEALED, 1.2f );
+    }
+
+    RemoveEntity(self);
     return MRES_Supercede;
 }
 

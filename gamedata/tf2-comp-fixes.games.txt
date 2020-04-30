@@ -17,6 +17,19 @@
 				"this" "entity"
 			}
 
+			"CTFBaseProjectile::ProjectileTouch" {
+				// virtual void ProjectileTouch( CBaseEntity *pOther )
+				"offset" "CTFBaseProjectile::ProjectileTouch"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				// float ApplyOnDamageAliveModifyRules( const CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, DamageModifyExtras_t& outParams )
 				"signature" "CTFGameRules::ApplyOnDamageAliveModifyRules"
@@ -77,9 +90,19 @@
 		}
 
 		"Offsets" {
+			"CBasePlayer::TakeHealth" {
+				"linux" "65"
+				"windows" "64"
+			}
+
 			"CBaseProjectile::CanCollideWithTeammates" {
 				"linux" "223"
 				"windows" "222"
+			}
+
+			"CTFBaseProjectile::ProjectileTouch" {
+				"linux" "235"
+				"windows" "232"
 			}
 
 			"CTFWeaponBase::SecondaryAttack" {
