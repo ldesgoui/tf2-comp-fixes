@@ -1,8 +1,24 @@
 # TF2 Competitive Fixes
 
-Various technical or gameplay altering changes catered towards competitive play
+Various technical or gameplay changes catered towards competitive play
 
 This plugin only support Linux servers.
+
+
+### Usage
+
+The `sm_cf` command is available to users with the SourceMod admin level `cvar` (flag `h`), or via RCON.
+
+`sm_cf all` enables everything.
+
+`sm_cf none` disables everything.
+
+`sm_cf fixes` enables 
+`sm_fix_sticky_delay`, 
+`sm_fix_ghost_crossbow_bolts`, 
+`sm_projectiles_ignore_teammates`, 
+`sm_remove_halloween_souls`.
+
 
 ### Features
 
@@ -38,6 +54,7 @@ This plugin only support Linux servers.
 
 - **Removes Upper Bound On `mp_bonusroundtime`**
 
+
 ## Installation
 
 This plugin depends on the 
@@ -47,6 +64,7 @@ Download the latest releases from the following links to
 `steam/steamapps/common/Team Fortress 2 Dedicated Server/tf` and unzip them:
 - https://github.com/peace-maker/DHooks2/releases/latest
 - https://github.com/ldesgoui/tf2-comp-fixes/releases/latest
+
 
 ## Internals
 
