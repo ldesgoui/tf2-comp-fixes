@@ -70,6 +70,14 @@
 					}
 				}
 			}
+
+			"CTFWeaponBase::ItemBusyFrame" {
+				// virtual void ItemBusyFrame()
+				"signature" "CTFWeaponBase::ItemBusyFrame"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "entity"
+			}
 		}
 
 		"Keys" {
@@ -99,6 +107,10 @@
 
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
+			}
+
+			"CTFWeaponBase::ItemBusyFrame" {
+				"linux" "@_ZN13CTFWeaponBase13ItemBusyFrameEv"
 			}
 		}
 	}

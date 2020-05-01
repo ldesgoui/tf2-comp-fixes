@@ -4,4 +4,5 @@ AlignConsecutiveMacros: true
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 BreakStringLiterals: false
+ColumnLimit: 100
 ...

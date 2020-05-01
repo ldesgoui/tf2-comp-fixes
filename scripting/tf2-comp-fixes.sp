@@ -2,26 +2,22 @@
 #pragma newdecls required
 
 #include <dhooks>
+#include <sdkhooks>
 #include <sdktools>
 #include <tf2_stocks>
 
-#define HOOK_PRE  false
-#define HOOK_POST true
+#define HOOK_PRE  (false)
+#define HOOK_POST (true)
 
-#define WEAPON_ID_THE_CHARGIN_TARGE   131
-#define WEAPON_ID_THE_SPLENDID_SCREEN 406
-#define WEAPON_ID_THE_TIDE_TURNER     1099
-#define WEAPON_ID_FESTIVE_TARGE       1144
+#define INVALID_HOOK_ID (-1)
 
-#define WEAPON_SLOT_SECONDARY 1
-
-ConVar g_cvar_fix_sticky_delay;
-Handle g_call_secondary_attack;
-Handle g_detour_apply_on_damage_alive_modify_rules;
-Handle g_detour_can_collide_with_teammates;
-Handle g_detour_drop_halloween_soul_pack;
-Handle g_detour_teamfortress_calculate_max_speed;
-int    g_offset_damaged_other_players;
+Handle g_call_CTFWeaponBase_SecondaryAttack;
+Handle g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules;
+Handle g_detour_CTFGameRules_DropHalloweenSoulPack;
+Handle g_detour_CTFWeaponBase_ItemBusyFrame;
+Handle g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed;
+Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
+int    g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers;
 
 // clang-format off
 public
@@ -40,44 +36,36 @@ void OnPluginStart() {
     Handle game_config = LoadGameConfigFile("tf2-comp-fixes.games");
 
     if (game_config == INVALID_HANDLE) {
-        SetFailState(
-            "Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
+        SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
 
-    RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS,
-                "Batch update of TF2 Competitive Fixes cvars");
+    RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS, "Batch update of TF2 Competitive Fixes cvars");
 
-    g_detour_apply_on_damage_alive_modify_rules = CheckedDHookCreateFromConf(
-        game_config, "CTFGameRules::ApplyOnDamageAliveModifyRules");
-    g_detour_can_collide_with_teammates = CheckedDHookCreateFromConf(
-        game_config, "CBaseProjectile::CanCollideWithTeammates");
-    g_detour_drop_halloween_soul_pack = CheckedDHookCreateFromConf(
-        game_config, "CTFGameRules::DropHalloweenSoulPack");
-    g_detour_teamfortress_calculate_max_speed = CheckedDHookCreateFromConf(
-        game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
+    g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules =
+        CheckedDHookCreateFromConf(game_config, "CTFGameRules::ApplyOnDamageAliveModifyRules");
+    g_detour_CTFGameRules_DropHalloweenSoulPack =
+        CheckedDHookCreateFromConf(game_config, "CTFGameRules::DropHalloweenSoulPack");
+    g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed =
+        CheckedDHookCreateFromConf(game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
+    g_detour_CTFWeaponBase_ItemBusyFrame =
+        CheckedDHookCreateFromConf(game_config, "CTFWeaponBase::ItemBusyFrame");
+    g_hook_CBaseProjectile_CanCollideWithTeammates =
+        CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
 
-    CreateBoolConVar("sm_fix_ghost_crossbow_bolts")
-        .AddChangeHook(OnChangeFixGhostCrossbowBolts);
-    CreateBoolConVar("sm_gunboats_always_apply")
-        .AddChangeHook(OnChangeGunboatsAlwaysApply);
-    CreateBoolConVar("sm_projectiles_ignore_teammates")
-        .AddChangeHook(OnChangeProjectilesIgnoreTeammates);
-    CreateBoolConVar("sm_remove_halloween_souls")
-        .AddChangeHook(OnChangeRemoveHalloweenSouls);
-    CreateBoolConVar("sm_remove_medic_attach_speed")
-        .AddChangeHook(OnChangeRemoveMedicAttachSpeed);
+    CreateBoolConVar("sm_fix_ghost_crossbow_bolts", FixGhostCrossbowBolts_OnConVarChange);
+    CreateBoolConVar("sm_fix_sticky_delay", FixStickyDelay_OnConVarChange);
+    CreateBoolConVar("sm_gunboats_always_apply", GunboatsAlwaysApply_OnConVarChange);
+    CreateBoolConVar("sm_projectiles_ignore_teammates", ProjectilesIgnoreTeammates_OnConVarChange);
+    CreateBoolConVar("sm_remove_halloween_souls", RemoveHalloweenSouls_OnConVarChange);
+    CreateBoolConVar("sm_remove_medic_attach_speed", RemoveMedicAttachSpeed_OnConVarChange);
 
-    g_cvar_fix_sticky_delay = CreateBoolConVar("sm_fix_sticky_delay");
-
-    g_offset_damaged_other_players = CheckedGameConfGetKeyValueInt(
-        game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
+    g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers =
+        CheckedGameConfGetKeyValueInt(game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
 
     StartPrepSDKCall(SDKCall_Entity);
-    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual,
-                            "CTFWeaponBase::SecondaryAttack");
-    if ((g_call_secondary_attack = EndPrepSDKCall()) == INVALID_HANDLE) {
-        SetFailState(
-            "Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack");
+    if ((g_call_CTFWeaponBase_SecondaryAttack = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
     }
 
     RemoveBonusRoundTimeUpperBound();
@@ -85,15 +73,6 @@ void OnPluginStart() {
 
 public
 void OnMapStart() { RemoveBonusRoundTimeUpperBound(); }
-
-public
-Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3],
-                      float angles[3], int &currWeapon, int &subtype,
-                      int &cmdnum, int &tickcount, int &seed, int mouse[2]) {
-    FixStickyDelay(client, buttons);
-
-    return Plugin_Continue;
-}
 
 Action CfCommand(int client, int args) {
     char full[256];
@@ -125,90 +104,117 @@ Action CfCommand(int client, int args) {
 
 // === FIX GHOST CROSSBOW BOLTS ===
 
-void OnChangeFixGhostCrossbowBolts(ConVar cvar, const char[] before,
-                                   const char[] after) {
+void FixGhostCrossbowBolts_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    DHookToggleEntityListener(ListenType_Created, ListenerFixGhostCrossbowBolts,
+    DHookToggleEntityListener(ListenType_Created, FixGhostCrossbowBolts_OnEntityCreated,
                               cvar.BoolValue);
 }
 
-void ListenerFixGhostCrossbowBolts(int entity, const char[] classname) {
+void FixGhostCrossbowBolts_OnEntityCreated(int entity, const char[] classname) {
     if (StrEqual(classname, "tf_projectile_healing_bolt")) {
-        DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
-                    HookFixGhostCrossbowBolts);
+        if (INVALID_HOOK_ID ==
+            DHookEntity(g_hook_CBaseProjectile_CanCollideWithTeammates, HOOK_PRE, entity, _,
+                        FixGhostCrossbowBolts_Hook_CBaseProjectile_CanCollideWithTeammates)) {
+            SetFailState("Failed to hook CBaseProjectile::CanCollideWithTeammates");
+        }
     }
 }
 
-MRESReturn HookFixGhostCrossbowBolts(int self, Handle ret) {
+MRESReturn FixGhostCrossbowBolts_Hook_CBaseProjectile_CanCollideWithTeammates(int    self,
+                                                                              Handle ret) {
     DHookSetReturn(ret, true);
     return MRES_Supercede;
 }
 
 // === FIX STICKY DELAY BUG ===
 
-void FixStickyDelay(int client, int &buttons) {
-    int weapon, item_id;
-
-    if (g_cvar_fix_sticky_delay.BoolValue && buttons & IN_ATTACK2 &&
-        IsPlayerAlive(client) &&
-        TF2_GetPlayerClass(client) == TFClass_DemoMan &&
-        (weapon = GetPlayerWeaponSlot(client, WEAPON_SLOT_SECONDARY)) &&
-        weapon != -1 &&
-        (item_id = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")) &&
-        item_id != -1 && item_id != WEAPON_ID_THE_CHARGIN_TARGE &&
-        item_id != WEAPON_ID_THE_SPLENDID_SCREEN &&
-        item_id != WEAPON_ID_THE_TIDE_TURNER &&
-        item_id != WEAPON_ID_FESTIVE_TARGE) {
-        SDKCall(g_call_secondary_attack, weapon);
-    }
-}
-
-// === GUNBOATS ALWAYS APPLY ===
-
-void OnChangeGunboatsAlwaysApply(ConVar cvar, const char[] before,
-                                 const char[] after) {
+void FixStickyDelay_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    if (!DHookToggleDetour(g_detour_apply_on_damage_alive_modify_rules,
-                           HOOK_PRE, DetourGunboatsAlwaysApply,
-                           cvar.BoolValue)) {
-        SetFailState(
-            "Failed to toggle detour CTFGameRules::ApplyOnDamageAliveModifyRules");
+    if (!DHookToggleDetour(g_detour_CTFWeaponBase_ItemBusyFrame, HOOK_PRE,
+                           FixStickyDelay_Detour_ItemBusyFrame, cvar.BoolValue)) {
+        SetFailState("Failed to toggle detour on CTFWeaponBase::ItemBusyFrame");
     }
 }
 
-MRESReturn DetourGunboatsAlwaysApply(Address self, Handle ret, Handle params) {
-    DHookSetParamObjectPtrVar(params, 1, g_offset_damaged_other_players,
+stock MRESReturn FixStickyDelay_Detour_ItemBusyFrame(int self, Handle ret) {
+    int owner = GetEntPropEnt(self, Prop_Data, "m_hOwnerEntity");
+
+    if (GetClientButtons(owner) & IN_ATTACK2 != IN_ATTACK2) {
+        return MRES_Ignored;
+    }
+
+    int secondary = GetPlayerWeaponSlot(owner, TFWeaponSlot_Secondary);
+    if (secondary == -1) {
+        return MRES_Ignored;
+    }
+
+    // XXX: perf?
+    char classname[64];
+    if (!GetEntityClassname(secondary, classname, sizeof(classname))) {
+        return MRES_Ignored;
+    }
+
+    if (!StrEqual(classname, "tf_weapon_pipebomblauncher")) {
+        return MRES_Ignored;
+    }
+
+    SDKCall(g_call_CTFWeaponBase_SecondaryAttack, self);
+
+    return MRES_Handled;
+}
+
+// === GUNBOATS ALWAYS APPLY ===
+
+void GunboatsAlwaysApply_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+    if (cvar.BoolValue == TruthyConVar(before)) {
+        return;
+    }
+
+    if (!DHookToggleDetour(g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules, HOOK_PRE,
+                           GunboatsAlwaysApply_Detour_ApplyOnDamageAliveModifyRules,
+                           cvar.BoolValue)) {
+        SetFailState("Failed to toggle detour on CTFGameRules::ApplyOnDamageAliveModifyRules");
+    }
+}
+
+MRESReturn GunboatsAlwaysApply_Detour_ApplyOnDamageAliveModifyRules(Address self, Handle ret,
+                                                                    Handle params) {
+    DHookSetParamObjectPtrVar(params, 1, g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers,
                               ObjectValueType_Int, 0);
     return MRES_Handled;
 }
 
 // === PROJECTILES IGNORE TEAMMATES ===
 
-void OnChangeProjectilesIgnoreTeammates(ConVar cvar, const char[] before,
-                                        const char[] after) {
+void ProjectilesIgnoreTeammates_OnConVarChange(ConVar cvar, const char[] before,
+                                               const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    DHookToggleEntityListener(
-        ListenType_Created, ListenerProjectilesIgnoreTeammates, cvar.BoolValue);
+    DHookToggleEntityListener(ListenType_Created, ProjectilesIgnoreTeammates_OnEntityCreated,
+                              cvar.BoolValue);
 }
 
-void ListenerProjectilesIgnoreTeammates(int entity, const char[] classname) {
+void ProjectilesIgnoreTeammates_OnEntityCreated(int entity, const char[] classname) {
     if (StrContains(classname, "tf_projectile_") != -1 &&
         !StrEqual(classname, "tf_projectile_healing_bolt")) {
-        DHookEntity(g_detour_can_collide_with_teammates, HOOK_PRE, entity, _,
-                    HookProjectilesIgnoreTeammates);
+        if (INVALID_HOOK_ID ==
+            DHookEntity(g_hook_CBaseProjectile_CanCollideWithTeammates, HOOK_PRE, entity, _,
+                        ProjectilesIgnoreTeammates_Hook_CBaseProjectile_CanCollideWithTeammates)) {
+            SetFailState("Failed to hook CBaseProjectile::CanCollideWithTeammates");
+        }
     }
 }
 
-MRESReturn HookProjectilesIgnoreTeammates(int self, Handle ret) {
+MRESReturn ProjectilesIgnoreTeammates_Hook_CBaseProjectile_CanCollideWithTeammates(int    self,
+                                                                                   Handle ret) {
     DHookSetReturn(ret, false);
     return MRES_Supercede;
 }
@@ -221,39 +227,40 @@ void RemoveBonusRoundTimeUpperBound() {
 
 // === REMOVE HALLOWEEN SOULS ===
 
-void OnChangeRemoveHalloweenSouls(ConVar cvar, const char[] before,
-                                  const char[] after) {
+void RemoveHalloweenSouls_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    if (!DHookToggleDetour(g_detour_drop_halloween_soul_pack, HOOK_PRE,
-                           DetourRemoveHalloweenSouls, cvar.BoolValue)) {
-        SetFailState(
-            "Failed to toggle detour CTFGameRules::DropHalloweenSoulPack");
+    if (!DHookToggleDetour(g_detour_CTFGameRules_DropHalloweenSoulPack, HOOK_PRE,
+                           RemoveHalloweenSouls_Detour_CTFGameRules_DropHalloweenSoulPack,
+                           cvar.BoolValue)) {
+        SetFailState("Failed to toggle detour on CTFGameRules::DropHalloweenSoulPack");
     }
 }
 
-MRESReturn DetourRemoveHalloweenSouls(Address self, Handle ret, Handle params) {
+MRESReturn RemoveHalloweenSouls_Detour_CTFGameRules_DropHalloweenSoulPack(Address self, Handle ret,
+                                                                          Handle params) {
     return MRES_Supercede;
 }
 
 // === REMOVE MEDIC ATTACH SPEED ===
 
-void OnChangeRemoveMedicAttachSpeed(ConVar cvar, const char[] before,
-                                    const char[] after) {
+void RemoveMedicAttachSpeed_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    if (!DHookToggleDetour(g_detour_teamfortress_calculate_max_speed, HOOK_PRE,
-                           DetourRemoveMedicAttachSpeed, cvar.BoolValue)) {
-        SetFailState(
-            "Failed to toggle detour CTFPlayer::TeamFortress_CalculateMaxSpeed");
+    if (!DHookToggleDetour(g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed, HOOK_PRE,
+                           RemoveMedicAttachSpeed_Detour_CTFPlayer_TeamFortress_CalculateMaxSpeed,
+                           cvar.BoolValue)) {
+        SetFailState("Failed to toggle detour on CTFPlayer::TeamFortress_CalculateMaxSpeed");
     }
 }
 
-MRESReturn DetourRemoveMedicAttachSpeed(int self, Handle ret, Handle params) {
+MRESReturn RemoveMedicAttachSpeed_Detour_CTFPlayer_TeamFortress_CalculateMaxSpeed(int    self,
+                                                                                  Handle ret,
+                                                                                  Handle params) {
     if (DHookGetParam(params, 1)) {
         DHookSetReturn(ret, 0.0);
         return MRES_Supercede;
@@ -299,14 +306,22 @@ stock int CheckedGameConfGetKeyValueInt(Handle game_config, const char[] name) {
     return res;
 }
 
-stock ConVar CreateBoolConVar(const char[] name,
-                              const char[] description = "") {
-    return CreateConVar(name, "0", description, FCVAR_NOTIFY, true, 0.0, true,
-                        1.0);
+stock ConVar CreateBoolConVar(const char[] name, ConVarChanged callback) {
+    ConVar cvar = CreateConVar(name, "0", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
+
+    cvar.AddChangeHook(callback);
+
+    /*
+    char current[128];
+    cvar.GetString(current, sizeof(current));
+
+    callback(cvar, "0", current);
+    */
+
+    return cvar;
 }
 
-stock bool DHookToggleDetour(Handle setup, bool post, DHookCallback callback,
-                             bool enabled) {
+stock bool DHookToggleDetour(Handle setup, bool post, DHookCallback callback, bool enabled) {
     if (enabled) {
         return DHookEnableDetour(setup, post, callback);
     } else {
@@ -314,8 +329,7 @@ stock bool DHookToggleDetour(Handle setup, bool post, DHookCallback callback,
     }
 }
 
-stock void DHookToggleEntityListener(ListenType listen_type, ListenCB callback,
-                                     bool enabled) {
+stock void DHookToggleEntityListener(ListenType listen_type, ListenCB callback, bool enabled) {
     if (enabled) {
         DHookAddEntityListener(listen_type, callback);
     } else {
