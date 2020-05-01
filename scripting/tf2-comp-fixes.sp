@@ -48,6 +48,8 @@ void OnPluginStart() {
     CreateBoolConVar("sm_projectiles_ignore_teammates", ProjectilesIgnoreTeammates_OnConVarChange);
     CreateBoolConVar("sm_remove_halloween_souls", RemoveHalloweenSouls_OnConVarChange);
     CreateBoolConVar("sm_remove_medic_attach_speed", RemoveMedicAttachSpeed_OnConVarChange);
+    CreateBoolConVar("sm_rest_in_peace_rick_may", RemoveSoldierStatue_OnConVarChange);
+    SetConVarBounds(FindConVar("sm_rest_in_peace_rick_may"), ConVarBound_Upper, true, 255.0);
 
     StartPrepSDKCall(SDKCall_Entity);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack");
@@ -97,6 +99,7 @@ Action CfCommand(int client, int args) {
     FindConVar("sm_fix_sticky_delay").SetBool(everything || fixes);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(everything || fixes);
     FindConVar("sm_remove_halloween_souls").SetBool(everything || fixes);
+    FindConVar("sm_rest_in_peace_rick_may").SetInt(everything || fixes ? 128 : 0);
 
     FindConVar("sm_gunboats_always_apply").SetBool(everything);
     FindConVar("sm_remove_medic_attach_speed").SetBool(everything);
@@ -269,6 +272,27 @@ MRESReturn RemoveMedicAttachSpeed_Detour_CTFPlayer_TeamFortress_CalculateMaxSpee
     }
 
     return MRES_Ignored;
+}
+
+// === REMOVE SOLIDER STATUS ===
+
+void RemoveSoldierStatue_OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+    int i = -1;
+
+    while ((i = FindEntityByClassname(i, "entity_soldier_statue")) != -1) {
+        if (cvar.BoolValue) {
+            SetEntityRenderMode(i, RENDER_TRANSTEXTURE);
+            SetEntityRenderColor(i, 255, 255, 255, 255 - cvar.IntValue);
+
+            SetEntProp(i, Prop_Data, "m_nSolidType", 0);
+            SetEntProp(i, Prop_Send, "m_CollisionGroup", 1);
+        } else {
+            SetEntityRenderMode(i, RENDER_NORMAL);
+
+            SetEntProp(i, Prop_Data, "m_nSolidType", 2);
+            SetEntProp(i, Prop_Send, "m_CollisionGroup", 0);
+        }
+    }
 }
 
 //
