@@ -17,7 +17,8 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 `sm_fix_sticky_delay`, 
 `sm_fix_ghost_crossbow_bolts`, 
 `sm_projectiles_ignore_teammates`, 
-`sm_remove_halloween_souls`.
+`sm_remove_halloween_souls`,
+`sm_rest_in_peace_rick_may 128`.
 
 
 ### Features
@@ -51,6 +52,13 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
     When enabled with `sm_remove_medic_attach_speed 1`,
     the Medic will not run as fast as its target if the target is faster.
+
+- **Rest In Peace, Rick May**
+
+    When enabled with `sm_rest_in_peace_rick_may [1 .. 255]`,
+    the commemorative Soldier statues will become transparent 
+    (values near 0 being opaque, 255 being invisible),
+    and will not collide with players, shots or projectiles.
 
 - **Removes Upper Bound On `mp_bonusroundtime`**
 
