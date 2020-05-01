@@ -12,12 +12,14 @@
 
 #define INVALID_HOOK_ID (-1)
 
+Handle g_call_CTFWeaponBase_PrimaryAttack;
 Handle g_call_CTFWeaponBase_SecondaryAttack;
 Handle g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules;
 Handle g_detour_CTFGameRules_DropHalloweenSoulPack;
 Handle g_detour_CTFWeaponBase_ItemBusyFrame;
 Handle g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed;
 Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
+Handle g_hook_CTFWeaponBase_SecondaryAttack;
 int    g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers;
 
 // clang-format off
@@ -50,6 +52,12 @@ void OnPluginStart() {
     CreateBoolConVar("sm_remove_medic_attach_speed", RemoveMedicAttachSpeed_OnConVarChange);
 
     StartPrepSDKCall(SDKCall_Entity);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::PrimaryAttack");
+    if ((g_call_CTFWeaponBase_PrimaryAttack = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CTFWeaponBase::PrimaryAttack");
+    }
+
+    StartPrepSDKCall(SDKCall_Entity);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack");
     if ((g_call_CTFWeaponBase_SecondaryAttack = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
@@ -66,15 +74,68 @@ void OnPluginStart() {
 
     g_hook_CBaseProjectile_CanCollideWithTeammates =
         CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
+    g_hook_CTFWeaponBase_SecondaryAttack =
+        CheckedDHookCreateFromConf(game_config, "CTFWeaponBase::SecondaryAttack");
 
     g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers =
         CheckedGameConfGetKeyValueInt(game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
 
     RemoveBonusRoundTimeUpperBound();
+
+    int i = -1;
+    while ((i = FindEntityByClassname(i, "tf_weapon_syringegun_medic")) != -1) {
+        DHookEntity(g_hook_CTFWeaponBase_SecondaryAttack, HOOK_PRE, i, _, hook);
+    }
 }
 
 public
 void OnMapStart() { RemoveBonusRoundTimeUpperBound(); }
+
+public
+void OnClientPutInServer(int client) { SDKHook(client, SDKHook_WeaponCanUse, fuk); }
+
+void fuk(int client, int weapon) {
+    char classname[64];
+    if (!GetEntityClassname(weapon, classname, sizeof(classname))) {
+        return;
+    }
+
+    if (!StrEqual(classname, "tf_weapon_syringegun_medic")) {
+        return;
+    }
+
+    DHookEntity(g_hook_CTFWeaponBase_SecondaryAttack, HOOK_PRE, weapon, _, hook);
+}
+
+MRESReturn hook(int self) {
+    PrintToChatAll("FUCK YOU");
+
+    if (GetEntPropFloat(self, Prop_Send, "m_flNextSecondaryAttack") > GetGameTime()) {
+        return MRES_Supercede;
+    }
+
+    int client = GetEntPropEnt(self, Prop_Send, "m_hOwner");
+
+    if (client == 0 || client > MaxClients) {
+        return MRES_Supercede;
+    }
+
+    int ammo_type = GetEntProp(self, Prop_Send, "m_iPrimaryAmmoType");
+
+    // this dont work
+    if (GetEntProp(client, Prop_Send, "m_iAmmo", 4, ammo_type) < 10) {
+        return MRES_Supercede;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        SetEntPropFloat(self, Prop_Send, "m_flNextPrimaryAttack", 0.0);
+        SDKCall(g_call_CTFWeaponBase_PrimaryAttack, self);
+    }
+
+    SetEntPropFloat(self, Prop_Send, "m_flNextPrimaryAttack", GetGameTime() + 1.5);
+    SetEntPropFloat(self, Prop_Send, "m_flNextSecondaryAttack", GetGameTime() + 1.5);
+    return MRES_Supercede;
+}
 
 Action CfCommand(int client, int args) {
     char full[256];

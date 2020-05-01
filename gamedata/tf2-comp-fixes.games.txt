@@ -78,6 +78,14 @@
 				"return" "void"
 				"this" "entity"
 			}
+
+			"CTFWeaponBase::SecondaryAttack" {
+				// virtual void SecondaryAttack()
+				"offset" "CTFWeaponBase::SecondaryAttack"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "entity"
+			}
 		}
 
 		"Keys" {
@@ -88,6 +96,11 @@
 			"CBaseProjectile::CanCollideWithTeammates" {
 				"linux" "223"
 				"windows" "222"
+			}
+
+			"CTFWeaponBase::PrimaryAttack" {
+				"linux" "285"
+				"windows" "279"
 			}
 
 			"CTFWeaponBase::SecondaryAttack" {
