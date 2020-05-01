@@ -94,10 +94,10 @@ The method `CTFPlayer::TeamFortress_CalculateMaxSpeed(this, bool)` contains the 
 we are trying to change, consider the following pseudocode:
 
 ```cpp
-double CTFPlayer::TeamFortress_CalculateMaxSpeed(CTFPlayer *this, param) {
+float CTFPlayer::TeamFortress_CalculateMaxSpeed(CTFPlayer *this, param) {
     // ..
 
-    double max_speed = 0.0;
+    float max_speed = 0.0;
     auto active_weapon = CBaseCombatCharacter::GetActiveWeapon(this);
 
     // ..
@@ -117,7 +117,7 @@ double CTFPlayer::TeamFortress_CalculateMaxSpeed(CTFPlayer *this, param) {
                     && CTFPlayerShared::InCond(medigun_target, COND_SHIELD_CHARGING)) {
                 max_speed = g_tf_max_charge_speed;
             } else {
-                double medigun_target_speed =
+                float medigun_target_speed =
                     CTFPlayer::TeamFortress_CalculateMaxSpeed(medigun_target, true),
 
                 // -- WE DON'T WANT THIS
@@ -150,7 +150,7 @@ The Quick-Fix still benefits from the speed boost while a demoman is charging.
 
 The method `bool CBaseProjectile::CanCollideWithTeammates(*this)` simply returns a field (TODO: find name),
 this field is initialized to false and is set to true after some time, depending on what
-`double CBaseProjectile::GetCollideWithTeammatesDelay()` returns (250ms by default).
+`float CBaseProjectile::GetCollideWithTeammatesDelay()` returns (250ms by default).
 `CTFProjectile_HealingBolt` overrides `GetCollideWithTeammatesDelay` to always return 0ms.
 `CTFProjectile_GrapplingHook` overrides `CanCollideWithTeammates` to always return false.
 
