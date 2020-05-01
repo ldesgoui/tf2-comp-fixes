@@ -2,6 +2,7 @@
 #pragma newdecls required
 
 #include <dhooks>
+#include <functions>
 #include <sdkhooks>
 #include <sdktools>
 #include <tf2_stocks>
@@ -41,6 +42,19 @@ void OnPluginStart() {
 
     RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS, "Batch update of TF2 Competitive Fixes cvars");
 
+    CreateBoolConVar("sm_fix_ghost_crossbow_bolts", FixGhostCrossbowBolts_OnConVarChange);
+    CreateBoolConVar("sm_fix_sticky_delay", FixStickyDelay_OnConVarChange);
+    CreateBoolConVar("sm_gunboats_always_apply", GunboatsAlwaysApply_OnConVarChange);
+    CreateBoolConVar("sm_projectiles_ignore_teammates", ProjectilesIgnoreTeammates_OnConVarChange);
+    CreateBoolConVar("sm_remove_halloween_souls", RemoveHalloweenSouls_OnConVarChange);
+    CreateBoolConVar("sm_remove_medic_attach_speed", RemoveMedicAttachSpeed_OnConVarChange);
+
+    StartPrepSDKCall(SDKCall_Entity);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack");
+    if ((g_call_CTFWeaponBase_SecondaryAttack = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
+    }
+
     g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules =
         CheckedDHookCreateFromConf(game_config, "CTFGameRules::ApplyOnDamageAliveModifyRules");
     g_detour_CTFGameRules_DropHalloweenSoulPack =
@@ -49,24 +63,12 @@ void OnPluginStart() {
         CheckedDHookCreateFromConf(game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
     g_detour_CTFWeaponBase_ItemBusyFrame =
         CheckedDHookCreateFromConf(game_config, "CTFWeaponBase::ItemBusyFrame");
+
     g_hook_CBaseProjectile_CanCollideWithTeammates =
         CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
 
-    CreateBoolConVar("sm_fix_ghost_crossbow_bolts", FixGhostCrossbowBolts_OnConVarChange);
-    CreateBoolConVar("sm_fix_sticky_delay", FixStickyDelay_OnConVarChange);
-    CreateBoolConVar("sm_gunboats_always_apply", GunboatsAlwaysApply_OnConVarChange);
-    CreateBoolConVar("sm_projectiles_ignore_teammates", ProjectilesIgnoreTeammates_OnConVarChange);
-    CreateBoolConVar("sm_remove_halloween_souls", RemoveHalloweenSouls_OnConVarChange);
-    CreateBoolConVar("sm_remove_medic_attach_speed", RemoveMedicAttachSpeed_OnConVarChange);
-
     g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers =
         CheckedGameConfGetKeyValueInt(game_config, "CTakeDamageInfo::m_iDamagedOtherPlayers");
-
-    StartPrepSDKCall(SDKCall_Entity);
-    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTFWeaponBase::SecondaryAttack");
-    if ((g_call_CTFWeaponBase_SecondaryAttack = EndPrepSDKCall()) == INVALID_HANDLE) {
-        SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
-    }
 
     RemoveBonusRoundTimeUpperBound();
 }
@@ -311,12 +313,14 @@ stock ConVar CreateBoolConVar(const char[] name, ConVarChanged callback) {
 
     cvar.AddChangeHook(callback);
 
-    /*
     char current[128];
     cvar.GetString(current, sizeof(current));
 
-    callback(cvar, "0", current);
-    */
+    Call_StartFunction(INVALID_HANDLE, callback);
+    Call_PushCell(cvar);
+    Call_PushString("0");
+    Call_PushString(current);
+    Call_Finish();
 
     return cvar;
 }
