@@ -23,7 +23,7 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
 ### Features
 
-## Fixes
+#### Fixes
 
 - **Fixes Sticky Delay**
 
@@ -52,7 +52,7 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
     When enabled with `sm_remove_halloween_souls 1`,
     no souls will be spawned during the Halloween holiday events.
 
-## Gameplay Changes
+#### Gameplay Changes
 
 - **Gunboats Always Apply**
 
