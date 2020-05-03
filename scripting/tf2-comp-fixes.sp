@@ -4,6 +4,7 @@
 Handle g_hook_CBaseProjectile_CanCollideWithTeammates = INVALID_HANDLE;
 
 #include "tf2-comp-fixes/common.sp"
+#include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
@@ -33,6 +34,7 @@ void OnPluginStart() {
 
     RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS, "Batch update of TF2 Competitive Fixes cvars");
 
+    DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup(game_config);
     FixStickDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
@@ -59,6 +61,7 @@ Action CfCommand(int client, int args) {
         return Plugin_Handled;
     }
 
+    FindConVar("sm_deterministic_fall_damage").SetBool(everything || fixes);
     FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(everything || fixes);
     FindConVar("sm_fix_sticky_delay").SetBool(everything || fixes);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(everything || fixes);

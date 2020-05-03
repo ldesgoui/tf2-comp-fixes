@@ -58,6 +58,19 @@
 				}
 			}
 
+			"CTFGameRules::FlPlayerFallDamage" {
+				// virtual float FlPlayerFallDamage( CBasePlayer *pPlayer )
+				"signature" "CTFGameRules::FlPlayerFallDamage"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "address"
+				"arguments" {
+					"player" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				// float TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= false*/ ) const
 				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
@@ -99,6 +112,10 @@
 		"Signatures" {
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
+			}
+
+			"CTFGameRules::FlPlayerFallDamage" {
+				"linux" "@_ZN12CTFGameRules18FlPlayerFallDamageEP11CBasePlayer"
 			}
 
 			"CTFGameRules::DropHalloweenSoulPack" {
