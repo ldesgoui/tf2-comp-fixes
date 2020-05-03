@@ -23,6 +23,8 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
 ### Features
 
+## Fixes
+
 - **Fixes Sticky Delay**
 
     When enabled with `sm_fix_sticky_delay 1`,
@@ -32,6 +34,13 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
     When enabled with `sm_fix_ghost_crossbow_bolts 1`,
     crossbow bolts will no longer pass through teammates when in close range.
+
+- **Ghostify Soldier Statues**
+
+    When enabled with `sm_rest_in_peace_rick_may [1 .. 255]`,
+    the commemorative Soldier statues will become transparent 
+    (values near 0 being opaque, 255 being invisible),
+    and will not collide with players, shots or projectiles.
 
 - **Projectiles Ignore Teammates**
 
@@ -43,6 +52,8 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
     When enabled with `sm_remove_halloween_souls 1`,
     no souls will be spawned during the Halloween holiday events.
 
+## Gameplay Changes
+
 - **Gunboats Always Apply**
 
     When enabled with `sm_gunboats_always_apply 1`,
@@ -52,15 +63,6 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
     When enabled with `sm_remove_medic_attach_speed 1`,
     the Medic will not run as fast as its target if the target is faster.
-
-- **Rest In Peace, Rick May**
-
-    When enabled with `sm_rest_in_peace_rick_may [1 .. 255]`,
-    the commemorative Soldier statues will become transparent 
-    (values near 0 being opaque, 255 being invisible),
-    and will not collide with players, shots or projectiles.
-
-- **Removes Upper Bound On `mp_bonusroundtime`**
 
 
 ## Installation
