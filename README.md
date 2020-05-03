@@ -14,10 +14,11 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 `sm_cf none` disables everything.
 
 `sm_cf fixes` enables 
-`sm_fix_sticky_delay`, 
-`sm_fix_ghost_crossbow_bolts`, 
-`sm_projectiles_ignore_teammates`, 
-`sm_remove_halloween_souls`,
+`sm_fix_ghost_crossbow_bolts 1`, 
+`sm_fix_slope_bug 1`, 
+`sm_fix_sticky_delay 1`, 
+`sm_projectiles_ignore_teammates 1`, 
+`sm_remove_halloween_souls 1`,
 `sm_rest_in_peace_rick_may 128`.
 
 
