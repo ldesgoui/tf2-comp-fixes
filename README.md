@@ -25,15 +25,29 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
 #### Fixes
 
-- **Fixes Sticky Delay**
+- **Deterministic Fall Damage**
 
-    When enabled with `sm_fix_sticky_delay 1`,
-    stickies will no longer fail to detonate when swapping weapons.
+    When enabled with `sm_deterministic_fall_damage 1`,
+    the random variable in fall damage calculation will be removed. 
+
+    Credits to the existing plugin https://github.com/stephanieLGBT/tf2-FallDamageFixer
 
 - **Fixes Ghost Crossbow Bolts**
 
     When enabled with `sm_fix_ghost_crossbow_bolts 1`,
     crossbow bolts will no longer pass through teammates when in close range.
+
+- **Fixes Slope Bugs**
+
+    When enabled with `sm_fix_slope_bug 1`,
+    players won't stop while sliding on slopes anymore.
+
+    Credits to the existing plugin https://github.com/laurirasanen/groundfix
+
+- **Fixes Sticky Delay**
+
+    When enabled with `sm_fix_sticky_delay 1`,
+    stickies will no longer fail to detonate when swapping weapons.
 
 - **Ghostify Soldier Statues**
 
@@ -68,7 +82,7 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 ## Installation
 
 This plugin depends on the 
-[DHooks2 Extension](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
+[DHooks2 Extension with detour support](https://forums.alliedmods.net/showpost.php?p=2588686&postcount=589)
 
 Download the latest releases from the following links to 
 `steam/steamapps/common/Team Fortress 2 Dedicated Server/tf` and unzip them:
