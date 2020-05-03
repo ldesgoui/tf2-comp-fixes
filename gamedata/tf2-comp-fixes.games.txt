@@ -17,6 +17,19 @@
 				"this" "entity"
 			}
 
+			"CTFGameMovement::SetGroundEntity" {
+				// virtual void SetGroundEntity( trace_t *pm )
+				"signature" "CTFGameMovement::SetGroundEntity"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "address"
+				"arguments" {
+					"trace" {
+						"type" "objectptr"
+					}
+				}
+			}
+
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				// float ApplyOnDamageAliveModifyRules( const CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, DamageModifyExtras_t& outParams )
 				"signature" "CTFGameRules::ApplyOnDamageAliveModifyRules"
@@ -94,6 +107,7 @@
 		}
 
 		"Keys" {
+			"CGameMovement::player" "4"
 			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
 		}
 
@@ -110,6 +124,10 @@
 		}
 
 		"Signatures" {
+			"CTFGameMovement::SetGroundEntity" {
+				"linux" "@_ZN15CTFGameMovement15SetGroundEntityEP10CGameTrace"
+			}
+
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
 			}

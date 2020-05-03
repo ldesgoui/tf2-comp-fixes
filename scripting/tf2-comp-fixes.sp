@@ -6,6 +6,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates = INVALID_HANDLE;
 #include "tf2-comp-fixes/common.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
+#include "tf2-comp-fixes/fix-slope-bug.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
@@ -36,6 +37,7 @@ void OnPluginStart() {
 
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup(game_config);
+    FixSlopeBug_Setup(game_config);
     FixStickDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
@@ -63,6 +65,7 @@ Action CfCommand(int client, int args) {
 
     FindConVar("sm_deterministic_fall_damage").SetBool(everything || fixes);
     FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(everything || fixes);
+    FindConVar("sm_fix_slope_bug").SetBool(everything || fixes);
     FindConVar("sm_fix_sticky_delay").SetBool(everything || fixes);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(everything || fixes);
     FindConVar("sm_remove_halloween_souls").SetBool(everything || fixes);
