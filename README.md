@@ -14,6 +14,7 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 `sm_cf none` disables everything.
 
 `sm_cf fixes` enables 
+`sm_deterministic_fall_damage 1`, 
 `sm_fix_ghost_crossbow_bolts 1`, 
 `sm_fix_slope_bug 1`, 
 `sm_fix_sticky_delay 1`, 
