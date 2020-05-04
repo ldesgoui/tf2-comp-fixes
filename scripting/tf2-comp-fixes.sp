@@ -33,7 +33,7 @@ void OnPluginStart() {
         SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
 
-    RegAdminCmd("sm_cf", CfCommand, ADMFLAG_CONVARS, "Batch update of TF2 Competitive Fixes cvars");
+    RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup(game_config);
@@ -46,20 +46,38 @@ void OnPluginStart() {
     RemoveMedicAttachSpeed_Setup(game_config);
 }
 
-Action CfCommand(int client, int args) {
+Action Command_Cf(int client, int args) {
     char full[256];
     bool everything = false;
     bool fixes      = false;
 
     GetCmdArgString(full, sizeof(full));
 
-    if (StrEqual(full, "all")) {
+    if (StrEqual(full, "list")) {
+        ReplyToCommand(client, "--- Fixes");
+        ReplyDiffConVar(client, "sm_deterministic_fall_damage");
+        ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
+        ReplyDiffConVar(client, "sm_fix_slope_bug");
+        ReplyDiffConVar(client, "sm_fix_sticky_delay");
+        ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
+        ReplyDiffConVar(client, "sm_remove_halloween_souls");
+        ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
+        ReplyToCommand(client, "--- Balance changes");
+        ReplyDiffConVar(client, "sm_gunboats_always_apply");
+        ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        return Plugin_Handled;
+    } else if (StrEqual(full, "all")) {
         everything = true;
     } else if (StrEqual(full, "fixes")) {
         fixes = true;
     } else if (StrEqual(full, "none")) {
     } else {
-        ReplyToCommand(client, "usage: sm_cf (all | fixes | none)");
+        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | none)");
+        return Plugin_Handled;
+    }
+
+    if (!(GetUserFlagBits(client) & (ADMFLAG_CONVARS | ADMFLAG_RCON | ADMFLAG_ROOT))) {
+        ReplyToCommand(client, "You do not have permissions to edit ConVars");
         return Plugin_Handled;
     }
 
@@ -75,4 +93,13 @@ Action CfCommand(int client, int args) {
     FindConVar("sm_remove_medic_attach_speed").SetBool(everything);
 
     return Plugin_Handled;
+}
+
+void ReplyDiffConVar(int client, const char[] name) {
+    ConVar cvar = FindConVar(name);
+    char   current[128], def[128];
+    cvar.GetString(current, sizeof(current));
+    cvar.GetDefault(def, sizeof(def));
+
+    ReplyToCommand(client, "Server cvar '%s' is set to %s (default: %s)", name, current, def);
 }
