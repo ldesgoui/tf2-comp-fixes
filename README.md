@@ -9,6 +9,8 @@ This plugin only support Linux servers.
 
 The `sm_cf` command is available to users with the SourceMod admin level `cvar` (flag `h`), or via RCON.
 
+`sm_cf list` lists all available cvars.
+
 `sm_cf all` enables everything.
 
 `sm_cf none` disables everything.
