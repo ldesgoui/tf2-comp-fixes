@@ -76,7 +76,8 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
-    if (!(GetUserFlagBits(client) & (ADMFLAG_CONVARS | ADMFLAG_RCON | ADMFLAG_ROOT))) {
+    if (client != 0 &&
+        !(GetUserFlagBits(client) & (ADMFLAG_CONVARS | ADMFLAG_RCON | ADMFLAG_ROOT))) {
         ReplyToCommand(client, "You do not have permissions to edit ConVars");
         return Plugin_Handled;
     }
