@@ -142,13 +142,13 @@
 				"windows" "\x55\x8B\xEC\x51\x56\x8B\x75\x2A\x85\xF6\x0F\x84\x2A\x2A\x2A\x2A"
 			}
 
-            // contains string "halloween_souls_pack"
+			// contains string "halloween_souls_pack"
 			"CTFGameRules::DropHalloweenSoulPack" {
 				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
 				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x56\x6A\x00\x8D\x45\x2A"
 			}
 
-            // contains string "mult_player_aiming_movespeed"
+			// contains string "mult_player_aiming_movespeed"
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
 				"windows" "\x55\x8B\xEC\x83\xEC\x18\x83\x3D\x2A\x2A\x2A\x2A\x00"
