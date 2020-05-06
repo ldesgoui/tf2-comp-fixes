@@ -1,0 +1,152 @@
+"Games" {
+	"tf" {
+		"Addresses" {
+			"CTFProjectile_HealingBolt::vtable" {
+				"linux" {
+					"signature" "CTFProjectile_HealingBolt::vtable"
+				}
+			}
+		}
+
+		"Functions" {
+			"CBaseProjectile::CanCollideWithTeammates" {
+				// virtual bool CanCollideWithTeammates() const
+				"offset" "CBaseProjectile::CanCollideWithTeammates"
+				"callconv" "thiscall"
+				"return" "bool"
+				"this" "entity"
+			}
+
+			"CTFGameMovement::SetGroundEntity" {
+				// virtual void SetGroundEntity( trace_t *pm )
+				"signature" "CTFGameMovement::SetGroundEntity"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "address"
+				"arguments" {
+					"trace" {
+						"type" "objectptr"
+					}
+				}
+			}
+
+			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
+				// float ApplyOnDamageAliveModifyRules( const CTakeDamageInfo &info, CBaseEntity *pVictimBaseEntity, DamageModifyExtras_t& outParams )
+				"signature" "CTFGameRules::ApplyOnDamageAliveModifyRules"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "address"
+				"arguments" {
+					"take_damage_info" {
+						"type" "objectptr"
+					}
+					"victim" {
+						"type" "cbaseentity"
+					}
+					"out_params" {
+						"type" "objectptr"
+					}
+				}
+			}
+
+			"CTFGameRules::DropHalloweenSoulPack" {
+				// void DropHalloweenSoulPack( int nAmount, const Vector& vecSource, CBaseEntity *pTarget, int nSourceTeam )
+				"signature" "CTFGameRules::DropHalloweenSoulPack"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "address"
+				"arguments" {
+					"amount" {
+						"type" "int"
+					}
+					"position" {
+						"type" "vectorptr"
+					}
+					"target" {
+						"type" "cbaseentity"
+					}
+					"source_team" {
+						"type" "int"
+					}
+				}
+			}
+
+			"CTFGameRules::FlPlayerFallDamage" {
+				// virtual float FlPlayerFallDamage( CBasePlayer *pPlayer )
+				"signature" "CTFGameRules::FlPlayerFallDamage"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "address"
+				"arguments" {
+					"player" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
+			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
+				// float TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= false*/ ) const
+				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
+				"callconv" "thiscall"
+				"return" "float"
+				"this" "entity"
+				"arguments" {
+					"ignore_special_ability" {
+						"type" "bool"
+					}
+				}
+			}
+
+			"CTFWeaponBase::ItemBusyFrame" {
+				// virtual void ItemBusyFrame()
+				"signature" "CTFWeaponBase::ItemBusyFrame"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "entity"
+			}
+		}
+
+		"Keys" {
+			"CGameMovement::player" "4"
+			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
+		}
+
+		"Offsets" {
+			"CBaseProjectile::CanCollideWithTeammates" {
+				"linux" "223"
+				"windows" "222"
+			}
+
+			"CTFWeaponBase::SecondaryAttack" {
+				"linux" "286"
+				"windows" "280"
+			}
+		}
+
+		"Signatures" {
+			"CTFGameMovement::SetGroundEntity" {
+				"linux" "@_ZN15CTFGameMovement15SetGroundEntityEP10CGameTrace"
+			}
+
+			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
+				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
+			}
+
+			"CTFGameRules::FlPlayerFallDamage" {
+				"linux" "@_ZN12CTFGameRules18FlPlayerFallDamageEP11CBasePlayer"
+			}
+
+			"CTFGameRules::DropHalloweenSoulPack" {
+				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
+			}
+
+			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
+				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
+			}
+
+			"CTFWeaponBase::ItemBusyFrame" {
+				"linux" "@_ZN13CTFWeaponBase13ItemBusyFrameEv"
+			}
+		}
+	}
+}
