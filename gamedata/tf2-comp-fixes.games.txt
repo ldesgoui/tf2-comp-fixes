@@ -107,6 +107,7 @@
 		}
 
 		"Keys" {
+			"CBaseTrace::plane::normal" "24"
 			"CGameMovement::player" "4"
 			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
 		}
@@ -124,28 +125,42 @@
 		}
 
 		"Signatures" {
+			// contains string "BumperCar.JumpLand"
 			"CTFGameMovement::SetGroundEntity" {
 				"linux" "@_ZN15CTFGameMovement15SetGroundEntityEP10CGameTrace"
+				"windows" "\x55\x8B\xEC\x56\x8B\xF1\x57\x6A\x52"
 			}
 
+			// contains string "uber_on_damage_taken"
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
+				"windows" "\x55\x8B\xEC\x81\xEC\xD0\x00\x00\x00\x53\x8B\x5D\x2A"
 			}
 
+			// contains string "cancel_falling_damage"
 			"CTFGameRules::FlPlayerFallDamage" {
 				"linux" "@_ZN12CTFGameRules18FlPlayerFallDamageEP11CBasePlayer"
+				"windows" "\x55\x8B\xEC\x51\x56\x8B\x75\x2A\x85\xF6\x0F\x84\x2A\x2A\x2A\x2A"
 			}
 
+			// contains string "halloween_souls_pack"
 			"CTFGameRules::DropHalloweenSoulPack" {
 				"linux" "@_ZN12CTFGameRules21DropHalloweenSoulPackEiRK6VectorP11CBaseEntityi"
+				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x56\x6A\x00\x8D\x45\x2A"
 			}
 
+			// contains string "mult_player_aiming_movespeed"
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
+				"windows" "\x55\x8B\xEC\x83\xEC\x18\x83\x3D\x2A\x2A\x2A\x2A\x00"
 			}
 
+			// CTFWeaponBase::ApplyItemRegen contains "active_item_health_regen"
+			// ApplyItemRegen is called by ItemBusyFrame and ItemPostFrame
+			// ItemBusyFrame has less callers than ItemPostFrame
 			"CTFWeaponBase::ItemBusyFrame" {
 				"linux" "@_ZN13CTFWeaponBase13ItemBusyFrameEv"
+				"windows" "\x55\x8B\xEC\x51\x56\x57\x8B\xF1\xE8\x2A\x2A\x2A\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\xF8\x85\xFF\x0F\x84\x2A\x2A\x2A\x2A\x8B\x17"
 			}
 		}
 	}

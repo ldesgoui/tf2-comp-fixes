@@ -10,11 +10,15 @@
 #include <sdktools>
 
 static Handle g_detour_CTFGameMovement_SetGroundEntity;
+static int    g_offset_CBaseTrace_plane_normal;
 static int    g_offset_CGameMovement_player;
 
 void FixSlopeBug_Setup(Handle game_config) {
     g_detour_CTFGameMovement_SetGroundEntity =
         CheckedDHookCreateFromConf(game_config, "CTFGameMovement::SetGroundEntity");
+
+    g_offset_CBaseTrace_plane_normal =
+        CheckedGameConfGetKeyValueInt(game_config, "CBaseTrace::plane::normal");
 
     g_offset_CGameMovement_player =
         CheckedGameConfGetKeyValueInt(game_config, "CGameMovement::player");
@@ -49,8 +53,8 @@ static MRESReturn Detour_CTFGameMovement_SetGroundEntity(Address self, Handle pa
 
     float plane[3], abs_velocity[3];
 
-    DHookGetParamObjectPtrVarVector(params, 1, 24 /* XXX: magic number */, ObjectValueType_Vector,
-                                    plane);
+    DHookGetParamObjectPtrVarVector(params, 1, g_offset_CBaseTrace_plane_normal,
+                                    ObjectValueType_Vector, plane);
 
     GetEntPropVector(player, Prop_Data, "m_vecAbsVelocity", abs_velocity);
 
