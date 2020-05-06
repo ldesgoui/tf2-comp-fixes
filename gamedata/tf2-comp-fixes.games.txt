@@ -107,6 +107,7 @@
 		}
 
 		"Keys" {
+			"CBaseTrace::plane::normal" "24"
 			"CGameMovement::player" "4"
 			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
 		}
