@@ -2,8 +2,6 @@
 
 Various technical or gameplay changes catered towards competitive play
 
-This plugin only support Linux servers.
-
 
 ### Usage
 
