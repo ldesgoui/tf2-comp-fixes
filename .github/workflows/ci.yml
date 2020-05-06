@@ -17,10 +17,12 @@ jobs:
       - run: |
           mkdir -p addons/sourcemod/plugins include
 
-          cp -r scripting gamedata addons/sourcemod/
+          cp -r scripting gamedata updatefile.txt addons/sourcemod/
 
           curl -o include/dhooks.inc \
             https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod/scripting/include/dhooks.inc
+          curl -o include/updater.inc \
+            https://bitbucket.org/GoD_Tony/updater/raw/default/include/updater.inc
 
           spcomp \
             -i include \
@@ -45,3 +47,9 @@ jobs:
           asset_path: ./tf2-comp-fixes.zip
           asset_name: tf2-comp-fixes.zip
           asset_content_type: application/zip
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: updater
+          publish_dir: addons/sourcemod

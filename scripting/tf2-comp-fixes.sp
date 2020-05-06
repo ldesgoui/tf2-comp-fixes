@@ -1,3 +1,9 @@
+#undef REQUIRE_PLUGIN
+#include <updater>
+#define UPDATER_URL                                                                                \
+    "https://raw.githubusercontent.com/ldesgoui/tf2-comp-fixes/updater/updatefile.txt"
+#define REQUIRE_PLUGIN
+
 #pragma semicolon 1
 #pragma newdecls required
 
@@ -44,6 +50,17 @@ void OnPluginStart() {
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
+
+    if (LibraryExists("updater")) {
+        Updater_AddPlugin(UPDATER_URL);
+    }
+}
+
+public
+void OnLibraryAdded(const char[] name) {
+    if (StrEqual(name, "updater")) {
+        Updater_AddPlugin(UPDATER_URL);
+    }
 }
 
 Action Command_Cf(int client, int args) {

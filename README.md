@@ -94,6 +94,10 @@ Download the latest releases from the following links to
 - https://github.com/ldesgoui/tf2-comp-fixes/releases/latest
 
 
+This plugin supports auto-updating using 
+[Updater](https://forums.alliedmods.net/showthread.php?t=169095)
+
+
 ## Internals
 
 ### Reverse Engineering

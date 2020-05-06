@@ -1,0 +1,26 @@
+"Updater" {
+	"Information" {
+		"Version" {
+			"Latest" "1.5.0"
+		}
+
+		"Notes" "Patch notes: https://github.com/ldesgoui/tf2-comp-fixes/releases"
+	}
+
+	"Files" {
+		"Plugin" "Path_SM/plugins/tf2-comp-fixes.smx"
+		"Plugin" "Path_SM/gamedata/tf2-comp-fixes.games.txt"
+
+		"Source" "Path_SM/scripting/tf2-comp-fixes.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/common.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/deterministic-fall-damage.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-slope-bug.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-sticky-delay.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/ghostify-soldier-statue.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/gunboats-always-apply.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/projectiles-ignore-teammates.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-halloween-souls.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-medic-attach-speed.sp"
+	}
+}
