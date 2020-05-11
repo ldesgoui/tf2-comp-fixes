@@ -22,6 +22,13 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 `sm_remove_halloween_souls 1`,
 `sm_rest_in_peace_rick_may 128`.
 
+`sm_cf etf2l` enables 
+`sm_deterministic_fall_damage 1`, 
+`sm_fix_ghost_crossbow_bolts 1`, 
+`sm_fix_slope_bug 1`, 
+`sm_fix_sticky_delay 1`, 
+`sm_remove_halloween_souls 1`.
+
 
 ### Features
 
@@ -79,6 +86,13 @@ The `sm_cf` command is available to users with the SourceMod admin level `cvar` 
 
     When enabled with `sm_remove_medic_attach_speed 1`,
     the Medic will not run as fast as its target if the target is faster.
+
+- **Winger Jump Bonus Applies When Fully Deployed**
+
+    When enabled with `sm_winger_jump_bonus_when_fully_deployed 1`,
+    the Winger's jump bonus will only take effect when the weapon is fully deployed.
+    (TODO: for now, hardcoded as 200ms after the player switches to the weapon)
+
 
 
 ## Installation
