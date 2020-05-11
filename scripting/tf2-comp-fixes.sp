@@ -19,6 +19,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
+#include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
 // clang-format off
 public
@@ -53,10 +54,16 @@ void OnPluginStart() {
     ProjectilesIgnoreTeammates_Setup();
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
+    WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
     if (LibraryExists("updater")) {
         Updater_AddPlugin(UPDATER_URL);
     }
+}
+
+public
+void OnClientPutInServer(int client) {
+    WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
 }
 
 public
@@ -116,6 +123,7 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_gunboats_always_apply").SetBool(all);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
+    FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
 
     return Plugin_Handled;
 }
