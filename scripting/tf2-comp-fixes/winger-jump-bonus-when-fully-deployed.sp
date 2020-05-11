@@ -3,6 +3,8 @@
 #endif
 #define _TF2_COMP_FIXES_WINGER_JUMP_BONUS_WHEN_FULLY_DEPLOYED
 
+// TODO: hooking methods confused, verify later
+
 #include "common.sp"
 #include <dhooks>
 #include <sdkhooks>
@@ -11,6 +13,7 @@
 #define ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON (524)
 #define WEAPON_ID_THE_WINGER             (449)
 
+static ConVar g_convar;
 static Handle g_call_CAttributeList_SetRuntimeAttributeValue;
 static Handle g_call_CEconItemSchema_GetAttributeDefinition;
 static Handle g_call_GEconItemSchema;
@@ -18,6 +21,8 @@ static Handle g_hook_CBaseCombatWeapon_Deploy;
 static Handle g_timers[MAXENTITIES + 1];
 
 void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
+    g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
+
     StartPrepSDKCall(SDKCall_Raw);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
                             "CAttributeList::SetRuntimeAttributeValue");
@@ -46,10 +51,16 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
     g_hook_CBaseCombatWeapon_Deploy =
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
 
-    CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
+    for (int i = 0; i <= MAXENTITIES; i++) {
+        g_timers[i] = INVALID_HANDLE;
+    }
 }
 
 void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {
+    if (!g_convar.BoolValue) {
+        return;
+    }
+
     SDKHook(client, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
 }
 
@@ -78,7 +89,6 @@ static Action Hook_WeaponCanUse(int client, int weapon) {
         return Plugin_Continue;
     }
 
-    PrintToChatAll("Hooking Winger");
     DHookEntity(g_hook_CBaseCombatWeapon_Deploy, HOOK_PRE, weapon, _,
                 Hook_CBaseCombatWeapon_Deploy);
 
@@ -86,7 +96,9 @@ static Action Hook_WeaponCanUse(int client, int weapon) {
 }
 
 static MRESReturn Hook_CBaseCombatWeapon_Deploy(int weapon, Handle ret) {
-    PrintToChatAll("Deploying Winger");
+    if (!g_convar.BoolValue) {
+        return MRES_Ignored;
+    }
 
     if (g_timers[weapon] != INVALID_HANDLE) {
         KillTimer(g_timers[weapon]);
@@ -96,11 +108,13 @@ static MRESReturn Hook_CBaseCombatWeapon_Deploy(int weapon, Handle ret) {
 
     g_timers[weapon] = CreateTimer(0.2, TimerFinished, weapon);
 
-    return MRES_Ignored;
+    return MRES_Handled;
 }
 
 static Action TimerFinished(Handle timer, int weapon) {
-    PrintToChatAll("Winger fully deployed");
+    if (!IsValidEntity(weapon)) {
+        return Plugin_Continue;
+    }
 
     SetAttribute(weapon, ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON, 1.25);
 
