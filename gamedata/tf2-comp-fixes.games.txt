@@ -9,6 +9,14 @@
 		}
 
 		"Functions" {
+			"CBaseCombatWeapon::Deploy" {
+				// virtual bool Deploy()
+				"offset" "CBaseCombatWeapon::Deploy"
+				"callconv" "thiscall"
+				"return" "bool"
+				"this" "entity"
+			}
+
 			"CBaseProjectile::CanCollideWithTeammates" {
 				// virtual bool CanCollideWithTeammates() const
 				"offset" "CBaseProjectile::CanCollideWithTeammates"
@@ -113,6 +121,11 @@
 		}
 
 		"Offsets" {
+			"CBaseCombatWeapon::Deploy" {
+				"linux" "260"
+				"windows" "254"
+			}
+
 			"CBaseProjectile::CanCollideWithTeammates" {
 				"linux" "223"
 				"windows" "222"
@@ -125,6 +138,14 @@
 		}
 
 		"Signatures" {
+			"CAttributeList::SetRuntimeAttributeValue" {
+				"linux" "@_ZN14CAttributeList24SetRuntimeAttributeValueEPK28CEconItemAttributeDefinitionf"
+			}
+
+			"CEconItemSchema::GetAttributeDefinition" {
+				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
+			}
+
 			// contains string "BumperCar.JumpLand"
 			"CTFGameMovement::SetGroundEntity" {
 				"linux" "@_ZN15CTFGameMovement15SetGroundEntityEP10CGameTrace"
@@ -161,6 +182,10 @@
 			"CTFWeaponBase::ItemBusyFrame" {
 				"linux" "@_ZN13CTFWeaponBase13ItemBusyFrameEv"
 				"windows" "\x55\x8B\xEC\x51\x56\x57\x8B\xF1\xE8\x2A\x2A\x2A\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\xF8\x85\xFF\x0F\x84\x2A\x2A\x2A\x2A\x8B\x17"
+			}
+
+			"GEconItemSchema" {
+				"linux" "@_Z15GEconItemSchemav"
 			}
 		}
 	}

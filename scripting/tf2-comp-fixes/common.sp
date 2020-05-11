@@ -11,6 +11,8 @@
 
 #define INVALID_HOOK_ID (-1)
 
+#define MAXENTITIES (2048)
+
 stock Handle CheckedDHookCreateFromConf(Handle game_config, const char[] name) {
     Handle res = DHookCreateFromConf(game_config, name);
 

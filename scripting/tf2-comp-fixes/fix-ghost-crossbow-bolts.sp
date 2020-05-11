@@ -7,12 +7,7 @@
 #include <dhooks>
 #include <sdktools>
 
-void FixGhostCrossbowBolts_Setup(Handle game_config) {
-    if (g_hook_CBaseProjectile_CanCollideWithTeammates == INVALID_HANDLE) {
-        g_hook_CBaseProjectile_CanCollideWithTeammates =
-            CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
-    }
-
+void FixGhostCrossbowBolts_Setup() {
     CreateBoolConVar("sm_fix_ghost_crossbow_bolts", OnConVarChange);
 }
 

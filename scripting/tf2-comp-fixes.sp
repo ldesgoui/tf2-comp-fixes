@@ -7,7 +7,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-Handle g_hook_CBaseProjectile_CanCollideWithTeammates = INVALID_HANDLE;
+Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 
 #include "tf2-comp-fixes/common.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
@@ -26,7 +26,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.5.2",
+    version = "1.5.3",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -41,13 +41,16 @@ void OnPluginStart() {
 
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
+    g_hook_CBaseProjectile_CanCollideWithTeammates =
+        CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
+
     DeterministicFallDamage_Setup(game_config);
-    FixGhostCrossbowBolts_Setup(game_config);
+    FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
     FixStickDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
-    ProjectilesIgnoreTeammates_Setup(game_config);
+    ProjectilesIgnoreTeammates_Setup();
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
 
@@ -65,8 +68,9 @@ void OnLibraryAdded(const char[] name) {
 
 Action Command_Cf(int client, int args) {
     char full[256];
-    bool everything = false;
-    bool fixes      = false;
+    bool all   = false;
+    bool fixes = false;
+    bool etf2l = false;
 
     GetCmdArgString(full, sizeof(full));
 
@@ -84,12 +88,14 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
         return Plugin_Handled;
     } else if (StrEqual(full, "all")) {
-        everything = true;
+        all = true;
     } else if (StrEqual(full, "fixes")) {
         fixes = true;
+    } else if (StrEqual(full, "etf2l")) {
+        etf2l = true;
     } else if (StrEqual(full, "none")) {
     } else {
-        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | none)");
+        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | none)");
         return Plugin_Handled;
     }
 
@@ -99,16 +105,17 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
-    FindConVar("sm_deterministic_fall_damage").SetBool(everything || fixes);
-    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(everything || fixes);
-    FindConVar("sm_fix_slope_bug").SetBool(everything || fixes);
-    FindConVar("sm_fix_sticky_delay").SetBool(everything || fixes);
-    FindConVar("sm_projectiles_ignore_teammates").SetBool(everything || fixes);
-    FindConVar("sm_remove_halloween_souls").SetBool(everything || fixes);
-    FindConVar("sm_rest_in_peace_rick_may").SetInt(everything || fixes ? 128 : 0);
+    FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l);
+    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l);
+    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l);
+    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l);
+    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l);
 
-    FindConVar("sm_gunboats_always_apply").SetBool(everything);
-    FindConVar("sm_remove_medic_attach_speed").SetBool(everything);
+    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
+    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : 0);
+
+    FindConVar("sm_gunboats_always_apply").SetBool(all);
+    FindConVar("sm_remove_medic_attach_speed").SetBool(all);
 
     return Plugin_Handled;
 }
