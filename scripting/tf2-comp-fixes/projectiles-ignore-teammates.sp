@@ -7,13 +7,7 @@
 #include <dhooks>
 #include <sdktools>
 
-void ProjectilesIgnoreTeammates_Setup(Handle game_config) {
-
-    if (g_hook_CBaseProjectile_CanCollideWithTeammates == INVALID_HANDLE) {
-        g_hook_CBaseProjectile_CanCollideWithTeammates =
-            CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
-    }
-
+void ProjectilesIgnoreTeammates_Setup() {
     CreateBoolConVar("sm_projectiles_ignore_teammates", OnConVarChange);
 }
 
