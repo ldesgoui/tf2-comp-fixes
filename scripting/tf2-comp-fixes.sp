@@ -26,7 +26,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.5.2",
+    version = "1.5.3",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
