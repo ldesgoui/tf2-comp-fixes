@@ -18,7 +18,7 @@ static Handle g_call_CAttributeList_SetRuntimeAttributeValue;
 static Handle g_call_CEconItemSchema_GetAttributeDefinition;
 static Handle g_call_GEconItemSchema;
 static Handle g_hook_CBaseCombatWeapon_Deploy;
-static Handle g_timers[MAXENTITIES + 1];
+static Handle g_timers[MAXENTITIES + 1] = {INVALID_HANDLE, ...};
 
 void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
     if (GetOs(game_config) == Windows) {
@@ -54,10 +54,6 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
 
     g_hook_CBaseCombatWeapon_Deploy =
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
-
-    for (int i = 0; i <= MAXENTITIES; i++) {
-        g_timers[i] = INVALID_HANDLE;
-    }
 }
 
 void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {
