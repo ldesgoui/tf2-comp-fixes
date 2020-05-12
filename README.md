@@ -5,11 +5,14 @@ Various technical or gameplay changes catered towards competitive play
 
 ### Usage
 
-`sm_cf list` (or `/cf list` in chat) lists all available cvars
+`sm_cf list` (or `!cf list` in chat) lists all available cvars
 with their current values, and is available to everyone.
 
-`sm_cf <PRESET>` (or `/cf <PRESET>` in chat) is available to all with 
+`sm_cf <PRESET>` (or `!cf <PRESET>` in chat) is available to all with 
 the SourceMod admin level `cvar` (flag `h`), or via RCON.
+On [serveme.tf](https://serveme.tf), the command is available to
+the owner of a premium reservation without having to use RCON.
+Thank to Arie for providing these servers.
 It changes cvars in bulk according to the following:
 
 |                                          | all | fixes | etf2l | ozf | none |
