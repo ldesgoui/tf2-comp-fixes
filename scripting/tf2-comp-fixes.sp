@@ -78,6 +78,7 @@ Action Command_Cf(int client, int args) {
     bool all   = false;
     bool fixes = false;
     bool etf2l = false;
+    bool ozf   = false;
 
     GetCmdArgString(full, sizeof(full));
 
@@ -101,6 +102,8 @@ Action Command_Cf(int client, int args) {
         fixes = true;
     } else if (StrEqual(full, "etf2l")) {
         etf2l = true;
+    } else if (StrEqual(full, "ozf")) {
+        ozf = true;
     } else if (StrEqual(full, "none")) {
     } else {
         ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | none)");
@@ -115,15 +118,13 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l);
     FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l);
-    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l);
-    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l);
-    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l);
-
-    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
-    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : 0);
-
+    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf);
+    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf);
     FindConVar("sm_gunboats_always_apply").SetBool(all);
+    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
+    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
+    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
 
     return Plugin_Handled;

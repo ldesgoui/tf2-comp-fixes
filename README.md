@@ -5,29 +5,23 @@ Various technical or gameplay changes catered towards competitive play
 
 ### Usage
 
-The `sm_cf` command is available to users with the SourceMod admin level `cvar` (flag `h`), or via RCON.
+`sm_cf list` lists all available cvars with their current values, and is available to everyone.
 
-`sm_cf list` lists all available cvars.
+`sm_cf <PRESET>` is available to all with the SourceMod admin level `cvar` (flag `h`), or via RCON.
+It changes cvars in bulk according to the following:
 
-`sm_cf all` enables everything.
-
-`sm_cf none` disables everything.
-
-`sm_cf fixes` enables 
-`sm_deterministic_fall_damage 1`, 
-`sm_fix_ghost_crossbow_bolts 1`, 
-`sm_fix_slope_bug 1`, 
-`sm_fix_sticky_delay 1`, 
-`sm_projectiles_ignore_teammates 1`, 
-`sm_remove_halloween_souls 1`,
-`sm_rest_in_peace_rick_may 128`.
-
-`sm_cf etf2l` enables 
-`sm_deterministic_fall_damage 1`, 
-`sm_fix_ghost_crossbow_bolts 1`, 
-`sm_fix_slope_bug 1`, 
-`sm_fix_sticky_delay 1`, 
-`sm_remove_halloween_souls 1`.
+|                                          | all | fixes | etf2l | ozf | none |
+|------------------------------------------|-----|-------|-------|-----|------|
+| sm_deterministic_fall_damage             | 1   | 1     | 1     | 0   | 0    |
+| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 1     | 0   | 0    |
+| sm_fix_slope_bug                         | 1   | 1     | 1     | 1   | 0    |
+| sm_fix_sticky_delay                      | 1   | 1     | 1     | 1   | 0    |
+| sm_gunboats_always_apply                 | 1   | 0     | 0     | 0   | 0    |
+| sm_projectiles_ignore_teammates          | 1   | 1     | 0     | 0   | 0    |
+| sm_remove_halloween_souls                | 1   | 1     | 1     | 0   | 0    |
+| sm_remove_medic_attach_speed             | 1   | 0     | 0     | 0   | 0    |
+| sm_rest_in_peace_rick_may                | 128 | 128   | 0     | 255 | 0    |
+| sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0     | 0   | 0    |
 
 
 ### Features
