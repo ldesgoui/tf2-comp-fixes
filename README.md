@@ -5,9 +5,11 @@ Various technical or gameplay changes catered towards competitive play
 
 ### Usage
 
-`sm_cf list` lists all available cvars with their current values, and is available to everyone.
+`sm_cf list` (or `/cf list` in chat) lists all available cvars
+with their current values, and is available to everyone.
 
-`sm_cf <PRESET>` is available to all with the SourceMod admin level `cvar` (flag `h`), or via RCON.
+`sm_cf <PRESET>` (or `/cf <PRESET>` in chat) is available to all with 
+the SourceMod admin level `cvar` (flag `h`), or via RCON.
 It changes cvars in bulk according to the following:
 
 |                                          | all | fixes | etf2l | ozf | none |
