@@ -112,7 +112,7 @@ Action Command_Cf(int client, int args) {
         ozf = true;
     } else if (StrEqual(full, "none")) {
     } else {
-        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | none)");
+        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | ozf | none)");
         return Plugin_Handled;
     }
 
