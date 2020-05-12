@@ -115,6 +115,12 @@
 		}
 
 		"Keys" {
+			"OS" {
+				"linux" "linux"
+				"mac" "mac"
+				"windows" "windows"
+			}
+
 			"CBaseTrace::plane::normal" "24"
 			"CGameMovement::player" "4"
 			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
@@ -138,12 +144,16 @@
 		}
 
 		"Signatures" {
+			// TODO
 			"CAttributeList::SetRuntimeAttributeValue" {
 				"linux" "@_ZN14CAttributeList24SetRuntimeAttributeValueEPK28CEconItemAttributeDefinitionf"
+				"windows" "\x55\x8B\xEC\x83\xEC\x14\x33\xD2\x53\x8B\xD9\x56\x57\x8B\x73\x10\x85\xF6"
 			}
 
+			// TODO
 			"CEconItemSchema::GetAttributeDefinition" {
 				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
+				"windows" "\x55\x8B\xEC\x83\xEC\x40\x53\x56\x8B\xD9\x8D\x4D\xC4\x57"
 			}
 
 			// contains string "BumperCar.JumpLand"
@@ -184,8 +194,10 @@
 				"windows" "\x55\x8B\xEC\x51\x56\x57\x8B\xF1\xE8\x2A\x2A\x2A\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\xF8\x85\xFF\x0F\x84\x2A\x2A\x2A\x2A\x8B\x17"
 			}
 
+			// TODO
 			"GEconItemSchema" {
 				"linux" "@_Z15GEconItemSchemav"
+				"windows" "\xE8\x2A\x2A\x2A\x2A\x83\xC0\x04\xC3"
 			}
 		}
 	}

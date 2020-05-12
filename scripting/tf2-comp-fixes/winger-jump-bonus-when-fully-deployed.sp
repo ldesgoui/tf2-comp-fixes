@@ -21,6 +21,10 @@ static Handle g_hook_CBaseCombatWeapon_Deploy;
 static Handle g_timers[MAXENTITIES + 1];
 
 void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
+    if (GetOs(game_config) == Windows) {
+        LogMessage("'Winger Jump Bonus When Fully Deployed' hasn't been tested on Windows yet");
+    }
+
     g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
 
     StartPrepSDKCall(SDKCall_Raw);

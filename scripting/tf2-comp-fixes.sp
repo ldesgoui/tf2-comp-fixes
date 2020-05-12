@@ -40,6 +40,12 @@ void OnPluginStart() {
         SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
 
+    OperatingSystem Os = GetOs(game_config);
+
+    if (Os != Linux && Os != Windows) {
+        SetFailState("The server's operating system is not supported");
+    }
+
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     g_hook_CBaseProjectile_CanCollideWithTeammates =

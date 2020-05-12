@@ -13,6 +13,31 @@
 
 #define MAXENTITIES (2048)
 
+enum OperatingSystem {
+    Linux,
+    Mac,
+    Windows,
+    Unknown,
+};
+
+stock OperatingSystem GetOs(Handle game_config) {
+    char buf[32];
+
+    if (!GameConfGetKeyValue(game_config, "OS", buf, sizeof(buf))) {
+        return Unknown;
+    }
+
+    if (StrEqual(buf, "linux")) {
+        return Linux;
+    } else if (StrEqual(buf, "mac")) {
+        return Mac;
+    } else if (StrEqual(buf, "windows")) {
+        return Windows;
+    } else {
+        return Unknown;
+    }
+}
+
 stock Handle CheckedDHookCreateFromConf(Handle game_config, const char[] name) {
     Handle res = DHookCreateFromConf(game_config, name);
 

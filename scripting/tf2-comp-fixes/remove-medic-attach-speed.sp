@@ -10,6 +10,10 @@
 static Handle g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed;
 
 void RemoveMedicAttachSpeed_Setup(Handle game_config) {
+    if (GetOs(game_config) == Windows) {
+        LogMessage("'Remove Medic Attach Speed' is currently broken on Windows (sorry!)");
+    }
+
     g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed =
         CheckedDHookCreateFromConf(game_config, "CTFPlayer::TeamFortress_CalculateMaxSpeed");
 
