@@ -93,6 +93,7 @@ Action Command_Cf(int client, int args) {
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
         return Plugin_Handled;
     } else if (StrEqual(full, "all")) {
         all = true;
