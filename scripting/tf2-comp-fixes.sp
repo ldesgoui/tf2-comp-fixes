@@ -13,6 +13,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
+#include "tf2-comp-fixes/fix-splash-bug.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
@@ -54,6 +55,7 @@ void OnPluginStart() {
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
+    FixSplashBug_Setup(game_config);
     FixStickDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
@@ -93,6 +95,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
+        ReplyDiffConVar(client, "sm_fix_splash_bug");
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
@@ -125,6 +128,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l);
     FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l);
     FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf);
+    FindConVar("sm_fix_splash_bug").SetBool(all || fixes);
     FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf);
     FindConVar("sm_gunboats_always_apply").SetBool(all);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);

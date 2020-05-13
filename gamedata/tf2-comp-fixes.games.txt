@@ -25,6 +25,22 @@
 				"this" "entity"
 			}
 
+			"CTFBaseRocket::Explode" {
+				// virtual void Explode( trace_t *trace, CBaseEntity *pOther )
+				"signature" "CTFBaseRocket::Explode"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"trace" {
+						"type" "objectptr"
+					}
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"CTFGameMovement::SetGroundEntity" {
 				// virtual void SetGroundEntity( trace_t *pm )
 				"signature" "CTFGameMovement::SetGroundEntity"
@@ -154,6 +170,10 @@
 			"CEconItemSchema::GetAttributeDefinition" {
 				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
 				"windows" "\x55\x8B\xEC\x83\xEC\x40\x53\x56\x8B\xD9\x8D\x4D\xC4\x57"
+			}
+
+			"CTFBaseRocket::Explode" {
+				"linux" "@_ZN13CTFBaseRocket7ExplodeEP10CGameTraceP11CBaseEntity"
 			}
 
 			// contains string "BumperCar.JumpLand"
