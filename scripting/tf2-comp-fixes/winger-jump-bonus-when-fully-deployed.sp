@@ -3,8 +3,6 @@
 #endif
 #define _TF2_COMP_FIXES_WINGER_JUMP_BONUS_WHEN_FULLY_DEPLOYED
 
-// TODO: hooking methods confused, verify later
-
 #include "common.sp"
 #include <dhooks>
 #include <sdkhooks>
@@ -21,12 +19,6 @@ static Handle g_hook_CBaseCombatWeapon_Deploy;
 static Handle g_timers[MAXENTITIES + 1] = {INVALID_HANDLE, ...};
 
 void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
-    if (GetOs(game_config) == Windows) {
-        LogMessage("'Winger Jump Bonus When Fully Deployed' hasn't been tested on Windows yet");
-    }
-
-    g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
-
     StartPrepSDKCall(SDKCall_Raw);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
                             "CAttributeList::SetRuntimeAttributeValue");
@@ -54,6 +46,8 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
 
     g_hook_CBaseCombatWeapon_Deploy =
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
+
+    g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
 }
 
 void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {

@@ -147,13 +147,13 @@
 			// TODO
 			"CAttributeList::SetRuntimeAttributeValue" {
 				"linux" "@_ZN14CAttributeList24SetRuntimeAttributeValueEPK28CEconItemAttributeDefinitionf"
-				"windows" "\x55\x8B\xEC\x83\xEC\x14\x33\xD2\x53\x8B\xD9\x56\x57\x8B\x73\x10\x85\xF6"
+				"windows" "\x55\x8B\xEC\x83\xEC\x2A\x33\x2A\x53\x8B\xD9\x56\x57\x8B\x2A\x2A\x8B\x2A\x2A"
 			}
 
 			// TODO
 			"CEconItemSchema::GetAttributeDefinition" {
 				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
-				"windows" "\x55\x8B\xEC\x83\xEC\x40\x53\x56\x8B\xD9\x8D\x4D\xC4\x57"
+				"windows" "\x55\x8B\xEC\x83\xEC\x2A\x53\x56\x8B\xD9\x8D\x2A\x2A\x57"
 			}
 
 			// contains string "BumperCar.JumpLand"
