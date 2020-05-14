@@ -25,8 +25,6 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
         LogMessage("'Winger Jump Bonus When Fully Deployed' hasn't been tested on Windows yet");
     }
 
-    g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
-
     StartPrepSDKCall(SDKCall_Raw);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
                             "CAttributeList::SetRuntimeAttributeValue");
@@ -54,6 +52,8 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
 
     g_hook_CBaseCombatWeapon_Deploy =
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
+
+    g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
 }
 
 void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {
