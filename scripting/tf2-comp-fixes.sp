@@ -54,7 +54,7 @@ void OnPluginStart() {
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
-    FixStickDelay_Setup(game_config);
+    FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup();
@@ -70,6 +70,15 @@ void OnPluginStart() {
 public
 void OnClientPutInServer(int client) {
     WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
+}
+
+public
+Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3],
+                      int &currWeapon, int &subtype, int &cmdnum, int &tickcount, int &seed,
+                      int mouse[2]) {
+    FixStickyDelay_OnPlayerRunCmd(client, buttons);
+
+    return Plugin_Continue;
 }
 
 public
