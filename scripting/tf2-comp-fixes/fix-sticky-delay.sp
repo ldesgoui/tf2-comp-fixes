@@ -11,6 +11,7 @@
 #define WEAPON_ID_THE_TIDE_TURNER     1099
 #define WEAPON_ID_FESTIVE_TARGE       1144
 
+static ConVar g_convar;
 static Handle g_call_CTFWeaponBase_SecondaryAttack;
 
 void FixStickyDelay_Setup(Handle game_config) {
@@ -20,11 +21,15 @@ void FixStickyDelay_Setup(Handle game_config) {
         SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
     }
 
-    CreateConVar("sm_fix_sticky_delay", "", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_convar = CreateConVar("sm_fix_sticky_delay", "", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
 }
 
 void FixStickyDelay_OnPlayerRunCmd(int client, int buttons) {
     if (!(buttons & IN_ATTACK2)) {
+        return;
+    }
+
+    if (g_convar.BoolValue) {
         return;
     }
 
