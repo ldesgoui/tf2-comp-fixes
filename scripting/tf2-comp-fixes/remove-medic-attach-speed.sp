@@ -26,16 +26,12 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
     }
 
     if (!DHookToggleDetour(g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed, HOOK_PRE, Detour_Pre,
-                           cvar.BoolValue) ||
-        !DHookToggleDetour(g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed, HOOK_POST,
-                           Detour_Post, cvar.BoolValue)) {
-        ThrowError("Failed to toggle detour on CTFPlayer::TeamFortress_CalculateMaxSpeed");
+                           cvar.BoolValue)) {
+        SetFailState("Failed to toggle detour on CTFPlayer::TeamFortress_CalculateMaxSpeed");
     }
 }
 
-static MRESReturn Detour_Pre(int self, Handle ret, Handle params) { return MRES_Ignored; }
-
-static MRESReturn Detour_Post(int self, Handle ret, Handle params) {
+static MRESReturn Detour_Pre(int self, Handle ret, Handle params) {
     if (DHookGetParam(params, 1)) {
         DHookSetReturn(ret, 0.0);
         return MRES_Override;
