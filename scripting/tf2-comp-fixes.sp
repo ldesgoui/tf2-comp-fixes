@@ -27,7 +27,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.6.3",
+    version = "1.6.4",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -54,7 +54,7 @@ void OnPluginStart() {
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
-    FixStickDelay_Setup(game_config);
+    FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup();
@@ -73,6 +73,15 @@ void OnClientPutInServer(int client) {
 }
 
 public
+Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3],
+                      int &currWeapon, int &subtype, int &cmdnum, int &tickcount, int &seed,
+                      int mouse[2]) {
+    FixStickyDelay_OnPlayerRunCmd(client, buttons);
+
+    return Plugin_Continue;
+}
+
+public
 void OnLibraryAdded(const char[] name) {
     if (StrEqual(name, "updater")) {
         Updater_AddPlugin(UPDATER_URL);
@@ -85,6 +94,7 @@ Action Command_Cf(int client, int args) {
     bool fixes = false;
     bool etf2l = false;
     bool ozf   = false;
+    bool rgl   = false;
 
     GetCmdArgString(full, sizeof(full));
 
@@ -110,9 +120,11 @@ Action Command_Cf(int client, int args) {
         etf2l = true;
     } else if (StrEqual(full, "ozf")) {
         ozf = true;
+    } else if (StrEqual(full, "rgl")) {
+        rgl = true;
     } else if (StrEqual(full, "none")) {
     } else {
-        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | ozf | none)");
+        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | ozf | rgl | none)");
         return Plugin_Handled;
     }
 
@@ -122,13 +134,13 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
-    FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l);
-    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l);
-    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf);
-    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf);
+    FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l || rgl);
+    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l || rgl);
+    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
+    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_gunboats_always_apply").SetBool(all);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
-    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf);
+    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);

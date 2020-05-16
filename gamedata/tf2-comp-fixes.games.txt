@@ -104,14 +104,6 @@
 					}
 				}
 			}
-
-			"CTFWeaponBase::ItemBusyFrame" {
-				// virtual void ItemBusyFrame()
-				"signature" "CTFWeaponBase::ItemBusyFrame"
-				"callconv" "thiscall"
-				"return" "void"
-				"this" "entity"
-			}
 		}
 
 		"Keys" {
@@ -184,14 +176,6 @@
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
 				"windows" "\x55\x8B\xEC\x83\xEC\x18\x83\x3D\x2A\x2A\x2A\x2A\x00"
-			}
-
-			// CTFWeaponBase::ApplyItemRegen contains "active_item_health_regen"
-			// ApplyItemRegen is called by ItemBusyFrame and ItemPostFrame
-			// ItemBusyFrame has less callers than ItemPostFrame
-			"CTFWeaponBase::ItemBusyFrame" {
-				"linux" "@_ZN13CTFWeaponBase13ItemBusyFrameEv"
-				"windows" "\x55\x8B\xEC\x51\x56\x57\x8B\xF1\xE8\x2A\x2A\x2A\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x8B\xF8\x85\xFF\x0F\x84\x2A\x2A\x2A\x2A\x8B\x17"
 			}
 
 			// TODO
