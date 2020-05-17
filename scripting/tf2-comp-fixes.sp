@@ -19,6 +19,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
+#include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
 // clang-format off
@@ -27,7 +28,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.6.4",
+    version = "1.6.5",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -60,6 +61,7 @@ void OnPluginStart() {
     ProjectilesIgnoreTeammates_Setup();
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
+    TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
     if (LibraryExists("updater")) {
@@ -107,6 +109,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
+        ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
@@ -142,7 +145,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
-    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : ozf ? 255 : 0);
+    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
 
     return Plugin_Handled;
