@@ -19,6 +19,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
+#include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
 // clang-format off
@@ -60,6 +61,7 @@ void OnPluginStart() {
     ProjectilesIgnoreTeammates_Setup();
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
+    TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
     if (LibraryExists("updater")) {
@@ -107,6 +109,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
+        ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");

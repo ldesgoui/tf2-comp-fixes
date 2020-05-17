@@ -12,7 +12,7 @@
 			"CBaseCombatWeapon::Deploy" {
 				// virtual bool Deploy()
 				"offset" "CBaseCombatWeapon::Deploy"
-				"callconv" "thiscall"
+				"hooktype" "entity"
 				"return" "bool"
 				"this" "entity"
 			}
@@ -20,9 +20,25 @@
 			"CBaseProjectile::CanCollideWithTeammates" {
 				// virtual bool CanCollideWithTeammates() const
 				"offset" "CBaseProjectile::CanCollideWithTeammates"
-				"callconv" "thiscall"
+				"hooktype" "entity"
 				"return" "bool"
 				"this" "entity"
+			}
+
+			"CEconItemSystem::ReloadWhitelist" {
+				// void ReloadWhitelist()
+				"signature" "CEconItemSystem::ReloadWhitelist"
+				"callconv" "thiscall"
+				"return" "void"
+				"this" "address"
+			}
+
+			"CTeamplayRoundBasedRules::RestartTournament" {
+				// virtual void RestartTournament()
+				"offset" "CTeamplayRoundBasedRules::RestartTournament"
+				"hooktype" "gamerules"
+				"return" "void"
+				"this" "address"
 			}
 
 			"CTFGameMovement::SetGroundEntity" {
@@ -129,6 +145,11 @@
 				"windows" "222"
 			}
 
+			"CTeamplayRoundBasedRules::RestartTournament" {
+				"linux" "209"
+				"windows" "207"
+			}
+
 			"CTFWeaponBase::SecondaryAttack" {
 				"linux" "286"
 				"windows" "280"
@@ -146,6 +167,12 @@
 			"CEconItemSchema::GetAttributeDefinition" {
 				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
 				"windows" "\x55\x8B\xEC\x83\xEC\x2A\x53\x56\x8B\xD9\x8D\x2A\x2A\x57"
+			}
+
+			// contains string "item_whitelist"
+			"CEconItemSystem::ReloadWhitelist" {
+				"linux" "@_ZN15CEconItemSystem15ReloadWhitelistEv"
+				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x53\x56\x57\x8B\xD9\xC6\x45\x2A\x01"
 			}
 
 			// contains string "BumperCar.JumpLand"

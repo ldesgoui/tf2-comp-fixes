@@ -74,7 +74,7 @@ stock int CheckedGameConfGetKeyValueInt(Handle game_config, const char[] name) {
 }
 
 stock ConVar CreateBoolConVar(const char[] name, ConVarChanged callback) {
-    ConVar cvar = CreateConVar(name, "", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    ConVar cvar = CreateConVar(name, "0", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
 
     cvar.AddChangeHook(callback);
 
