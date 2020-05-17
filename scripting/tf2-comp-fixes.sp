@@ -142,7 +142,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
-    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes ? 128 : ozf ? 255 : 0);
+    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
 
     return Plugin_Handled;
