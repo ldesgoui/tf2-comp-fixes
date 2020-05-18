@@ -22,5 +22,7 @@
 		"Source" "Path_SM/scripting/tf2-comp-fixes/projectiles-ignore-teammates.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-halloween-souls.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-medic-attach-speed.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 	}
 }
