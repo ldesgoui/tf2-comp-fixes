@@ -13,6 +13,41 @@
 
 #define MAXENTITIES (2048)
 
+Handle g_call_CAttributeList_SetRuntimeAttributeValue;
+Handle g_call_CEconItemSchema_GetAttributeDefinition;
+Handle g_call_GEconItemSchema;
+Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
+
+void Common_Setup(Handle game_config) {
+    StartPrepSDKCall(SDKCall_Raw);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
+                            "CAttributeList::SetRuntimeAttributeValue");
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+    if ((g_call_CAttributeList_SetRuntimeAttributeValue = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CAttributeList::SetRuntimeAttributeValue");
+    }
+
+    StartPrepSDKCall(SDKCall_Raw);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
+                            "CEconItemSchema::GetAttributeDefinition");
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
+    if ((g_call_CEconItemSchema_GetAttributeDefinition = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to CEconItemSchema::GetAttributeDefinition");
+    }
+
+    StartPrepSDKCall(SDKCall_Static);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature, "GEconItemSchema");
+    PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
+    if ((g_call_GEconItemSchema = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to GEconItemSchema");
+    }
+
+    g_hook_CBaseProjectile_CanCollideWithTeammates =
+        CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
+}
+
 enum OperatingSystem {
     Linux,
     Mac,
@@ -67,7 +102,7 @@ stock int CheckedGameConfGetKeyValueInt(Handle game_config, const char[] name) {
     }
 
     if (StringToIntEx(buf, res) != strlen(buf)) {
-        SetFailState("%s key is not a valid integer");
+        SetFailState("Gamedata key %s is not a valid integer", name);
     }
 
     return res;
@@ -139,4 +174,15 @@ stock void ClipVelocity(const float velocity[3], const float normal[3], float re
         ScaleVectorTo(normal, backoff, tmp);
         SubtractVectors(velocity, tmp, result);
     }
+}
+
+stock void SetAttribute(int entity, int attribute, float value) {
+    int     offset         = GetEntSendPropOffs(entity, "m_AttributeList", true);
+    Address entity_pointer = GetEntityAddress(entity);
+    Address schema         = SDKCall(g_call_GEconItemSchema);
+    Address attribute_definition =
+        SDKCall(g_call_CEconItemSchema_GetAttributeDefinition, schema, attribute);
+
+    SDKCall(g_call_CAttributeList_SetRuntimeAttributeValue,
+            entity_pointer + view_as<Address>(offset), attribute_definition, value);
 }
