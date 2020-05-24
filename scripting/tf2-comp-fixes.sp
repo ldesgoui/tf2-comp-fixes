@@ -1,13 +1,9 @@
 #undef REQUIRE_PLUGIN
 #include <updater>
-#define UPDATER_URL                                                                                \
-    "https://raw.githubusercontent.com/ldesgoui/tf2-comp-fixes/updater/updatefile.txt"
 #define REQUIRE_PLUGIN
 
 #pragma semicolon 1
 #pragma newdecls required
-
-Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 
 #include "tf2-comp-fixes/common.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
@@ -19,6 +15,7 @@ Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
+#include "tf2-comp-fixes/remove-pipe-spin.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
@@ -28,7 +25,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.6.5",
+    version = "1.8.0",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -49,8 +46,7 @@ void OnPluginStart() {
 
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
-    g_hook_CBaseProjectile_CanCollideWithTeammates =
-        CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
+    Common_Setup(game_config);
 
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
@@ -61,22 +57,24 @@ void OnPluginStart() {
     ProjectilesIgnoreTeammates_Setup();
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
+    RemovePipeSpin_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
     if (LibraryExists("updater")) {
-        Updater_AddPlugin(UPDATER_URL);
+        OnLibraryAdded("updater");
     }
 }
 
 public
 void OnClientPutInServer(int client) {
+    RemovePipeSpin_OnClientPutInServer(client);
     WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
 }
 
 public
 Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3],
-                      int &currWeapon, int &subtype, int &cmdnum, int &tickcount, int &seed,
+                      int &active_weapon, int &subtype, int &cmdnum, int &tickcount, int &seed,
                       int mouse[2]) {
     FixStickyDelay_OnPlayerRunCmd(client, buttons);
 
@@ -86,7 +84,8 @@ Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], floa
 public
 void OnLibraryAdded(const char[] name) {
     if (StrEqual(name, "updater")) {
-        Updater_AddPlugin(UPDATER_URL);
+        Updater_AddPlugin(
+            "https://raw.githubusercontent.com/ldesgoui/tf2-comp-fixes/updater/updatefile.txt");
     }
 }
 
@@ -108,6 +107,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
+        ReplyDiffConVar(client, "sm_remove_pipe_spin");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
         ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
         ReplyToCommand(client, "--- Balance changes");
@@ -145,6 +145,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
+    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
 

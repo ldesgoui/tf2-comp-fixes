@@ -12,38 +12,11 @@
 #define WEAPON_ID_THE_WINGER             (449)
 
 static ConVar g_convar;
-static Handle g_call_CAttributeList_SetRuntimeAttributeValue;
-static Handle g_call_CEconItemSchema_GetAttributeDefinition;
-static Handle g_call_GEconItemSchema;
 static Handle g_hook_CBaseCombatWeapon_Deploy;
-static Handle g_timers[MAXENTITIES + 1] = {INVALID_HANDLE, ...};
+static Handle g_timers[MAXENTITIES + 1]   = {INVALID_HANDLE, ...};
+static int    g_hook_ids[MAXENTITIES + 1] = {-1, ...};
 
 void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
-    StartPrepSDKCall(SDKCall_Raw);
-    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
-                            "CAttributeList::SetRuntimeAttributeValue");
-    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-    PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
-    if ((g_call_CAttributeList_SetRuntimeAttributeValue = EndPrepSDKCall()) == INVALID_HANDLE) {
-        SetFailState("Failed to finalize SDK call to CAttributeList::SetRuntimeAttributeValue");
-    }
-
-    StartPrepSDKCall(SDKCall_Raw);
-    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
-                            "CEconItemSchema::GetAttributeDefinition");
-    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-    PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
-    if ((g_call_CEconItemSchema_GetAttributeDefinition = EndPrepSDKCall()) == INVALID_HANDLE) {
-        SetFailState("Failed to finalize SDK call to CEconItemSchema::GetAttributeDefinition");
-    }
-
-    StartPrepSDKCall(SDKCall_Static);
-    PrepSDKCall_SetFromConf(game_config, SDKConf_Signature, "GEconItemSchema");
-    PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
-    if ((g_call_GEconItemSchema = EndPrepSDKCall()) == INVALID_HANDLE) {
-        SetFailState("Failed to finalize SDK call to GEconItemSchema");
-    }
-
     g_hook_CBaseCombatWeapon_Deploy =
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
 
@@ -61,6 +34,23 @@ void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {
 static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
+    }
+
+    if (cvar.BoolValue) {
+        int entity = -1;
+        while ((entity = FindEntityByClassname(entity, "tf_weapon_handgun_scout_secondary")) !=
+               -1) {
+            Hook_WeaponCanUse(0, entity);
+        }
+    } else {
+        for (int i = 0; i <= MAXENTITIES; i++) {
+            if (g_hook_ids[i] == -1) {
+                continue;
+            }
+
+            DHookRemoveHookID(g_hook_ids[i]);
+            g_hook_ids[i] = -1;
+        }
     }
 
     for (int i = 1; i <= MaxClients; i++) {
@@ -83,19 +73,26 @@ static Action Hook_WeaponCanUse(int client, int weapon) {
         return Plugin_Continue;
     }
 
-    DHookEntity(g_hook_CBaseCombatWeapon_Deploy, HOOK_PRE, weapon, _,
-                Hook_CBaseCombatWeapon_Deploy);
+    g_hook_ids[weapon] = DHookEntity(g_hook_CBaseCombatWeapon_Deploy, HOOK_PRE, weapon, HookRemoved,
+                                     Hook_CBaseCombatWeapon_Deploy);
 
     return Plugin_Continue;
 }
 
-static MRESReturn Hook_CBaseCombatWeapon_Deploy(int weapon, Handle ret) {
-    if (!g_convar.BoolValue) {
-        return MRES_Ignored;
-    }
+static void HookRemoved(int hookid) {
+    for (int i = 1; i <= MAXENTITIES; i++) {
+        if (g_hook_ids[i] != hookid) {
+            continue;
+        }
 
+        g_hook_ids[i] = -1;
+    }
+}
+
+static MRESReturn Hook_CBaseCombatWeapon_Deploy(int weapon, Handle ret) {
     if (g_timers[weapon] != INVALID_HANDLE) {
         KillTimer(g_timers[weapon]);
+        g_timers[weapon] = INVALID_HANDLE;
     }
 
     SetAttribute(weapon, ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON, 1.0);
@@ -106,24 +103,13 @@ static MRESReturn Hook_CBaseCombatWeapon_Deploy(int weapon, Handle ret) {
 }
 
 static Action TimerFinished(Handle timer, int weapon) {
+    g_timers[weapon] = INVALID_HANDLE;
+
     if (!IsValidEntity(weapon)) {
         return Plugin_Continue;
     }
 
     SetAttribute(weapon, ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON, 1.25);
 
-    g_timers[weapon] = INVALID_HANDLE;
-
     return Plugin_Continue;
-}
-
-static void SetAttribute(int entity, int attribute, float value) {
-    int     offset         = GetEntSendPropOffs(entity, "m_AttributeList", true);
-    Address entity_pointer = GetEntityAddress(entity);
-    Address schema         = SDKCall(g_call_GEconItemSchema);
-    Address attribute_definition =
-        SDKCall(g_call_CEconItemSchema_GetAttributeDefinition, schema, attribute);
-
-    SDKCall(g_call_CAttributeList_SetRuntimeAttributeValue,
-            entity_pointer + view_as<Address>(offset), attribute_definition, value);
 }

@@ -1,13 +1,5 @@
 "Games" {
 	"tf" {
-		"Addresses" {
-			"CTFProjectile_HealingBolt::vtable" {
-				"linux" {
-					"signature" "CTFProjectile_HealingBolt::vtable"
-				}
-			}
-		}
-
 		"Functions" {
 			"CBaseCombatWeapon::Deploy" {
 				// virtual bool Deploy()
