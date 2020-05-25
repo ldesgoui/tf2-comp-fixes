@@ -100,6 +100,19 @@
 				}
 			}
 
+			"CTFGrenadePipebombProjectile::PipebombTouch" {
+				// virtual void PipebombTouch( CBaseEntity *pOther )
+				"offset" "CTFGrenadePipebombProjectile::PipebombTouch"
+				"hooktype" "entity"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				// float TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= false*/ ) const
 				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
@@ -140,6 +153,11 @@
 			"CTeamplayRoundBasedRules::RestartTournament" {
 				"linux" "209"
 				"windows" "207"
+			}
+
+			"CTFGrenadePipebombProjectile::PipebombTouch" {
+				"linux" "254"
+				"windows" "253"
 			}
 
 			"CTFWeaponBase::SecondaryAttack" {

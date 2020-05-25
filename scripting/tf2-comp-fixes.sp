@@ -54,7 +54,7 @@ void OnPluginStart() {
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
-    ProjectilesIgnoreTeammates_Setup();
+    ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
