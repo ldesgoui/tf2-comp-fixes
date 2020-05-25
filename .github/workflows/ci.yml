@@ -17,7 +17,7 @@ jobs:
       - run: |
           mkdir -p addons/sourcemod/plugins include
 
-          cp -r scripting gamedata updatefile.txt addons/sourcemod/
+          cp -r scripting gamedata addons/sourcemod/
 
           curl -o include/dhooks.inc \
             https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod/scripting/include/dhooks.inc
@@ -30,6 +30,8 @@ jobs:
             -o addons/sourcemod/plugins/tf2-comp-fixes.smx
 
           zip tf2-comp-fixes $(find addons -type f)
+
+          cp updatefile.txt addons/sourcemod/
 
       - uses: actions/create-release@latest
         id: create_release
