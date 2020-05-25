@@ -93,6 +93,6 @@ static MRESReturn Hook_Post(Address self) {
 }
 
 static MRESReturn Detour_Pre(Address self) {
-    PrintToChatAll("[TF2 Comp Fixes] Preventing Whitelist Reload");
+    PrintToChatAll("[TF2 Competitive Fixes] Preventing whitelist reload");
     return MRES_Supercede;
 }

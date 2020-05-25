@@ -148,6 +148,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
+    PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
     return Plugin_Handled;
 }
