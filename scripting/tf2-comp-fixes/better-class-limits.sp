@@ -17,7 +17,7 @@ static int         g_class_limits[9]               = {-1, ...};
 static TFClassType g_current_class[MAXPLAYERS + 1] = {TFClass_Unknown, ...};
 static TFClassType g_wanted_class[MAXPLAYERS + 1]  = {-1, ...};
 
-void BetterClassLimits_Setup(Handle game_config) {
+void BetterClassLimits_Setup() {
     ConVar cvar = CreateConVar(
         "sm_better_class_limits", "-1,-1,-1,-1,-1,-1,-1,-1,-1",
         "Format: whole numbers separated by commas for each class, empty/unspecified defaults to -1, which is unlimited. \
@@ -92,18 +92,18 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
 
 static void Event_PlayerChangeClass(Event event, const char[] name, bool dont_broadcast) {
     int         player = GetClientOfUserId(event.GetInt("userid"));
-    TFClassType wanted = event.GetInt("class");
+    TFClassType klass  = view_as<TFClassType>(event.GetInt("class"));
 
-    PrintToChatAll("%N: wants %d", player, wanted);
+    PrintToChatAll("%N: wants %d", player, klass);
 }
 
 static void Event_PlayerSpawn(Event event, const char[] name, bool dont_broadcast) {
     int         player = GetClientOfUserId(event.GetInt("userid"));
-    TFClassType klass  = event.GetInt("class");
+    TFClassType klass  = view_as<TFClassType>(event.GetInt("class"));
 
     g_current_class[player] = klass;
 
-    PrintToChatAll("%N: %d", player, g_current_class[player]);
+    PrintToChatAll("%N: %d", player, klass);
 }
 
 static void OnEntityCreated(int entity, const char[] classname) {

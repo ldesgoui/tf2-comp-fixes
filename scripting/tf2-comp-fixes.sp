@@ -49,7 +49,7 @@ void OnPluginStart() {
 
     Common_Setup(game_config);
 
-    BetterClassLimits_Setup(game_config);
+    BetterClassLimits_Setup();
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
