@@ -4,6 +4,7 @@
 #define _TF2_COMP_FIXES_COMMON
 
 #include <dhooks>
+#include <sdkhooks>
 #include <sdktools>
 
 #define HOOK_PRE  (false)
@@ -128,6 +129,23 @@ stock void CallConVarUpdateHook(ConVar cvar, ConVarChanged callback) {
     Call_PushString(def);
     Call_PushString(current);
     Call_Finish();
+}
+
+stock void ToggleHookEvent(const char[] name, EventHook callback, bool enabled,
+                           EventHookMode mode = EventHookMode_Post) {
+    if (enabled) {
+        HookEvent(name, callback, mode);
+    } else {
+        UnhookEvent(name, callback, mode);
+    }
+}
+
+stock void ToggleSDKHook(int entity, SDKHookType type, SDKHookCB callback, bool enabled) {
+    if (enabled) {
+        SDKHook(entity, type, callback);
+    } else {
+        SDKUnhook(entity, type, callback);
+    }
 }
 
 stock bool DHookToggleDetour(Handle setup, bool post, DHookCallback callback, bool enabled) {

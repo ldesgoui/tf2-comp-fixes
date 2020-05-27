@@ -5,6 +5,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
+#include "tf2-comp-fixes/better-class-limits.sp"
 #include "tf2-comp-fixes/common.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
@@ -48,6 +49,7 @@ void OnPluginStart() {
 
     Common_Setup(game_config);
 
+    BetterClassLimits_Setup(game_config);
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);
@@ -101,6 +103,7 @@ Action Command_Cf(int client, int args) {
 
     if (StrEqual(full, "list")) {
         ReplyToCommand(client, "--- Fixes");
+        ReplyDiffConVar(client, "sm_better_class_limits");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
