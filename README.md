@@ -29,7 +29,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0     | 255 | 128 | 0    |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0     | 0   | 0   | 0    |
 
-Every feature will be enabled or disabled immediately except for features that
+Every feature is active immediately when the cvar is enabled except for features that
 hook short-lived entities, in which case the feature will apply if the entity
 was created when the feature was enabled. For now this includes:
 `sm_fix_ghost_crossbow_bolts`, `sm_projectiles_ignore_teammates`,
