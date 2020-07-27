@@ -29,7 +29,7 @@ void FixStickyDelay_OnPlayerRunCmd(int client, int buttons) {
         return;
     }
 
-    if (g_convar.BoolValue) {
+    if (!g_convar.BoolValue) {
         return;
     }
 
