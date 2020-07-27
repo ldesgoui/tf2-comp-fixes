@@ -25,7 +25,7 @@ Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.8.1",
+    version = "1.8.2",
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -148,6 +148,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
+    PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
     return Plugin_Handled;
 }
