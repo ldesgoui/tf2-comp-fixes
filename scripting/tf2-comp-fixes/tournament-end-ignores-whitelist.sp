@@ -1,7 +1,8 @@
-static int    g_hook_id_pre  = -1;
-static int    g_hook_id_post = -1;
+static ConVar g_cvar;
 static Handle g_detour_CEconItemSystem_ReloadWhitelist;
 static Handle g_detour_CTeamplayRoundBasedRules_RestartTournament;
+static int    g_hook_id_post = -1;
+static int    g_hook_id_pre  = -1;
 
 void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
     g_detour_CTeamplayRoundBasedRules_RestartTournament =
@@ -10,17 +11,19 @@ void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
     g_detour_CEconItemSystem_ReloadWhitelist =
         CheckedDHookCreateFromConf(game_config, "CEconItemSystem::ReloadWhitelist");
 
-    ConVar cvar = CreateConVar("sm_tournament_end_ignores_whitelist", "1", _, FCVAR_NOTIFY, true,
-                               0.0, true, 1.0);
+    g_cvar = CreateConVar("sm_tournament_end_ignores_whitelist", "1", _, FCVAR_NOTIFY, true, 0.0,
+                          true, 1.0);
 
-    CallConVarUpdateHook(cvar, OnConVarChange);
+    CallConVarUpdateHook(g_cvar, OnConVarChange);
 
     RegServerCmd("mp_tournament_restart", Command_TournamentRestart);
 }
 
 static Action Command_TournamentRestart(int args) {
-    DisableHook();
-    CreateTimer(0.01, Timer_TournamentRestart_Post);
+    if (g_cvar.BoolValue) {
+        DisableHook();
+        CreateTimer(0.01, Timer_TournamentRestart_Post);
+    }
 
     return Plugin_Continue;
 }
