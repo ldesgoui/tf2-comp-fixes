@@ -1,7 +1,7 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest" "1.8.2"
+			"Latest" "1.9.0"
 		}
 
 		"Notes" "Patch notes: https://github.com/ldesgoui/tf2-comp-fixes/releases"
@@ -13,6 +13,7 @@
 
 		"Source" "Path_SM/scripting/tf2-comp-fixes.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/common.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/debug.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/deterministic-fall-damage.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-slope-bug.sp"
