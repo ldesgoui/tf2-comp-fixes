@@ -13,7 +13,7 @@ void FixStickyDelay_Setup(Handle game_config) {
         SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
     }
 
-    g_convar = CreateConVar("sm_fix_sticky_delay", "", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_convar = CreateConVar("sm_fix_sticky_delay", "0", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
 }
 
 void FixStickyDelay_OnPlayerRunCmd(int client, int buttons) {
