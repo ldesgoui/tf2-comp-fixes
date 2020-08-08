@@ -1,11 +1,3 @@
-#if defined _TF2_COMP_FIXES_FIX_STICKY_DELAY
-#endinput
-#endif
-#define _TF2_COMP_FIXES_FIX_STICKY_DELAY
-
-#include "common.sp"
-#include <tf2_stocks>
-
 #define WEAPON_ID_THE_CHARGIN_TARGE   131
 #define WEAPON_ID_THE_SPLENDID_SCREEN 406
 #define WEAPON_ID_THE_TIDE_TURNER     1099
@@ -21,7 +13,7 @@ void FixStickyDelay_Setup(Handle game_config) {
         SetFailState("Failed to finalize SDK call to CTFWeaponBase::SecondaryAttack");
     }
 
-    g_convar = CreateConVar("sm_fix_sticky_delay", "", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
+    g_convar = CreateConVar("sm_fix_sticky_delay", "0", _, FCVAR_NOTIFY, true, 0.0, true, 1.0);
 }
 
 void FixStickyDelay_OnPlayerRunCmd(int client, int buttons) {

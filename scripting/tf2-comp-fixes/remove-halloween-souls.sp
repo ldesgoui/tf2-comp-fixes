@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_REMOVE_HALLOWEEN_SOULS
-#endinput
-#endif
-#define _TF2_COMP_FIXES_REMOVE_HALLOWEEN_SOULS
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameRules_DropHalloweenSoulPack;
 
 void RemoveHalloweenSouls_Setup(Handle game_config) {
@@ -29,5 +20,6 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
 
 static MRESReturn Detour_CTFGameRules_DropHalloweenSoulPack(Address self, Handle ret,
                                                             Handle params) {
+    LogDebug("Preventing Halloween Souls from spawning");
     return MRES_Supercede;
 }

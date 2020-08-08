@@ -1,14 +1,5 @@
 // Credit to https://github.com/stephanieLGBT/tf2-FallDamageFixer
 
-#if defined _TF2_COMP_FIXES_DETERMINISTIC_FALL_DAMAGE
-#endinput
-#endif
-#define _TF2_COMP_FIXES_DETERMINISTIC_FALL_DAMAGE
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameRules_FlPlayerFallDamage;
 
 void DeterministicFallDamage_Setup(Handle game_config) {
@@ -40,6 +31,9 @@ static MRESReturn Detour_CTFGameRules_FlPlayerFallDamage(Address self, Handle re
 
         // 5 * (fall_velocity / 300) * (max_health / 100)
         fall_damage = fall_velocity * float(max_health) / 6000.0;
+
+        LogDebug("Removing random factor (+-%.0f) from fall damage (%.0f) for player %N",
+                 fall_damage * 0.2, fall_damage, player);
     } else {
         fall_damage = 0.0;
     }

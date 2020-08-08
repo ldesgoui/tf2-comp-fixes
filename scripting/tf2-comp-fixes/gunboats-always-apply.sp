@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_GUNBOATS_ALWAYS_APPLY
-#endinput
-#endif
-#define _TF2_COMP_FIXES_GUNBOATS_ALWAYS_APPLY
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameRules_ApplyOnDamageAliveModifyRules;
 static int    g_offset_CTakeDamageInfo_m_iDamagedOtherPlayers;
 

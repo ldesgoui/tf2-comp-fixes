@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_PROJECTILES_IGNORE_TEAMMATES
-#endinput
-#endif
-#define _TF2_COMP_FIXES_PROJECTILES_IGNORE_TEAMMATES
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 Handle g_detour_CTFGrenadePipebombProjectile_PipebombTouch;
 
 void ProjectilesIgnoreTeammates_Setup(Handle game_config) {
@@ -34,6 +25,7 @@ static void OnEntityCreated(int entity, const char[] classname) {
     }
 
     if (StrEqual(classname[14], "ball_ornament")) {
+        LogDebug("Hooking Touch for Ornament projectile with index %d", entity);
         if (INVALID_HOOK_ID == DHookEntity(g_detour_CTFGrenadePipebombProjectile_PipebombTouch,
                                            HOOK_PRE, entity, _,
                                            Hook_CTFGrenadePipebombProjectile_PipebombTouch)) {
@@ -43,6 +35,7 @@ static void OnEntityCreated(int entity, const char[] classname) {
 
     if (INVALID_HOOK_ID == DHookEntity(g_hook_CBaseProjectile_CanCollideWithTeammates, HOOK_PRE,
                                        entity, _, Hook_CBaseProjectile_CanCollideWithTeammates)) {
+        LogDebug("Nullifying teammate collide for projectile with index %d", entity);
         SetFailState("Failed to hook CBaseProjectile::CanCollideWithTeammates");
     }
 }

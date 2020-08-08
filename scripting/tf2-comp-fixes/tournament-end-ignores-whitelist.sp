@@ -1,16 +1,8 @@
-#if defined _TF2_COMP_FIXES_TOURNAMENT_END_IGNORES_WHITELIST
-#endinput
-#endif
-#define _TF2_COMP_FIXES_TOURNAMENT_END_IGNORES_WHITELIST
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
-static int    g_hook_id_pre  = -1;
-static int    g_hook_id_post = -1;
+static ConVar g_cvar;
 static Handle g_detour_CEconItemSystem_ReloadWhitelist;
 static Handle g_detour_CTeamplayRoundBasedRules_RestartTournament;
+static int    g_hook_id_post = -1;
+static int    g_hook_id_pre  = -1;
 
 void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
     g_detour_CTeamplayRoundBasedRules_RestartTournament =
@@ -19,17 +11,20 @@ void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
     g_detour_CEconItemSystem_ReloadWhitelist =
         CheckedDHookCreateFromConf(game_config, "CEconItemSystem::ReloadWhitelist");
 
-    ConVar cvar = CreateConVar("sm_tournament_end_ignores_whitelist", "1", _, FCVAR_NOTIFY, true,
-                               0.0, true, 1.0);
+    g_cvar = CreateConVar("sm_tournament_end_ignores_whitelist", "1", _, FCVAR_NOTIFY, true, 0.0,
+                          true, 1.0);
 
-    CallConVarUpdateHook(cvar, OnConVarChange);
+    CallConVarUpdateHook(g_cvar, OnConVarChange);
 
     RegServerCmd("mp_tournament_restart", Command_TournamentRestart);
 }
 
 static Action Command_TournamentRestart(int args) {
-    DisableHook();
-    CreateTimer(0.01, Timer_TournamentRestart_Post);
+    if (g_cvar.BoolValue) {
+        LogDebug("Disabling Whitelist Ignore for the duration of a command");
+        DisableHook();
+        CreateTimer(0.01, Timer_TournamentRestart_Post);
+    }
 
     return Plugin_Continue;
 }

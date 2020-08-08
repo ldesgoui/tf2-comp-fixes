@@ -5,7 +5,13 @@
 #pragma semicolon 1
 #pragma newdecls required
 
+#include <dhooks>
+#include <sdkhooks>
+#include <sdktools>
+#include <tf2_stocks>
+
 #include "tf2-comp-fixes/common.sp"
+#include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
@@ -19,13 +25,15 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
+#define PLUGIN_VERSION "1.9.0"
+
 // clang-format off
 public
 Plugin myinfo = {
     name = "TF2 Competitive Fixes",
     author = "ldesgoui",
     description = "Various technical or gameplay changes catered towards competitive play",
-    version = "1.8.2",
+    version = PLUGIN_VERSION,
     url = "https://github.com/ldesgoui/tf2-comp-fixes"
 };
 // clang-format on
@@ -47,6 +55,7 @@ void OnPluginStart() {
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     Common_Setup(game_config);
+    Debug_Setup();
 
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
@@ -127,6 +136,8 @@ Action Command_Cf(int client, int args) {
         rgl = true;
     } else if (StrEqual(full, "none")) {
     } else {
+        ReplyToCommand(client, "TF2 Competitive Fixes");
+        ReplyToCommand(client, "Version: %s", PLUGIN_VERSION);
         ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | ozf | rgl | none)");
         return Plugin_Handled;
     }

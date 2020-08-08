@@ -1,11 +1,3 @@
-#if defined _TF2_COMP_FIXES_COMMON
-#endinput
-#endif
-#define _TF2_COMP_FIXES_COMMON
-
-#include <dhooks>
-#include <sdktools>
-
 #define HOOK_PRE  (false)
 #define HOOK_POST (true)
 
