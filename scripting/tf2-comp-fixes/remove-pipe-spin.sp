@@ -24,11 +24,21 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
             continue;
         }
 
+        if (cvar.BoolValue) {
+            LogDebug("Removing Grenade Spin with index %d", entity);
+        } else {
+            LogDebug("Resetting Grenade Spin with index %d", entity);
+        }
         SetAttribute(entity, ATTR_GRENADE_NO_SPIN, cvar.BoolValue ? 1.0 : 0.0);
     }
 
     entity = -1;
     while ((entity = FindEntityByClassname(entity, "tf_weapon_cannon")) != -1) {
+        if (cvar.BoolValue) {
+            LogDebug("Removing Grenade Spin with index %d", entity);
+        } else {
+            LogDebug("Resetting Grenade Spin with index %d", entity);
+        }
         SetAttribute(entity, ATTR_GRENADE_NO_SPIN, cvar.BoolValue ? 1.0 : 0.0);
     }
 
@@ -56,6 +66,7 @@ static void Hook_WeaponCanUsePost(int client, int weapon) {
 
     if (StrEqual(classname, "tf_weapon_grenadelauncher") ||
         StrEqual(classname, "tf_weapon_cannon")) {
+        LogDebug("Removing Grenade Spin with index %d", weapon);
         SetAttribute(weapon, ATTR_GRENADE_NO_SPIN, 1.0);
     }
 }

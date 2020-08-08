@@ -33,25 +33,26 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
             Hook_WeaponCanUse(0, entity);
         }
     } else {
-        for (int i = 0; i <= MAXENTITIES; i++) {
-            if (g_hook_ids[i] == -1) {
+        for (int ent = 0; ent <= MAXENTITIES; ent++) {
+            if (g_hook_ids[ent] == -1) {
                 continue;
             }
 
-            DHookRemoveHookID(g_hook_ids[i]);
-            g_hook_ids[i] = -1;
+            LogDebug("Resetting Winger Bonus with index %d", ent);
+            DHookRemoveHookID(g_hook_ids[ent]);
+            g_hook_ids[ent] = -1;
         }
     }
 
-    for (int i = 1; i <= MaxClients; i++) {
-        if (!IsClientInGame(i)) {
+    for (int client = 1; client <= MaxClients; client++) {
+        if (!IsClientInGame(client)) {
             continue;
         }
 
         if (cvar.BoolValue) {
-            SDKHook(i, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
+            SDKHook(client, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
         } else {
-            SDKUnhook(i, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
+            SDKUnhook(client, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
         }
     }
 }
@@ -63,6 +64,7 @@ static Action Hook_WeaponCanUse(int client, int weapon) {
         return Plugin_Continue;
     }
 
+    LogDebug("Nullifying Winger Bonus with index %d", weapon);
     g_hook_ids[weapon] = DHookEntity(g_hook_CBaseCombatWeapon_Deploy, HOOK_PRE, weapon, HookRemoved,
                                      Hook_CBaseCombatWeapon_Deploy);
 

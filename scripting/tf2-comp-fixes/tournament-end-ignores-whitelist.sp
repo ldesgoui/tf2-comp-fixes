@@ -21,6 +21,7 @@ void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
 
 static Action Command_TournamentRestart(int args) {
     if (g_cvar.BoolValue) {
+        LogDebug("Disabling Whitelist Ignore for the duration of a command");
         DisableHook();
         CreateTimer(0.01, Timer_TournamentRestart_Post);
     }

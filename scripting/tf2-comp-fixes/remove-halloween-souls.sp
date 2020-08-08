@@ -20,5 +20,6 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
 
 static MRESReturn Detour_CTFGameRules_DropHalloweenSoulPack(Address self, Handle ret,
                                                             Handle params) {
+    LogDebug("Preventing Halloween Souls from spawning");
     return MRES_Supercede;
 }

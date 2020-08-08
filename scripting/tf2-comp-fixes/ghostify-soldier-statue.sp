@@ -31,12 +31,14 @@ static void OnEntityCreated(int entity, const char[] classname) {
 
 static void GhostifySoldierStatue(int entity, int alpha) {
     if (alpha) {
+        LogDebug("Ghostifying statue with index %d", entity);
         SetEntityRenderMode(entity, RENDER_TRANSTEXTURE);
         SetEntityRenderColor(entity, 255, 255, 255, 255 - alpha);
 
         SetEntProp(entity, Prop_Data, "m_nSolidType", 0);
         SetEntProp(entity, Prop_Send, "m_CollisionGroup", 1);
     } else {
+        LogDebug("Un-Ghostifying statue with index %d", entity);
         SetEntityRenderMode(entity, RENDER_NORMAL);
 
         SetEntProp(entity, Prop_Data, "m_nSolidType", 2);

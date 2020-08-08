@@ -55,6 +55,7 @@ static MRESReturn Detour_CTFGameMovement_SetGroundEntity(Address self, Handle pa
         ClipVelocity(abs_velocity, plane, predicted_velocity);
 
         if (predicted_velocity[2] > 250.0) {
+            LogDebug("Preventing Slope Bug for player %N", player);
             return MRES_Supercede;
         }
     }

@@ -11,6 +11,7 @@
 #include <tf2_stocks>
 
 #include "tf2-comp-fixes/common.sp"
+#include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
@@ -54,6 +55,7 @@ void OnPluginStart() {
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     Common_Setup(game_config);
+    Debug_Setup();
 
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
