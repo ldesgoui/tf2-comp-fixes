@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_TOURNAMENT_END_IGNORES_WHITELIST
-#endinput
-#endif
-#define _TF2_COMP_FIXES_TOURNAMENT_END_IGNORES_WHITELIST
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static int    g_hook_id_pre  = -1;
 static int    g_hook_id_post = -1;
 static Handle g_detour_CEconItemSystem_ReloadWhitelist;

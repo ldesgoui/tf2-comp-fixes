@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_FIX_GHOST_CROSSBOW_BOLTS
-#endinput
-#endif
-#define _TF2_COMP_FIXES_FIX_GHOST_CROSSBOW_BOLTS
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 void FixGhostCrossbowBolts_Setup() {
     CreateBoolConVar("sm_fix_ghost_crossbow_bolts", OnConVarChange);
 }

@@ -1,14 +1,5 @@
 // Credit to https://github.com/stephanieLGBT/tf2-FallDamageFixer
 
-#if defined _TF2_COMP_FIXES_DETERMINISTIC_FALL_DAMAGE
-#endinput
-#endif
-#define _TF2_COMP_FIXES_DETERMINISTIC_FALL_DAMAGE
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameRules_FlPlayerFallDamage;
 
 void DeterministicFallDamage_Setup(Handle game_config) {

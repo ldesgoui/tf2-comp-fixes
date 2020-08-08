@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_REMOVE_HALLOWEEN_SOULS
-#endinput
-#endif
-#define _TF2_COMP_FIXES_REMOVE_HALLOWEEN_SOULS
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameRules_DropHalloweenSoulPack;
 
 void RemoveHalloweenSouls_Setup(Handle game_config) {

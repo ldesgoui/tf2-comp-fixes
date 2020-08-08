@@ -1,13 +1,3 @@
-#if defined _TF2_COMP_FIXES_REMOVE_PIPE_SPIN
-#endinput
-#endif
-#define _TF2_COMP_FIXES_REMOVE_PIPE_SPIN
-
-#include "common.sp"
-#include <dhooks>
-#include <sdkhooks>
-#include <sdktools>
-
 #define ATTR_GRENADE_NO_SPIN      (681)
 #define WEAPON_ID_THE_LOCH_N_LOAD (308)
 

@@ -1,8 +1,3 @@
-#if defined _TF2_COMP_FIXES_GHOSTIFY_SOLDIER_STATUE
-#endinput
-#endif
-#define _TF2_COMP_FIXES_GHOSTIFY_SOLDIER_STATUE
-
 void GhostifySoldierStatue_Setup() {
     ConVar cvar =
         CreateConVar("sm_rest_in_peace_rick_may", "0", _, FCVAR_NOTIFY, true, 0.0, true, 255.0);

@@ -1,14 +1,5 @@
 // Credits to https://github.com/laurirasanen/groundfix
 
-#if defined _TF2_COMP_FIXES_FIX_SLOPE_BUG
-#endinput
-#endif
-#define _TF2_COMP_FIXES_FIX_SLOPE_BUG
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFGameMovement_SetGroundEntity;
 static int    g_offset_CBaseTrace_plane_normal;
 static int    g_offset_CGameMovement_player;

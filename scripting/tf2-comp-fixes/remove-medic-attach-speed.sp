@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_REMOVE_MEDIC_ATTACH_SPEED
-#endinput
-#endif
-#define _TF2_COMP_FIXES_REMOVE_MEDIC_ATTACH_SPEED
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 static Handle g_detour_CTFPlayer_TeamFortress_CalculateMaxSpeed;
 
 void RemoveMedicAttachSpeed_Setup(Handle game_config) {

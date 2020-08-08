@@ -1,13 +1,3 @@
-#if defined _TF2_COMP_FIXES_WINGER_JUMP_BONUS_WHEN_FULLY_DEPLOYED
-#endinput
-#endif
-#define _TF2_COMP_FIXES_WINGER_JUMP_BONUS_WHEN_FULLY_DEPLOYED
-
-#include "common.sp"
-#include <dhooks>
-#include <sdkhooks>
-#include <sdktools>
-
 #define ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON (524)
 #define WEAPON_ID_THE_WINGER             (449)
 

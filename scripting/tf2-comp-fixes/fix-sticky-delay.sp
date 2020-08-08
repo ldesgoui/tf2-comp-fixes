@@ -1,11 +1,3 @@
-#if defined _TF2_COMP_FIXES_FIX_STICKY_DELAY
-#endinput
-#endif
-#define _TF2_COMP_FIXES_FIX_STICKY_DELAY
-
-#include "common.sp"
-#include <tf2_stocks>
-
 #define WEAPON_ID_THE_CHARGIN_TARGE   131
 #define WEAPON_ID_THE_SPLENDID_SCREEN 406
 #define WEAPON_ID_THE_TIDE_TURNER     1099

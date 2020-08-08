@@ -5,6 +5,11 @@
 #pragma semicolon 1
 #pragma newdecls required
 
+#include <dhooks>
+#include <sdkhooks>
+#include <sdktools>
+#include <tf2_stocks>
+
 #include "tf2-comp-fixes/common.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"

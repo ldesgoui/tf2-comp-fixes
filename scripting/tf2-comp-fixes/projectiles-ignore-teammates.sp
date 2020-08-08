@@ -1,12 +1,3 @@
-#if defined _TF2_COMP_FIXES_PROJECTILES_IGNORE_TEAMMATES
-#endinput
-#endif
-#define _TF2_COMP_FIXES_PROJECTILES_IGNORE_TEAMMATES
-
-#include "common.sp"
-#include <dhooks>
-#include <sdktools>
-
 Handle g_detour_CTFGrenadePipebombProjectile_PipebombTouch;
 
 void ProjectilesIgnoreTeammates_Setup(Handle game_config) {
