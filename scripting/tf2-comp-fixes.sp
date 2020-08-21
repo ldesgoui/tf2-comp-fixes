@@ -1,5 +1,5 @@
 #undef REQUIRE_PLUGIN
-#include <updater>
+#include "include/updater.inc"
 #define REQUIRE_PLUGIN
 
 #pragma semicolon 1
