@@ -21,8 +21,6 @@ jobs:
 
           curl -o include/dhooks.inc \
             https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod/scripting/include/dhooks.inc
-          curl -o include/updater.inc \
-            https://bitbucket.org/GoD_Tony/updater/raw/default/include/updater.inc
 
           spcomp \
             -i include \
