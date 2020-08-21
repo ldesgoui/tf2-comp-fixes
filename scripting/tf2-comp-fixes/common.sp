@@ -164,7 +164,7 @@ stock void ClipVelocity(const float velocity[3], const float normal[3], float re
     backoff = GetVectorDotProduct(result, normal);
     if (backoff < 0.0) {
         ScaleVectorTo(normal, backoff, tmp);
-        SubtractVectors(velocity, tmp, result);
+        SubtractVectors(result, tmp, result);
     }
 }
 
