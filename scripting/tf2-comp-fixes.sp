@@ -1,5 +1,5 @@
 #undef REQUIRE_PLUGIN
-#include <updater>
+#include "include/updater.inc"
 #define REQUIRE_PLUGIN
 
 #pragma semicolon 1
@@ -25,7 +25,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.9.0"
+#define PLUGIN_VERSION "1.9.1"
 
 // clang-format off
 public
