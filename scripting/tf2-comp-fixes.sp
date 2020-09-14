@@ -152,13 +152,13 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l || rgl);
     FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_gunboats_always_apply").SetBool(all);
-    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes);
+    FindConVar("sm_gunboats_always_apply").SetBool(all || etf2l);
+    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes || etf2l);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_remove_medic_attach_speed").SetBool(all);
-    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
+    FindConVar("sm_remove_medic_attach_speed").SetBool(all || etf2l);
+    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes || etf2l);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
-    FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all);
+    FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all || etf2l);
     PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
     return Plugin_Handled;
