@@ -149,7 +149,7 @@ Action Command_Cf(int client, int args) {
     }
 
     FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l || rgl);
-    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l || rgl);
+    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_gunboats_always_apply").SetBool(all || etf2l);
