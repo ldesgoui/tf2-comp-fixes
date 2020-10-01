@@ -25,7 +25,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.9.3"
+#define PLUGIN_VERSION "1.9.4"
 
 // clang-format off
 public
@@ -156,7 +156,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes || etf2l);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all || etf2l);
-    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes || etf2l);
+    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all || etf2l);
     PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
