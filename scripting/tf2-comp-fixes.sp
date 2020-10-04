@@ -11,6 +11,8 @@
 #include <tf2_stocks>
 
 #include "tf2-comp-fixes/common.sp"
+
+#include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
@@ -57,6 +59,7 @@ void OnPluginStart() {
     Common_Setup(game_config);
     Debug_Setup();
 
+    Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixSlopeBug_Setup(game_config);

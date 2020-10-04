@@ -7,6 +7,7 @@
 
 Handle g_call_CAttributeList_SetRuntimeAttributeValue;
 Handle g_call_CEconItemSchema_GetAttributeDefinition;
+Handle g_call_CTeamplayRules_SetWinningTeam;
 Handle g_call_GEconItemSchema;
 Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 
@@ -27,6 +28,12 @@ void Common_Setup(Handle game_config) {
     PrepSDKCall_SetReturnInfo(SDKType_PlainOldData, SDKPass_Plain);
     if ((g_call_CEconItemSchema_GetAttributeDefinition = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState("Failed to finalize SDK call to CEconItemSchema::GetAttributeDefinition");
+    }
+
+    StartPrepSDKCall(SDKCall_GameRules);
+    PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTeamplayRules::SetWinningTeam");
+    if ((g_call_CTeamplayRules_SetWinningTeam = EndPrepSDKCall()) == INVALID_HANDLE) {
+        SetFailState("Failed to finalize SDK call to SDKCall_GameRules");
     }
 
     StartPrepSDKCall(SDKCall_Static);
@@ -177,4 +184,9 @@ stock void SetAttribute(int entity, int attribute, float value) {
 
     SDKCall(g_call_CAttributeList_SetRuntimeAttributeValue,
             entity_pointer + view_as<Address>(offset), attribute_definition, value);
+}
+
+stock void ForceWin(TFTeam team) {
+    LogDebug("Forcing Win for team %d", view_as<int>(team));
+    SDKCall(g_call_CTeamplayRules_SetWinningTeam, view_as<int>(team), 1, true, false, false, false);
 }

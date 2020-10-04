@@ -155,6 +155,11 @@
 				"windows" "207"
 			}
 
+			"CTeamplayRules::SetWinningTeam" {
+				"linux" "161"
+				"windows" "160"
+			}
+
 			"CTFGrenadePipebombProjectile::PipebombTouch" {
 				"linux" "254"
 				"windows" "253"
