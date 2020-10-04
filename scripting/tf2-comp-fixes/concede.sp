@@ -51,7 +51,10 @@ Action Concede_Command(int client, int args) {
 
     if (g_convar_vote.IntValue < 1 || team_votes >= g_convar_vote.IntValue) {
         PrintToChatAll("[TF2 Competitive Fixes] '%s' has conceded the match", team_name);
-        ForceWin(team == TFTeam_Red ? TFTeam_Blue : TFTeam_Red);
+        ConVar cvar  = FindConVar("mp_timelimit");
+        int    limit = cvar.IntValue;
+        cvar.SetInt(1);
+        CreateTimer(0.1, TimerFinished, limit);
         return Plugin_Handled;
     }
 
@@ -61,6 +64,11 @@ Action Concede_Command(int client, int args) {
             client, team_name, g_convar_vote.IntValue - team_votes);
     }
 
+    return Plugin_Handled;
+}
+
+static Action TimerFinished(Handle timer, int limit) {
+    FindConVar("mp_timelimit").SetInt(limit);
     return Plugin_Handled;
 }
 

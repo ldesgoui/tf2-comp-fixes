@@ -32,6 +32,12 @@ void Common_Setup(Handle game_config) {
 
     StartPrepSDKCall(SDKCall_GameRules);
     PrepSDKCall_SetFromConf(game_config, SDKConf_Virtual, "CTeamplayRules::SetWinningTeam");
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+    PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
     if ((g_call_CTeamplayRules_SetWinningTeam = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState("Failed to finalize SDK call to SDKCall_GameRules");
     }
