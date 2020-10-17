@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: rumblefrog/setup-sp@v1.0.0
+      - uses: rumblefrog/setup-sp@v1.0.1
 
       - run: |
           mkdir -p addons/sourcemod/plugins include
