@@ -1,7 +1,9 @@
 #define HOOK_PRE  (false)
 #define HOOK_POST (true)
 
+#if !defined INVALID_HOOK_ID
 #define INVALID_HOOK_ID (-1)
+#endif
 
 #define MAXENTITIES (2048)
 
