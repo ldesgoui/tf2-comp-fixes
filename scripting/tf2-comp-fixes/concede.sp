@@ -51,6 +51,7 @@ Action Concede_Command(int client, int args) {
 
     if (g_convar_vote.IntValue < 1 || team_votes >= g_convar_vote.IntValue) {
         PrintToChatAll("[TF2 Competitive Fixes] '%s' has conceded the match", team_name);
+        SetTeamScore(team, -1);
         ConVar cvar  = FindConVar("mp_timelimit");
         int    limit = cvar.IntValue;
         cvar.SetInt(1);
