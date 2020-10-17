@@ -48,14 +48,14 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
 
 static void EnableHook() {
     g_hook_id_pre =
-        DHookGamerules(g_detour_CTeamplayRoundBasedRules_RestartTournament, HOOK_PRE, _, Hook_Pre);
+        DHookGamerules(g_detour_CTeamplayRoundBasedRules_RestartTournament, HOOK_PRE, _, Hook_RestartTournament_Pre);
 
     if (g_hook_id_pre == -1) {
         SetFailState("Failed to hook CTeamplayRoundBasedRules::RestartTournament");
     }
 
     g_hook_id_post = DHookGamerules(g_detour_CTeamplayRoundBasedRules_RestartTournament, HOOK_POST,
-                                    _, Hook_Post);
+                                    _, Hook_RestartTournament_Post);
 
     if (g_hook_id_post == -1) {
         DisableHook();
@@ -75,13 +75,13 @@ static void DisableHook() {
     }
 }
 
-static MRESReturn Hook_Pre(Address self) {
+static MRESReturn Hook_RestartTournament_Pre(Address self) {
     DHookEnableDetour(g_detour_CEconItemSystem_ReloadWhitelist, HOOK_PRE, Detour_Pre);
 
     return MRES_Handled;
 }
 
-static MRESReturn Hook_Post(Address self) {
+static MRESReturn Hook_RestartTournament_Post(Address self) {
     DHookDisableDetour(g_detour_CEconItemSystem_ReloadWhitelist, HOOK_PRE, Detour_Pre);
 
     return MRES_Handled;
