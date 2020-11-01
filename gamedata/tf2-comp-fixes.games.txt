@@ -199,13 +199,13 @@
 			// contains string "uber_on_damage_taken"
 			"CTFGameRules::ApplyOnDamageAliveModifyRules" {
 				"linux" "@_ZN12CTFGameRules29ApplyOnDamageAliveModifyRulesERK15CTakeDamageInfoP11CBaseEntityRNS_20DamageModifyExtras_tE"
-				"windows" "\x55\x8B\xEC\x81\xEC\xD0\x00\x00\x00\x53\x8B\x5D\x2A"
+				"windows" "\x55\x8B\xEC\x81\xEC\xD4\x00\x00\x00\x53\x8B\x5D\x0C"
 			}
 
 			// contains string "cancel_falling_damage"
 			"CTFGameRules::FlPlayerFallDamage" {
 				"linux" "@_ZN12CTFGameRules18FlPlayerFallDamageEP11CBasePlayer"
-				"windows" "\x55\x8B\xEC\x51\x56\x8B\x75\x2A\x85\xF6\x0F\x84\x2A\x2A\x2A\x2A"
+				"windows" "\x55\x8B\xEC\x51\x53\x56\x8B\x75\x08\x8B\xD9\x85\xF6\x0F\x84\x2A\x2A\x2A\x2A"
 			}
 
 			// contains string "halloween_souls_pack"
