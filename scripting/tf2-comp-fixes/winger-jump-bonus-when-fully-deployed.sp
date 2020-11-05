@@ -11,6 +11,8 @@ void WingerJumpBonusWhenFullyDeployed_Setup(Handle game_config) {
         CheckedDHookCreateFromConf(game_config, "CBaseCombatWeapon::Deploy");
 
     g_convar = CreateBoolConVar("sm_winger_jump_bonus_when_fully_deployed", OnConVarChange);
+
+    HookEvent("teamplay_round_start", OnRoundStart);
 }
 
 void WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(int client) {
@@ -104,4 +106,15 @@ static Action TimerFinished(Handle timer, int weapon) {
     SetAttribute(weapon, ATTR_MOD_JUMP_HEIGHT_FROM_WEAPON, 1.25);
 
     return Plugin_Continue;
+}
+
+static void OnRoundStart(Event event, const char[] name, bool dontBroadcast) {
+    for (int ent = 0; ent <= MAXENTITIES; ent++) {
+        if (g_timers[ent] == INVALID_HANDLE) {
+            continue;
+        }
+
+        KillTimer(g_timers[ent]);
+        g_timers[ent] = INVALID_HANDLE;
+    }
 }
