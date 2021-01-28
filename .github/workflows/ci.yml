@@ -20,7 +20,7 @@ jobs:
           cp -r scripting gamedata addons/sourcemod/
 
           curl -o include/dhooks.inc \
-            https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod/scripting/include/dhooks.inc
+            https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc
 
           spcomp \
             -i include \
