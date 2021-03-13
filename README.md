@@ -29,6 +29,8 @@ these servers. It changes cvars in bulk according to the following:
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0     | 255 | 128 | 0    |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 1     | 0   | 0   | 0    |
 
+**Leagues should not rely on presets as part of their server configurations.**
+
 Every feature is active immediately when the cvar is enabled except for features
 that hook short-lived entities, in which case the feature will apply if the
 entity was created when the feature was enabled. For now this includes:
@@ -83,7 +85,7 @@ entity was created when the feature was enabled. For now this includes:
 - **Remove Pipe Spin**
 
   When enabled with `sm_remove_pipe_spin 1`, pipes will not spawn with a random
-  rotation.
+  rotation, similarly to Loch-n-Load pipes
 
 - **Tournament Match End Ignores Whitelist**
 
@@ -105,8 +107,7 @@ entity was created when the feature was enabled. For now this includes:
 - **Winger Jump Bonus Applies When Fully Deployed**
 
   When enabled with `sm_winger_jump_bonus_when_fully_deployed 1`, the Winger's
-  jump bonus will only take effect when the weapon is fully deployed. (TODO: for
-  now, hardcoded as 200ms after the player switches to the weapon)
+  jump bonus will only take effect when the weapon is fully deployed.
 
 ## Installation
 

@@ -173,5 +173,5 @@ void ReplyDiffConVar(int client, const char[] name) {
     cvar.GetString(current, sizeof(current));
     cvar.GetDefault(def, sizeof(def));
 
-    ReplyToCommand(client, "Server cvar '%s' is set to %s (default: %s)", name, current, def);
+    ReplyToCommand(client, "%s %s (default: %s)", name, current, def);
 }
