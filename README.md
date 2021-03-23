@@ -109,6 +109,17 @@ entity was created when the feature was enabled. For now this includes:
   When enabled with `sm_winger_jump_bonus_when_fully_deployed 1`, the Winger's
   jump bonus will only take effect when the weapon is fully deployed.
 
+#### Other
+
+- **Concede Command**
+
+  When enabled with `sm_concede_command 1`, teams will be able to type
+  `!concede`/`/concede` in chat to concede the match.  
+  `sm_concede_command_vote n` adds the requirement for `n` players to type the
+  command before the match is conceded.  
+  `sm_concede_command_timeleft n` makes the command only available when `n`
+  minutes are left on the map timer.
+
 ## Installation
 
 This plugin depends on the
