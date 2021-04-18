@@ -16,7 +16,7 @@ static void OnConVarChange(ConVar cvar, const char[] before, const char[] after)
 }
 
 static void OnEntityCreated(int entity, const char[] classname) {
-    if (StrContains(classname, "tf_projectile_") != 0) {
+    if (strncmp(classname, "tf_projectile_", 14) != 0) {
         return;
     }
 
