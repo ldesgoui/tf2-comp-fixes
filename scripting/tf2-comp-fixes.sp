@@ -20,6 +20,7 @@
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
+#include "tf2-comp-fixes/override-pipe-size.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
@@ -27,7 +28,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.10.6"
+#define PLUGIN_VERSION "1.11.0"
 
 // clang-format off
 public
@@ -66,6 +67,7 @@ void OnPluginStart() {
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
+    OverridePipeSize_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
@@ -122,6 +124,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_remove_pipe_spin");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
         ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
+        ReplyDiffConVar(client, "sm_fix_iron_bomber_hitbox");
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
@@ -156,6 +159,7 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_gunboats_always_apply").SetBool(all || etf2l);
+    FindConVar("sm_override_pipe_size").SetFloat(all || fixes ? 4.0 : 0.0);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes || etf2l);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
