@@ -6,6 +6,8 @@ Various technical or gameplay changes catered towards competitive play
 
 ### Usage
 
+`sm_cf` (or `!cf` in chat) displays the current running version.
+
 `sm_cf list` (or `!cf list` in chat) lists all available cvars with their
 current values, and is available to everyone.
 
@@ -22,6 +24,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_fix_slope_bug                         | 1   | 1     | 1     | 1   | 1   | 0    |
 | sm_fix_sticky_delay                      | 1   | 1     | 1     | 1   | 1   | 0    |
 | sm_gunboats_always_apply                 | 1   | 0     | 1     | 0   | 0   | 0    |
+| sm_override_pipe_size                    | 4.0 | 4.0   | 0     | 0   | 0   | 0    |
 | sm_projectiles_ignore_teammates          | 1   | 1     | 1     | 0   | 0   | 0    |
 | sm_remove_halloween_souls                | 1   | 1     | 1     | 1   | 1   | 0    |
 | sm_remove_medic_attach_speed             | 1   | 0     | 0     | 0   | 0   | 0    |
@@ -72,6 +75,13 @@ entity was created when the feature was enabled. For now this includes:
   Soldier statues will become transparent (values near 0 being opaque, 255 being
   invisible), and will not collide with players, shots or projectiles.
 
+- **Override Pipe Collider Size**
+
+  When enabled with `sm_override_pipe_size [1 .. ]`, all pipes will have their
+  collider resized to that value in Hammer Units.  
+  The size of official pipes is 4.0, except for Iron Bomber, which is 8.75 wide
+  and 7.71424 tall.
+
 - **Projectiles Ignore Teammates**
 
   When enabled with `sm_projectiles_ignore_teammates 1`, projectiles will pass
@@ -118,7 +128,9 @@ entity was created when the feature was enabled. For now this includes:
   `sm_concede_command_vote n` adds the requirement for `n` players to type the
   command before the match is conceded.  
   `sm_concede_command_timeleft n` makes the command only available when `n`
-  minutes are left on the map timer.
+  minutes are left on the map timer.  
+  ATTENTION: This only really works for 5CP maps and *needs* to be disabled on
+  other map types.
 
 ## Installation
 
