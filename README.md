@@ -82,6 +82,8 @@ entity was created when the feature was enabled. For now this includes:
   The size of official pipes is 4.0, except for Iron Bomber, which is 8.75 wide
   and 7.71424 tall.
 
+  Credits for implementing go to https://github.com/bodolaz146
+
 - **Projectiles Ignore Teammates**
 
   When enabled with `sm_projectiles_ignore_teammates 1`, projectiles will pass
