@@ -1,13 +1,13 @@
-#define PIPE_SIZE 2.0
+static ConVar g_cvar;
 
 static Handle g_call_CBaseEntity_SetCollisionBounds;
 static Handle g_detour_CTFWeaponBaseGun_FirePipeBomb;
 
-void FixIronBomberHitbox_Setup(Handle game_config) {
+void OverridePipeSize_Setup(Handle game_config) {
     StartPrepSDKCall(SDKCall_Entity);
 
     if (!PrepSDKCall_SetFromConf(game_config, SDKConf_Signature, "CBaseEntity::SetCollisionBounds")) {
-        SetFailState("Failed to finalize SDK call to BaseEntity::SetCollisionBounds");
+        SetFailState("Failed to finalize SDK call to CBaseEntity::SetCollisionBounds");
     }
 
     PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
@@ -16,7 +16,12 @@ void FixIronBomberHitbox_Setup(Handle game_config) {
     g_call_CBaseEntity_SetCollisionBounds = EndPrepSDKCall();
     g_detour_CTFWeaponBaseGun_FirePipeBomb = CheckedDHookCreateFromConf(game_config, "CTFWeaponBaseGun::FirePipeBomb");
 
-    CreateBoolConVar("sm_fix_iron_bomber_hitbox", OnConVarChange);
+    g_cvar =
+        CreateConVar("sm_override_pipe_size", "0", _, FCVAR_NOTIFY, true, 0.0, true, 1000.0);
+
+    g_cvar.AddChangeHook(OnConVarChange);
+
+    CallConVarUpdateHook(g_cvar, OnConVarChange);
 }
 
 static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
@@ -37,22 +42,35 @@ static MRESReturn Detour_CTFWeaponBaseGun_FirePipeBomb(Handle hReturn, Handle hP
         return MRES_Ignored;
     }
 
-    float vec[3];
-    GetEntPropVector(entity, Prop_Data, "m_vecMaxs", vec);
-
-    if (vec[0] == PIPE_SIZE) {
-        return MRES_Ignored;
+    bool cf_debug = FindConVar("sm_cf_debug").BoolValue;
+    if (cf_debug) {
+        LogDebug("Pipe collision bounds before");
+        LogDebugCollisionBounds(entity);
     }
 
-    //PrintToServer("before %f", vec[0]);
+    float mins[3], maxs[3], x = g_cvar.FloatValue / 2.0;
+    mins[0] = mins[1] = mins[2] = -x;
+    maxs[0] = maxs[1] = maxs[2] = x;
 
-    float vecMins[3] = { -PIPE_SIZE, -PIPE_SIZE, -PIPE_SIZE };
-    float vecMaxs[3] = { PIPE_SIZE, PIPE_SIZE, PIPE_SIZE };
+    SDKCall(g_call_CBaseEntity_SetCollisionBounds, entity, mins, maxs);
 
-    SDKCall(g_call_CBaseEntity_SetCollisionBounds, entity, vecMins, vecMaxs);
-
-    //GetEntPropVector(entity, Prop_Data, "m_vecMaxs", vec);
-    //PrintToServer("after %f", vec[0]);
+    if (cf_debug) {
+        LogDebug("Pipe collision bounds after");
+        LogDebugCollisionBounds(entity);
+    }
 
     return MRES_Handled;
+}
+
+static void LogDebugCollisionBounds(int entity) {
+    float mins[3], maxs[3];
+
+    GetEntPropVector(entity, Prop_Data, "m_vecMins", mins);
+    GetEntPropVector(entity, Prop_Data, "m_vecMaxs", maxs);
+
+    LogDebug(
+        "{ %.2f, %.2f, %.2f }, { %.2f, %.2f, %.2f }",
+        mins[0], mins[1], mins[2],
+        maxs[0], maxs[1], maxs[2]
+    );
 }

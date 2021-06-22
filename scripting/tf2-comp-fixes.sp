@@ -20,13 +20,13 @@
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
+#include "tf2-comp-fixes/override-pipe-size.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
-#include "tf2-comp-fixes/fix-iron-bomber-hitbox.sp"
 
 #define PLUGIN_VERSION "1.10.6"
 
@@ -67,13 +67,13 @@ void OnPluginStart() {
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
+    OverridePipeSize_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
-    FixIronBomberHitbox_Setup(game_config);
 
     if (LibraryExists("updater")) {
         OnLibraryAdded("updater");
@@ -159,13 +159,13 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_gunboats_always_apply").SetBool(all || etf2l);
+    FindConVar("sm_override_pipe_size").SetFloat(all || fixes ? 4.0 : 0.0);
     FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes || etf2l);
     FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
     FindConVar("sm_remove_medic_attach_speed").SetBool(all);
     FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
     FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
     FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all || etf2l);
-    FindConVar("sm_fix_iron_bomber_hitbox").SetBool(all);
     PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
     return Plugin_Handled;
