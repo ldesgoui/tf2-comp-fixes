@@ -27,7 +27,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.10.5"
+#define PLUGIN_VERSION "1.10.6"
 
 // clang-format off
 public
@@ -173,5 +173,5 @@ void ReplyDiffConVar(int client, const char[] name) {
     cvar.GetString(current, sizeof(current));
     cvar.GetDefault(def, sizeof(def));
 
-    ReplyToCommand(client, "Server cvar '%s' is set to %s (default: %s)", name, current, def);
+    ReplyToCommand(client, "%s %s (default: %s)", name, current, def);
 }
