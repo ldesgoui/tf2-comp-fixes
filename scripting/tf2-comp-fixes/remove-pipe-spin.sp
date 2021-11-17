@@ -3,7 +3,7 @@
 
 static ConVar g_convar;
 
-void RemovePipeSpin_Setup() { g_convar = CreateBoolConVar("sm_remove_pipe_spin", OnConVarChange); }
+void RemovePipeSpin_Setup() { g_convar = CreateBoolConVar("sm_remove_pipe_spin", WhenConVarChange); }
 
 void RemovePipeSpin_OnClientPutInServer(int client) {
     if (!g_convar.BoolValue) {
@@ -13,7 +13,7 @@ void RemovePipeSpin_OnClientPutInServer(int client) {
     SDKHook(client, SDKHook_WeaponCanUsePost, Hook_WeaponCanUsePost);
 }
 
-static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }

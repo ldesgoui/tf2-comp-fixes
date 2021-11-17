@@ -4,18 +4,18 @@ void ProjectilesIgnoreTeammates_Setup(Handle game_config) {
     g_detour_CTFGrenadePipebombProjectile_PipebombTouch =
         CheckedDHookCreateFromConf(game_config, "CTFGrenadePipebombProjectile::PipebombTouch");
 
-    CreateBoolConVar("sm_projectiles_ignore_teammates", OnConVarChange);
+    CreateBoolConVar("sm_projectiles_ignore_teammates", WhenConVarChange);
 }
 
-static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
 
-    DHookToggleEntityListener(ListenType_Created, OnEntityCreated, cvar.BoolValue);
+    DHookToggleEntityListener(ListenType_Created, WhenEntityCreated, cvar.BoolValue);
 }
 
-static void OnEntityCreated(int entity, const char[] classname) {
+static void WhenEntityCreated(int entity, const char[] classname) {
     if (StrContains(classname, "tf_projectile_") != 0) {
         return;
     }

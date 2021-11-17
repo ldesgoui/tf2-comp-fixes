@@ -14,7 +14,7 @@ void TournamentEndIgnoresWhitelist_Setup(Handle game_config) {
     g_cvar = CreateConVar("sm_tournament_end_ignores_whitelist", "1", _, FCVAR_NOTIFY, true, 0.0,
                           true, 1.0);
 
-    CallConVarUpdateHook(g_cvar, OnConVarChange);
+    CallConVarUpdateHook(g_cvar, WhenConVarChange);
 
     RegServerCmd("mp_tournament_restart", Command_TournamentRestart);
 }
@@ -34,7 +34,7 @@ static Action Timer_TournamentRestart_Post(Handle timer) {
     return Plugin_Continue;
 }
 
-static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
