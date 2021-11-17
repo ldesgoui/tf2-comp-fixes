@@ -19,12 +19,12 @@ void OverridePipeSize_Setup(Handle game_config) {
     g_cvar =
         CreateConVar("sm_override_pipe_size", "0", _, FCVAR_NOTIFY, true, 0.0, true, 1000.0);
 
-    g_cvar.AddChangeHook(OnConVarChange);
+    g_cvar.AddChangeHook(WhenConVarChange);
 
-    CallConVarUpdateHook(g_cvar, OnConVarChange);
+    CallConVarUpdateHook(g_cvar, WhenConVarChange);
 }
 
-static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
+static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
     }
