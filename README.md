@@ -17,28 +17,25 @@ SourceMod admin level `cvar` (flag `h`), or via RCON. On
 premium reservation without having to use RCON. Thank to Arie for providing
 these servers. It changes cvars in bulk according to the following:
 
-|                                          | all | fixes | etf2l | ozf | rgl | none |
-| ---------------------------------------- | --- | ----- | ----- | --- | --- | ---- |
-| sm_deterministic_fall_damage             | 1   | 1     | 1     | 0   | 1   | 0    |
-| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 1     | 1   | 1   | 0    |
-| sm_fix_slope_bug                         | 1   | 1     | 1     | 1   | 1   | 0    |
-| sm_fix_sticky_delay                      | 1   | 1     | 1     | 1   | 1   | 0    |
-| sm_gunboats_always_apply                 | 1   | 0     | 1     | 0   | 0   | 0    |
-| sm_override_pipe_size                    | 4.0 | 4.0   | 0     | 0   | 0   | 0    |
-| sm_projectiles_ignore_teammates          | 1   | 1     | 1     | 0   | 0   | 0    |
-| sm_remove_halloween_souls                | 1   | 1     | 1     | 1   | 1   | 0    |
-| sm_remove_medic_attach_speed             | 1   | 0     | 0     | 0   | 0   | 0    |
-| sm_remove_pipe_spin                      | 1   | 1     | 0     | 0   | 0   | 0    |
-| sm_rest_in_peace_rick_may                | 128 | 128   | 0     | 255 | 128 | 0    |
-| sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 1     | 0   | 0   | 0    |
+|                                          | all | fixes | asf | etf2l | ozf | rgl | none |
+| ---------------------------------------- | --- | ----- | --- | ----- | --- | --- | ---- |
+| sm_deterministic_fall_damage             | 1   | 1     | 1   | 1     | 0   | 1   | 0    |
+| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
+| sm_fix_slope_bug                         | 1   | 1     | 1   | 1     | 1   | 1   | 0    |
+| sm_fix_sticky_delay                      | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
+| sm_gunboats_always_apply                 | 1   | 0     | 0   | 1     | 0   | 0   | 0    |
+| sm_override_pipe_size                    | 4.0 | 4.0   | 0   | 0     | 0   | 0   | 0    |
+| sm_projectiles_ignore_teammates          | 1   | 1     | 1   | 1     | 0   | 0   | 0    |
+| sm_remove_halloween_souls                | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
+| sm_remove_medic_attach_speed             | 1   | 0     | 0   | 0     | 0   | 0   | 0    |
+| sm_remove_pipe_spin                      | 1   | 0     | 0   | 0     | 0   | 0   | 0    |
+| sm_rest_in_peace_rick_may                | 128 | 128   | 0   | 0     | 255 | 128 | 0    |
+| sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0   | 1     | 0   | 0   | 0    |
 
-**Leagues should not rely on presets as part of their server configurations.**
+**Leagues should not rely on presets as part of their server configurations,
+except for `none`**
 
-Every feature is active immediately when the cvar is enabled except for features
-that hook short-lived entities, in which case the feature will apply if the
-entity was created when the feature was enabled. For now this includes:
-`sm_fix_ghost_crossbow_bolts`, `sm_projectiles_ignore_teammates`,
-`sm_remove_pipe_spin`.
+_Presets were updated on 2021-12-09._
 
 ### Features
 
@@ -125,6 +122,8 @@ entity was created when the feature was enabled. For now this includes:
 
 - **Concede Command**
 
+  _This command is deprecated and will be removed in a future update._
+
   When enabled with `sm_concede_command 1`, teams will be able to type
   `!concede`/`/concede` in chat to concede the match.  
   `sm_concede_command_vote n` adds the requirement for `n` players to type the
@@ -133,6 +132,17 @@ entity was created when the feature was enabled. For now this includes:
   minutes are left on the map timer.  
   ATTENTION: This only really works for 5CP maps and *needs* to be disabled on
   other map types.
+
+#### Note
+
+Every feature is active immediately when the cvar is enabled except for features
+that hook short-lived entities, in which case the feature will apply if the
+entity was created when the feature was enabled. For now this includes:
+
+- `sm_fix_ghost_crossbow_bolts`
+- `sm_override_pipe_size`
+- `sm_projectiles_ignore_teammates`
+- `sm_remove_pipe_spin`
 
 ## Installation
 

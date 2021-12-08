@@ -107,6 +107,7 @@ Action Command_Cf(int client, int args) {
     char full[256];
     bool all   = false;
     bool fixes = false;
+    bool asf   = false;
     bool etf2l = false;
     bool ozf   = false;
     bool rgl   = false;
@@ -134,6 +135,8 @@ Action Command_Cf(int client, int args) {
         all = true;
     } else if (StrEqual(full, "fixes")) {
         fixes = true;
+    } else if (StrEqual(full, "asf")) {
+        asf = true;
     } else if (StrEqual(full, "etf2l")) {
         etf2l = true;
     } else if (StrEqual(full, "ozf")) {
@@ -144,7 +147,7 @@ Action Command_Cf(int client, int args) {
     } else {
         ReplyToCommand(client, "TF2 Competitive Fixes");
         ReplyToCommand(client, "Version: %s", PLUGIN_VERSION);
-        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | etf2l | ozf | rgl | none)");
+        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | none | asf | etf2l | ozf | rgl)");
         return Plugin_Handled;
     }
 
@@ -154,18 +157,42 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
-    FindConVar("sm_deterministic_fall_damage").SetBool(all || fixes || etf2l || rgl);
-    FindConVar("sm_fix_ghost_crossbow_bolts").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_fix_slope_bug").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_fix_sticky_delay").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_gunboats_always_apply").SetBool(all || etf2l);
-    FindConVar("sm_override_pipe_size").SetFloat(all || fixes ? 4.0 : 0.0);
-    FindConVar("sm_projectiles_ignore_teammates").SetBool(all || fixes || etf2l);
-    FindConVar("sm_remove_halloween_souls").SetBool(all || fixes || etf2l || ozf || rgl);
-    FindConVar("sm_remove_medic_attach_speed").SetBool(all);
-    FindConVar("sm_remove_pipe_spin").SetBool(all || fixes);
-    FindConVar("sm_rest_in_peace_rick_may").SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
-    FindConVar("sm_winger_jump_bonus_when_fully_deployed").SetBool(all || etf2l);
+    FindConVar("sm_deterministic_fall_damage")
+        .SetBool(all || fixes || asf || etf2l || rgl);
+
+    FindConVar("sm_fix_ghost_crossbow_bolts")
+        .SetBool(all || fixes || etf2l || ozf || rgl);
+
+    FindConVar("sm_fix_slope_bug")
+        .SetBool(all || fixes || asf || etf2l || ozf || rgl);
+
+    FindConVar("sm_fix_sticky_delay")
+        .SetBool(all || fixes || etf2l || ozf || rgl);
+
+    FindConVar("sm_gunboats_always_apply")
+        .SetBool(all || etf2l);
+
+    FindConVar("sm_override_pipe_size")
+        .SetFloat(all || fixes ? 4.0 : 0.0);
+
+    FindConVar("sm_projectiles_ignore_teammates")
+        .SetBool(all || fixes || asf || etf2l);
+
+    FindConVar("sm_remove_halloween_souls")
+        .SetBool(all || fixes || etf2l || ozf || rgl);
+
+    FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_remove_pipe_spin")
+        .SetBool(all);
+
+    FindConVar("sm_rest_in_peace_rick_may")
+        .SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
+
+    FindConVar("sm_winger_jump_bonus_when_fully_deployed")
+        .SetBool(all || etf2l);
+
     PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
     return Plugin_Handled;
