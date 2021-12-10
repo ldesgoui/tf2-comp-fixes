@@ -17,20 +17,20 @@ SourceMod admin level `cvar` (flag `h`), or via RCON. On
 premium reservation without having to use RCON. Thank to Arie for providing
 these servers. It changes cvars in bulk according to the following:
 
-|                                          | all | fixes | asf | etf2l | ozf | rgl | none |
-| ---------------------------------------- | --- | ----- | --- | ----- | --- | --- | ---- |
-| sm_deterministic_fall_damage             | 1   | 1     | 1   | 1     | 0   | 1   | 0    |
-| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
-| sm_fix_slope_bug                         | 1   | 1     | 1   | 1     | 1   | 1   | 0    |
-| sm_fix_sticky_delay                      | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
-| sm_gunboats_always_apply                 | 1   | 0     | 0   | 1     | 0   | 0   | 0    |
-| sm_override_pipe_size                    | 4.0 | 4.0   | 0   | 0     | 0   | 0   | 0    |
-| sm_projectiles_ignore_teammates          | 1   | 1     | 1   | 1     | 0   | 0   | 0    |
-| sm_remove_halloween_souls                | 1   | 1     | 0   | 1     | 1   | 1   | 0    |
-| sm_remove_medic_attach_speed             | 1   | 0     | 0   | 0     | 0   | 0   | 0    |
-| sm_remove_pipe_spin                      | 1   | 0     | 0   | 0     | 0   | 0   | 0    |
-| sm_rest_in_peace_rick_may                | 128 | 128   | 0   | 0     | 255 | 128 | 0    |
-| sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0   | 1     | 0   | 0   | 0    |
+|                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
+| ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
+| sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 0   | 1   |
+| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
+| sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
+| sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
+| sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
+| sm_override_pipe_size                    | 4.0 | 4.0   | 0    |  0   | 0     | 0   | 0   |
+| sm_projectiles_ignore_teammates          | 1   | 1     | 0    |  1   | 1     | 0   | 0   |
+| sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
+| sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
+| sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
+| sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
+| sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 
 **Leagues should not rely on presets as part of their server configurations,
 except for `none`**
