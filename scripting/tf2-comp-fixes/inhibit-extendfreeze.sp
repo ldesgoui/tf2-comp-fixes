@@ -15,5 +15,6 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static Action WhenExtendfreeze(int client, const char[] command, int argc) {
+    LogDebug("Inhibiting `extendfreeze` from %N", client);
     return Plugin_Handled;
 }
