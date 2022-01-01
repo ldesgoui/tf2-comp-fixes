@@ -29,7 +29,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
-| ---------------------------------------- | --- | ----- | ---- | ---- | ----- | --- | --- |
+|                                          |     |       |      |      |       |     |     |
 | sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 | sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
