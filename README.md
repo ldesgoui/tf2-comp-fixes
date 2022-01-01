@@ -70,7 +70,7 @@ _Presets were updated on 2021-12-09._
 
 - **Inhibit `extendfreeze`**
 
-  When enabled with `sm_inhibit_extendfreeze`, clients will not be able to use
+  When enabled with `sm_inhibit_extendfreeze 1`, clients will not be able to use
   the `extendfreeze` command.  
   This prevents some information leak, players can use this command after dying
   to spectate their killer in third person.  
