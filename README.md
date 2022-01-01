@@ -23,13 +23,15 @@ these servers. It changes cvars in bulk according to the following:
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
-| sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
+| sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_override_pipe_size                    | 4.0 | 4.0   | 0    |  0   | 0     | 0   | 0   |
 | sm_projectiles_ignore_teammates          | 1   | 1     | 0    |  1   | 1     | 0   | 0   |
 | sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
-| sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
+| ---------------------------------------- | --- | ----- | ---- | ---- | ----- | --- | --- |
+| sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
+| sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 
 **Leagues should not rely on presets as part of their server configurations,
@@ -66,11 +68,16 @@ _Presets were updated on 2021-12-09._
   When enabled with `sm_fix_sticky_delay 1`, stickies will no longer fail to
   detonate when swapping weapons.
 
-- **Ghostify Soldier Statues**
+- **Inhibit `extendfreeze`**
 
-  When enabled with `sm_rest_in_peace_rick_may [1 .. 255]`, the commemorative
-  Soldier statues will become transparent (values near 0 being opaque, 255 being
-  invisible), and will not collide with players, shots or projectiles.
+  When enabled with `sm_inhibit_extendfreeze`, clients will not be able to use
+  the `extendfreeze` command.  
+  This prevents some information leak, players can use this command after dying
+  to spectate their killer in third person.  
+  This slightly alters the handling of freezecams and may result in reduced
+  spawn timers of at most 2 seconds across the board.
+
+  [Demonstration of the info leak in this video](https://youtu.be/WHGVAJgHMX8?t=371)
 
 - **Override Pipe Collider Size**
 
@@ -96,9 +103,15 @@ _Presets were updated on 2021-12-09._
   When enabled with `sm_remove_pipe_spin 1`, pipes will not spawn with a random
   rotation, similarly to Loch-n-Load pipes
 
+- **Ghostify Soldier Statues**
+
+  When enabled with `sm_rest_in_peace_rick_may [1 .. 255]`, the commemorative
+  Soldier statues will become transparent (values near 0 being opaque, 255 being
+  invisible), and will not collide with players, shots or projectiles.
+
 - **Tournament Match End Ignores Whitelist**
 
-  Enabled by default with `sm_tournament_end_ignores_whitelist 1`, the whitelist
+  _Enabled by default_ with `sm_tournament_end_ignores_whitelist 1`, the whitelist
   will not be executed at the end of a `mp_tournament` match.
 
 #### Gameplay Changes
