@@ -20,6 +20,7 @@
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
+#include "tf2-comp-fixes/inhibit-extendfreeze.sp"
 #include "tf2-comp-fixes/override-pipe-size.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
@@ -28,7 +29,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.12.0"
+#define PLUGIN_VERSION "1.13.0"
 
 // clang-format off
 public
@@ -67,6 +68,7 @@ void OnPluginStart() {
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
     GunboatsAlwaysApply_Setup(game_config);
+    InhibitExtendfreeze_Setup();
     OverridePipeSize_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
@@ -120,6 +122,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
+        ReplyDiffConVar(client, "sm_inhibit_extendfreeze");
         ReplyDiffConVar(client, "sm_override_pipe_size");
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
@@ -171,6 +174,9 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_gunboats_always_apply")
         .SetBool(all || etf2l);
+
+    FindConVar("sm_inhibit_extendfreeze")
+        .SetBool(all || fixes);
 
     FindConVar("sm_override_pipe_size")
         .SetFloat(all || fixes ? 4.0 : 0.0);

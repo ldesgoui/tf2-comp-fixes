@@ -1,7 +1,7 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest" "1.12.0"
+			"Latest" "1.13.0"
 		}
 
 		"Notes" "Patch notes: https://github.com/ldesgoui/tf2-comp-fixes/releases"
@@ -13,6 +13,7 @@
 
 		"Source" "Path_SM/scripting/tf2-comp-fixes.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/common.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/concede.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/debug.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/deterministic-fall-damage.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
@@ -20,9 +21,12 @@
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-sticky-delay.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/ghostify-soldier-statue.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/gunboats-always-apply.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/inhibit-extendfreeze.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/override-pipe-size.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/projectiles-ignore-teammates.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-halloween-souls.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-medic-attach-speed.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-pipe-spin.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 	}
