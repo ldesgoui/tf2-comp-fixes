@@ -29,7 +29,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static Action WhenPause(int client, const char[] command, int argc) {
-    if (!g_convar_pausable.GetBool()) {
+    if (!g_convar_pausable.BoolValue) {
         return Plugin_Continue;
     }
 
@@ -51,10 +51,10 @@ static Action WhenPause(int client, const char[] command, int argc) {
 
         if (g_paused) {
             SetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel", g_ubercharge[client]);
-            LogDebug("Restoring %N's ubercharge to %f%", client, g_ubercharge[client])
+            LogDebug("Restoring %N's ubercharge to %f%", client, g_ubercharge[client]);
         } else {
             g_ubercharge[client] = GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
-            LogDebug("Saving %N's ubercharge as %f%", client, g_ubercharge[client])
+            LogDebug("Saving %N's ubercharge as %f%", client, g_ubercharge[client]);
         }
     }
 
