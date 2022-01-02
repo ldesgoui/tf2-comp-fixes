@@ -16,6 +16,7 @@
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
+#include "tf2-comp-fixes/fix-post-pause-state.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
@@ -64,6 +65,7 @@ void OnPluginStart() {
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
+    FixPostPauseState_Setup();
     FixSlopeBug_Setup(game_config);
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
@@ -83,6 +85,19 @@ void OnPluginStart() {
 }
 
 public
+void OnLibraryAdded(const char[] name) {
+    if (StrEqual(name, "updater")) {
+        Updater_AddPlugin(
+            "https://raw.githubusercontent.com/ldesgoui/tf2-comp-fixes/updater/updatefile.txt");
+    }
+}
+
+public
+void OnMapStart() {
+    FixPostPauseState_OnMapStart();
+}
+
+public
 void OnClientPutInServer(int client) {
     RemovePipeSpin_OnClientPutInServer(client);
     WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
@@ -95,14 +110,6 @@ Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], floa
     FixStickyDelay_OnPlayerRunCmd(client, buttons);
 
     return Plugin_Continue;
-}
-
-public
-void OnLibraryAdded(const char[] name) {
-    if (StrEqual(name, "updater")) {
-        Updater_AddPlugin(
-            "https://raw.githubusercontent.com/ldesgoui/tf2-comp-fixes/updater/updatefile.txt");
-    }
 }
 
 Action Command_Cf(int client, int args) {
@@ -120,6 +127,7 @@ Action Command_Cf(int client, int args) {
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
+        ReplyDiffConVar(client, "sm_fix_post_pause_state");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
         ReplyDiffConVar(client, "sm_inhibit_extendfreeze");
@@ -165,6 +173,9 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
+
+    FindConVar("sm_fix_post_pause_state")
+        .SetBool(all || fixes);
 
     FindConVar("sm_fix_slope_bug")
         .SetBool(all || fixes || asf || etf2l || ozf || rgl);
