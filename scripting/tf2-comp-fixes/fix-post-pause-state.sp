@@ -51,10 +51,10 @@ static Action WhenPause(int client, const char[] command, int argc) {
 
         if (g_paused) {
             SetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel", g_ubercharge[client]);
-            LogDebug("Restoring %N's ubercharge to %f%", client, g_ubercharge[client]);
+            LogDebug("Restoring %N's ubercharge to %.0f%", client, g_ubercharge[client] * 100);
         } else {
             g_ubercharge[client] = GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
-            LogDebug("Saving %N's ubercharge as %f%", client, g_ubercharge[client]);
+            LogDebug("Saving %N's ubercharge as %.0f%", client, g_ubercharge[client] * 100);
         }
     }
 
