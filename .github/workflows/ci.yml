@@ -48,7 +48,14 @@ jobs:
           asset_name: tf2-comp-fixes.zip
           asset_content_type: application/zip
 
+      - id: check_prerelease
+        run: |
+          if [[ ${{ github.event.ref }} =~ ^refs/tags/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$ ]]; then
+            echo ::set-output name=match::true
+          fi
+
       - uses: peaceiris/actions-gh-pages@v3
+        if: steps.check_prerelease.match != "true"
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: updater
