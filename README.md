@@ -21,6 +21,7 @@ these servers. It changes cvars in bulk according to the following:
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
 | sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 0   | 1   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
+| sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
@@ -55,6 +56,14 @@ _Presets were updated on 2021-12-09._
 
   When enabled with `sm_fix_ghost_crossbow_bolts 1`, crossbow bolts will no
   longer pass through teammates when in close range.
+
+- **Revert state after unpausing**
+
+  When enabled with `sm_fix_post_pause_state 1`, gameplay state that changed
+  because of the UserCmd handling bug will be restored to what it was before
+  the pause. For now, this includes:
+
+  - Medigun ubercharge
 
 - **Fixes Slope Bugs**
 

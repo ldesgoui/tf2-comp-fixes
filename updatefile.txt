@@ -17,6 +17,7 @@
 		"Source" "Path_SM/scripting/tf2-comp-fixes/debug.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/deterministic-fall-damage.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-post-pause-state.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-slope-bug.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-sticky-delay.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/ghostify-soldier-statue.sp"
