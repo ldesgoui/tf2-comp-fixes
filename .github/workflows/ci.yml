@@ -55,7 +55,7 @@ jobs:
           fi
 
       - uses: peaceiris/actions-gh-pages@v3
-        if: steps.check_prerelease.match != "true"
+        if: steps.check_prerelease.match != 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: updater
