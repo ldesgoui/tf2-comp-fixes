@@ -16,6 +16,7 @@
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
+#include "tf2-comp-fixes/fix-post-pause-state.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
