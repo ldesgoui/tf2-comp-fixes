@@ -29,6 +29,7 @@
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
 #include "tf2-comp-fixes/solid-buildings.sp"
+#include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
@@ -67,6 +68,7 @@ void OnPluginStart() {
     // Here
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
+    EmptyActiveUberchargesWhenDropped_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixPostPauseState_Setup();
     FixSlopeBug_Setup(game_config);
@@ -131,6 +133,7 @@ Action Command_Cf(int client, int args) {
         // Here
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
+        ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_post_pause_state");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
@@ -179,6 +182,9 @@ Action Command_Cf(int client, int args) {
     // Here
     FindConVar("sm_deterministic_fall_damage")
         .SetBool(all || fixes || asf || etf2l || rgl);
+
+    FindConVar("sm_empty_active_ubercharges_when_dropped")
+        .SetBool(all || fixes);
 
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);

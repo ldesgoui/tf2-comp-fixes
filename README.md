@@ -20,6 +20,7 @@ these servers. It changes cvars in bulk according to the following:
 |                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
 | sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 0   | 1   |
+| sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 0     | 0   | 1   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
@@ -52,6 +53,13 @@ _Presets were updated on 2021-12-09._
 
   Credits to the existing plugin
   https://github.com/stephanieLGBT/tf2-FallDamageFixer
+
+- **Empty active ubercharges when the medigun is dropped**
+
+  When enabled with `sm_empty_active_ubercharges_when_dropped 1`, mediguns that
+  are dropped while the ubercharge is active will be emptied.  
+  This prevents the exploit of swapping mediguns while uberchargeded to conserve
+  some of the charge.
 
 - **Fixes Ghost Crossbow Bolts**
 

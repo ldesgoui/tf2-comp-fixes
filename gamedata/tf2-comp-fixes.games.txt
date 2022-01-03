@@ -33,6 +33,28 @@
 				"this" "address"
 			}
 
+			"CTFDroppedWeapon::InitDroppedWeapon" {
+				// void CTFDroppedWeapon::InitDroppedWeapon( CTFPlayer *pPlayer, CTFWeaponBase *pWeapon,  bool bSwap, bool bIsSuicide /*= false*/ )
+				"offset" "CTFDroppedWeapon::InitDroppedWeapon"
+				"hooktype" "thiscall"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"player" {
+						"type" "cbaseentity"
+					}
+					"weapon" {
+						"type" "cbaseentity"
+					}
+					"swap" {
+						"type" "bool"
+					}
+					"is_suicide" {
+						"type" "bool"
+					}
+				}
+			}
+
 			"CTFGameMovement::SetGroundEntity" {
 				// virtual void SetGroundEntity( trace_t *pm )
 				"signature" "CTFGameMovement::SetGroundEntity"
@@ -210,6 +232,11 @@
 			"CEconItemSystem::ReloadWhitelist" {
 				"linux" "@_ZN15CEconItemSystem15ReloadWhitelistEv"
 				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x53\x56\x57\x8B\xD9\xC6\x45\x2A\x01"
+			}
+
+			"CTFDroppedWeapon::InitDroppedWeapon" {
+				"linux" "@_ZN16CTFDroppedWeapon17InitDroppedWeaponEP9CTFPlayerP13CTFWeaponBasebb"
+				"windows" "\x55\x8B\xEC\x83\xEC\x24\x56\x57\x8B\xF9\x8B\x4D\x08"
 			}
 
 			// contains string "BumperCar.JumpLand"
