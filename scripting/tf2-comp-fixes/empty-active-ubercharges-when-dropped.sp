@@ -28,8 +28,7 @@ static MRESReturn Detour_Pre(int self, Handle params) {
         && GetEntProp(weapon, Prop_Send, "m_bChargeRelease", 1)) {
         LogDebug(
             "Emptying active ubercharge of %N's dropped medigun with index %d",
-            DHookGetParam(params, 1),
-            weapon,
+            DHookGetParam(params, 1), weapon
         );
 
         // Set bIsSuicide to true, forces m_flChargeLevel to 0.0
