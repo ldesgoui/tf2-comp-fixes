@@ -58,7 +58,7 @@ _Presets were updated on 2021-12-09._
 
   When enabled with `sm_empty_active_ubercharges_when_dropped 1`, mediguns that
   are dropped while the ubercharge is active will be emptied.  
-  This prevents the exploit of swapping mediguns while uberchargeded to conserve
+  This prevents the exploit of swapping mediguns while ubercharged to conserve
   some of the charge.
 
 - **Fixes Ghost Crossbow Bolts**
