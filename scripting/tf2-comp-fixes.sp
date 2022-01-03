@@ -12,9 +12,11 @@
 
 #include "tf2-comp-fixes/common.sp"
 
+// Here
 #include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
+#include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-post-pause-state.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
@@ -23,14 +25,16 @@
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
 #include "tf2-comp-fixes/inhibit-extendfreeze.sp"
 #include "tf2-comp-fixes/override-pipe-size.sp"
+#include "tf2-comp-fixes/prevent-respawning.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
+#include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.14.0"
+#define PLUGIN_VERSION "1.15.0"
 
 // clang-format off
 public
@@ -62,8 +66,10 @@ void OnPluginStart() {
     Common_Setup(game_config);
     Debug_Setup();
 
+    // Here
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
+    EmptyActiveUberchargesWhenDropped_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixPostPauseState_Setup();
     FixSlopeBug_Setup(game_config);
@@ -72,10 +78,12 @@ void OnPluginStart() {
     GunboatsAlwaysApply_Setup(game_config);
     InhibitExtendfreeze_Setup();
     OverridePipeSize_Setup(game_config);
+    PreventRespawning_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
+    SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
@@ -124,8 +132,10 @@ Action Command_Cf(int client, int args) {
     GetCmdArgString(full, sizeof(full));
 
     if (StrEqual(full, "list")) {
+        // Here
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
+        ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_post_pause_state");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
@@ -137,10 +147,14 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_remove_pipe_spin");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
         ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
+
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
+        ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
+
         return Plugin_Handled;
     } else if (StrEqual(full, "all")) {
         all = true;
@@ -168,8 +182,12 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
+    // Here
     FindConVar("sm_deterministic_fall_damage")
         .SetBool(all || fixes || asf || etf2l || rgl);
+
+    FindConVar("sm_empty_active_ubercharges_when_dropped")
+        .SetBool(all || fixes);
 
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
@@ -183,9 +201,6 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_fix_sticky_delay")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
-    FindConVar("sm_gunboats_always_apply")
-        .SetBool(all || etf2l);
-
     FindConVar("sm_inhibit_extendfreeze")
         .SetBool(all || fixes);
 
@@ -198,14 +213,25 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_remove_halloween_souls")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
-    FindConVar("sm_remove_medic_attach_speed")
-        .SetBool(all);
-
     FindConVar("sm_remove_pipe_spin")
         .SetBool(all);
 
     FindConVar("sm_rest_in_peace_rick_may")
         .SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
+
+    ///
+
+    FindConVar("sm_gunboats_always_apply")
+        .SetBool(all || etf2l);
+
+    FindConVar("sm_prevent_respawning")
+        .SetBool(all);
+
+    FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_solid_buildings")
+        .SetBool(all);
 
     FindConVar("sm_winger_jump_bonus_when_fully_deployed")
         .SetBool(all || etf2l);

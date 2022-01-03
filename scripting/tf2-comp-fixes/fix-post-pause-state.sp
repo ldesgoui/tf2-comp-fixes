@@ -28,7 +28,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
-static Action WhenPause(int client, const char[] command, int argc) {
+static Action WhenPause(int author, const char[] command, int argc) {
     if (!g_convar_pausable.BoolValue) {
         return Plugin_Continue;
     }
