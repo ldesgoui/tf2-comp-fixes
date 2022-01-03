@@ -12,6 +12,7 @@
 
 #include "tf2-comp-fixes/common.sp"
 
+// Here
 #include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
@@ -27,6 +28,7 @@
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
+#include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
@@ -62,6 +64,7 @@ void OnPluginStart() {
     Common_Setup(game_config);
     Debug_Setup();
 
+    // Here
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
@@ -76,6 +79,7 @@ void OnPluginStart() {
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
+    SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
 
@@ -124,6 +128,7 @@ Action Command_Cf(int client, int args) {
     GetCmdArgString(full, sizeof(full));
 
     if (StrEqual(full, "list")) {
+        // Here
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
@@ -137,10 +142,13 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_remove_pipe_spin");
         ReplyDiffConVar(client, "sm_rest_in_peace_rick_may");
         ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
+
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
+
         return Plugin_Handled;
     } else if (StrEqual(full, "all")) {
         all = true;
@@ -168,6 +176,7 @@ Action Command_Cf(int client, int args) {
         return Plugin_Handled;
     }
 
+    // Here
     FindConVar("sm_deterministic_fall_damage")
         .SetBool(all || fixes || asf || etf2l || rgl);
 
@@ -183,9 +192,6 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_fix_sticky_delay")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
-    FindConVar("sm_gunboats_always_apply")
-        .SetBool(all || etf2l);
-
     FindConVar("sm_inhibit_extendfreeze")
         .SetBool(all || fixes);
 
@@ -198,14 +204,22 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_remove_halloween_souls")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
-    FindConVar("sm_remove_medic_attach_speed")
-        .SetBool(all);
-
     FindConVar("sm_remove_pipe_spin")
         .SetBool(all);
 
     FindConVar("sm_rest_in_peace_rick_may")
         .SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
+
+    ///
+
+    FindConVar("sm_gunboats_always_apply")
+        .SetBool(all || etf2l);
+
+    FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_solid_buildings")
+        .SetBool(all);
 
     FindConVar("sm_winger_jump_bonus_when_fully_deployed")
         .SetBool(all || etf2l);
