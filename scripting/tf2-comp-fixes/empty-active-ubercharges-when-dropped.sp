@@ -24,7 +24,7 @@ static MRESReturn Detour_Pre(int self, Handle params) {
     char classname[64];
     GetEntityClassname(weapon, classname, sizeof(classname));
 
-    if (StrEqual(weapon, "tf_weapon_medigun")
+    if (StrEqual(classname, "tf_weapon_medigun")
         && GetEntProp(weapon, Prop_Send, "m_bChargeRelease", 1)) {
         LogDebug(
             "Emptying active ubercharge of %N's dropped medigun with index %d",
