@@ -19,7 +19,19 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static MRESReturn Detour_Pre(int self, Handle params) {
-    if (GetEntProp(DHookGetParam(params, 1), Prop_Send, "m_bChargeRelease", 1)) {
+    int weapon = DHookGetParam(params, 2);
+
+    char classname[64];
+    GetEntityClassname(weapon, classname, sizeof(classname));
+
+    if (StrEqual(weapon, "tf_weapon_medigun")
+        && GetEntProp(weapon, Prop_Send, "m_bChargeRelease", 1)) {
+        LogDebug(
+            "Emptying active ubercharge of %N's dropped medigun with index %d",
+            DHookGetParam(params, 1),
+            weapon,
+        );
+
         // Set bIsSuicide to true, forces m_flChargeLevel to 0.0
         DHookSetParam(params, 4, true);
         return MRES_Handled;

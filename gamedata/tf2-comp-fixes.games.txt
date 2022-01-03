@@ -34,9 +34,9 @@
 			}
 
 			"CTFDroppedWeapon::InitDroppedWeapon" {
-				// void CTFDroppedWeapon::InitDroppedWeapon( CTFPlayer *pPlayer, CTFWeaponBase *pWeapon,  bool bSwap, bool bIsSuicide /*= false*/ )
-				"offset" "CTFDroppedWeapon::InitDroppedWeapon"
-				"hooktype" "thiscall"
+				// void CTFDroppedWeapon::InitDroppedWeapon( CTFPlayer *pPlayer, CTFWeaponBase *pWeapon, bool bSwap, bool bIsSuicide /*= false*/ )
+				"signature" "CTFDroppedWeapon::InitDroppedWeapon"
+				"callconv" "thiscall"
 				"return" "void"
 				"this" "entity"
 				"arguments" {
