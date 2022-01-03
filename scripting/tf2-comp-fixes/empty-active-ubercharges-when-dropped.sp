@@ -31,8 +31,8 @@ static MRESReturn Detour_Pre(int self, Handle params) {
             DHookGetParam(params, 1), weapon
         );
 
-        // Set bIsSuicide to true, forces m_flChargeLevel to 0.0
-        DHookSetParam(params, 4, true);
+        SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.0);
+
         return MRES_Handled;
     }
 
