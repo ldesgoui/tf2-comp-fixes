@@ -19,7 +19,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static MRESReturn Detour_Pre(Handle ret, Handle params) {
-    if (DHookGetParam(params, 1) != null) {
+    if (DHookIsNullParam(params, 1)) {
         DHookSetReturn(ret, false);
         return MRES_Supercede;
     }
