@@ -16,6 +16,7 @@
 #include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
+#include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-post-pause-state.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
@@ -24,12 +25,12 @@
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
 #include "tf2-comp-fixes/inhibit-extendfreeze.sp"
 #include "tf2-comp-fixes/override-pipe-size.sp"
+#include "tf2-comp-fixes/prevent-respawning.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
 #include "tf2-comp-fixes/solid-buildings.sp"
-#include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
@@ -77,6 +78,7 @@ void OnPluginStart() {
     GunboatsAlwaysApply_Setup(game_config);
     InhibitExtendfreeze_Setup();
     OverridePipeSize_Setup(game_config);
+    PreventRespawning_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
@@ -148,6 +150,7 @@ Action Command_Cf(int client, int args) {
 
         ReplyToCommand(client, "--- Balance changes");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
+        ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
@@ -220,6 +223,9 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_gunboats_always_apply")
         .SetBool(all || etf2l);
+
+    FindConVar("sm_prevent_respawning")
+        .SetBool(all);
 
     FindConVar("sm_remove_medic_attach_speed")
         .SetBool(all);

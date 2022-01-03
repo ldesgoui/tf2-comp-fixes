@@ -33,6 +33,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
 |                                          |     |       |      |      |       |     |     |
 | sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
+| sm_prevent_respawning                    | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 | sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_solid_buildings                       | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
@@ -138,6 +139,11 @@ _Presets were updated on 2021-12-09._
 
   When enabled with `sm_gunboats_always_apply 1`, gunboats resistance will apply
   even if hitting an enemy.
+
+- **Prevent Respawning**
+
+  When enabled with `sm_prevent_respawning 1`, changing class or loadout in the
+  spawn room won't cause the player to respawn.
 
 - **Removes Medic Attach Speed**
 
