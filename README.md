@@ -142,8 +142,8 @@ _Presets were updated on 2021-12-09._
 
 - **Prevent Respawning**
 
-  When enabled with `sm_prevent_respawning 1`, changing class or loadout in the
-  spawn room won't cause the player to respawn.
+  When enabled with `sm_prevent_respawning 1`, players cannot force a respawn in
+  the spawn room by switching classes or loadouts..
 
 - **Removes Medic Attach Speed**
 
