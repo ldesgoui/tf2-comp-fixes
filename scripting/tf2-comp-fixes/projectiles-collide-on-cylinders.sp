@@ -43,9 +43,13 @@ static void WhenEntityCreated(int entity, const char[] classname) {
 }
 
 static MRESReturn Hook_Touch(int self, Handle params) {
+    if (DHookIsNullParam(params, 1)) {
+        return MRES_Ignored;
+    }
+
     int other = DHookGetParam(params, 1);
 
-    if (other <= 0 || other > MaxClients) {
+    if (other <= 0 || other > MaxClients || !IsPlayerAlive(other)) {
         return MRES_Ignored;
     }
 
