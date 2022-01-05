@@ -26,6 +26,7 @@
 #include "tf2-comp-fixes/inhibit-extendfreeze.sp"
 #include "tf2-comp-fixes/override-pipe-size.sp"
 #include "tf2-comp-fixes/prevent-respawning.sp"
+#include "tf2-comp-fixes/projectiles-collide-on-cylinders.sp"
 #include "tf2-comp-fixes/projectiles-ignore-teammates.sp"
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
@@ -79,6 +80,7 @@ void OnPluginStart() {
     InhibitExtendfreeze_Setup();
     OverridePipeSize_Setup(game_config);
     PreventRespawning_Setup(game_config);
+    ProjectilesCollideOnCylinders_Setup(game_config);
     ProjectilesIgnoreTeammates_Setup(game_config);
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
@@ -142,6 +144,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
         ReplyDiffConVar(client, "sm_inhibit_extendfreeze");
         ReplyDiffConVar(client, "sm_override_pipe_size");
+        ReplyDiffConVar(client, "sm_projectiles_collide_on_cylinders");
         ReplyDiffConVar(client, "sm_projectiles_ignore_teammates");
         ReplyDiffConVar(client, "sm_remove_halloween_souls");
         ReplyDiffConVar(client, "sm_remove_pipe_spin");
@@ -206,6 +209,9 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_override_pipe_size")
         .SetFloat(all || fixes ? 4.0 : 0.0);
+
+    FindConVar("sm_projectiles_collide_on_cylinders")
+        .SetBool(all);
 
     FindConVar("sm_projectiles_ignore_teammates")
         .SetBool(all || fixes || asf || etf2l);

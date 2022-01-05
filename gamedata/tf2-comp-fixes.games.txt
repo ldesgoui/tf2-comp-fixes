@@ -122,9 +122,48 @@
 				}
 			}
 
+			"CTFBaseProjectile::ProjectileTouch" {
+				// virtual void ProjectileTouch( CBaseEntity *pOther )
+				"offset" "CTFBaseProjectile::ProjectileTouch"
+				"hooktype" "entity"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
+			"CTFBaseRocket::RocketTouch" {
+				// virtual void RocketTouch( CBaseEntity *pOther )
+				"offset" "CTFBaseRocket::RocketTouch"
+				"hooktype" "entity"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"CTFGrenadePipebombProjectile::PipebombTouch" {
 				// virtual void PipebombTouch( CBaseEntity *pOther )
 				"offset" "CTFGrenadePipebombProjectile::PipebombTouch"
+				"hooktype" "entity"
+				"return" "void"
+				"this" "entity"
+				"arguments" {
+					"other" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
+			"CTFProjectile_Arrow::ArrowTouch" {
+				// virtual void ArrowTouch( CBaseEntity *pOther )
+				"offset" "CTFProjectile_Arrow::ArrowTouch"
 				"hooktype" "entity"
 				"return" "void"
 				"this" "entity"
@@ -216,9 +255,24 @@
 				"windows" "160"
 			}
 
+			"CTFBaseProjectile::ProjectileTouch" {
+				"linux" "236"
+				"windows" "233"
+			}
+
+			"CTFBaseRocket::RocketTouch" {
+				"linux" "233"
+				"windows" "232"
+			}
+
 			"CTFGrenadePipebombProjectile::PipebombTouch" {
 				"linux" "258"
 				"windows" "257"
+			}
+
+			"CTFProjectile_Arrow::ArrowTouch" {
+				"linux" "249"
+				"windows" "246"
 			}
 
 			"CTFWeaponBase::SecondaryAttack" {
