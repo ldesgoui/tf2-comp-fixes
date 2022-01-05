@@ -16,11 +16,8 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static void WhenEntityCreated(int entity, const char[] classname) {
-    if (StrContains(classname, "tf_projectile_") != 0) {
-        return;
-    }
-
-    if (StrEqual(classname[14], "rocket")) {
+    if (StrEqual(classname, "tf_projectile_rocket")) {
+        LogDebug("Hooking a rocket with index %d", entity);
         if (INVALID_HOOK_ID == DHookEntity(g_detour_CTFBaseRocket_RocketTouch,
                                            HOOK_PRE, entity, _,
                                            Hook_Touch)) {
@@ -53,16 +50,14 @@ static MRESReturn Hook_Touch(int self, Handle params) {
         return MRES_Ignored;
     }
 
-    float self_pos[3], other_pos[3], other_mins[3], other_maxs[3];
+    LogDebug("Checking in Hook_Touch");
+
+    float self_pos[3], other_pos[3];
 
     GetEntPropVector(self, Prop_Send, "m_vecOrigin", self_pos);
     GetEntPropVector(other, Prop_Send, "m_vecOrigin", other_pos);
-    GetEntPropVector(other, Prop_Send, "m_vecMins", other_mins);
-    GetEntPropVector(other, Prop_Send, "m_vecMaxs", other_maxs);
 
-    float width = other_maxs[X] - other_mins[X],
-          depth = other_maxs[Z] - other_mins[Z],
-          radius = (width < depth ? width : depth) / 2.0,
+    float radius = 10.0,
           dx = self_pos[X] - other_pos[X],
           dz = self_pos[Z] - other_pos[Z];
 
