@@ -15,7 +15,6 @@ Handle g_call_CAttributeList_SetRuntimeAttributeValue;
 Handle g_call_CEconItemSchema_GetAttributeDefinition;
 Handle g_call_CTeamplayRules_SetWinningTeam;
 Handle g_call_GEconItemSchema;
-Handle g_detour_CTFGrenadePipebombProjectile_PipebombTouch;
 Handle g_hook_CBaseProjectile_CanCollideWithTeammates;
 
 void Common_Setup(Handle game_config) {
@@ -55,9 +54,6 @@ void Common_Setup(Handle game_config) {
     if ((g_call_GEconItemSchema = EndPrepSDKCall()) == INVALID_HANDLE) {
         SetFailState("Failed to finalize SDK call to GEconItemSchema");
     }
-
-    g_detour_CTFGrenadePipebombProjectile_PipebombTouch =
-        CheckedDHookCreateFromConf(game_config, "CTFGrenadePipebombProjectile::PipebombTouch");
 
     g_hook_CBaseProjectile_CanCollideWithTeammates =
         CheckedDHookCreateFromConf(game_config, "CBaseProjectile::CanCollideWithTeammates");
