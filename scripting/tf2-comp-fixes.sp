@@ -17,6 +17,7 @@
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
+#include "tf2-comp-fixes/fix-airblast-explosive-self-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-post-pause-state.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
@@ -71,6 +72,7 @@ void OnPluginStart() {
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     EmptyActiveUberchargesWhenDropped_Setup(game_config);
+    FixAirblastSelfDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixPostPauseState_Setup();
     FixSlopeBug_Setup(game_config);
@@ -138,6 +140,7 @@ Action Command_Cf(int client, int args) {
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
+        ReplyDiffConVar(client, "sm_fix_airblast_explosive_selfdamage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_post_pause_state");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
@@ -192,6 +195,9 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_empty_active_ubercharges_when_dropped")
         .SetBool(all || fixes);
 
+    FindConVar("sm_fix_airblast_explosive_selfdamage")
+        .SetBool(all || fixes);
+        
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 

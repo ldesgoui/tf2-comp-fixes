@@ -220,6 +220,19 @@
 					}
 				}
 			}
+			
+			"CTFFlameThrower::DeflectEntity" {
+				// virtual bool	DeflectEntity( CBaseEntity *pTarget, CTFPlayer *pOwner, Vector &vecForward, Vector &vecCenter, Vector &vecSize );
+				"signature"		"CTFFlameThrower::DeflectEntity"
+				"callconv"		"thiscall"
+				"return"		"bool"
+				"this"			"ignore"
+				"arguments" {
+					"projectile" {
+						"type"	"cbaseentity"
+					}
+				}
+			}
 		}
 
 		"Keys" {
@@ -356,6 +369,9 @@
 			"PointInRespawnRoom" {
 				"linux" "@_Z18PointInRespawnRoomPK11CBaseEntityRK6Vectorb"
 				"windows" "\x55\x8B\xEC\x53\x33\xDB\x56\x57"
+			}
+			"CTFFlameThrower::DeflectEntity" {
+				"linux"		"@_ZN15CTFFlameThrower13DeflectEntityEP11CBaseEntityP9CTFPlayerR6Vector"
 			}
 		}
 	}
