@@ -37,6 +37,11 @@ static MRESReturn Detour_CTFFlameThrower_DeflectEntity(Handle hReturn, Handle hP
 		return MRES_Handled;
 	}
 	
+	if(StrEqual(class, "tf_projectile_flare", false)) {
+		SetEntPropEnt(projectile, Prop_Send, "m_hLauncher", GetEntPropEnt(projectile, Prop_Send, "m_hOriginalLauncher"));
+		return MRES_Handled;
+	}
+	
 	if(StrEqual(class, "tf_projectile_sentryrocket", false)) {
 		SetEntPropEnt(projectile, Prop_Send, "m_hOriginalLauncher", -1);
 		return MRES_Handled;
