@@ -147,6 +147,19 @@
 				}
 			}
 
+			"CTFPlayer::OnTakeDamage_Alive" {
+				// int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
+				"signature" "CTFPlayer::OnTakeDamage_Alive"
+				"callconv" "thiscall"
+				"return" "int"
+				"this" "entity"
+				"arguments" {
+					"info" {
+						"type" "objectptr"
+					}
+				}
+			}
+
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				// float TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= false*/ ) const
 				"signature" "CTFPlayer::TeamFortress_CalculateMaxSpeed"
@@ -190,19 +203,6 @@
 					}
 					"same_team_only" {
 						"type" "bool"
-					}
-				}
-			}
-
-			"CTFPlayer::OnTakeDamage_Alive" {
-				// int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
-				"signature" "CTFPlayer::OnTakeDamage_Alive"
-				"callconv" "thiscall"
-				"return" "int"
-				"this" "entity"
-				"arguments" {
-					"info" {
-						"type" "objectptr"
 					}
 				}
 			}
@@ -251,7 +251,6 @@
 		}
 
 		"Signatures" {
-			// TODO
 			"CAttributeList::SetRuntimeAttributeValue" {
 				"linux" "@_ZN14CAttributeList24SetRuntimeAttributeValueEPK28CEconItemAttributeDefinitionf"
 				"windows" "\x55\x8B\xEC\x83\xEC\x2A\x33\x2A\x53\x8B\xD9\x56\x57\x8B\x2A\x2A\x8B\x2A\x2A"
@@ -263,7 +262,6 @@
 				"windows" "\x55\x8B\xEC\x81\xC1\x5C\x01\x00\x00"
 			}
 
-			// TODO
 			"CEconItemSchema::GetAttributeDefinition" {
 				"linux" "@_ZN15CEconItemSchema22GetAttributeDefinitionEi"
 				"windows" "\x55\x8B\xEC\x83\xEC\x2A\x53\x56\x8B\xD9\x8D\x2A\x2A\x57"
@@ -308,6 +306,10 @@
 				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x56\x6A\x00\x8D\x45\x2A"
 			}
 
+			"CTFPlayer::OnTakeDamage_Alive" {
+				"linux" "@_ZN9CTFPlayer18OnTakeDamage_AliveERK15CTakeDamageInfo"
+			}
+
 			// contains string "mult_player_aiming_movespeed"
 			"CTFPlayer::TeamFortress_CalculateMaxSpeed" {
 				"linux" "@_ZNK9CTFPlayer30TeamFortress_CalculateMaxSpeedEb"
@@ -320,7 +322,6 @@
 				"windows" "\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\x58\x01\x00\x00\x56\x8B\xF1\x57\x8B\x06"
 			}
 
-			// TODO
 			"GEconItemSchema" {
 				"linux" "@_Z15GEconItemSchemav"
 				"windows" "\xE8\x2A\x2A\x2A\x2A\x83\xC0\x04\xC3"
@@ -329,10 +330,6 @@
 			"PointInRespawnRoom" {
 				"linux" "@_Z18PointInRespawnRoomPK11CBaseEntityRK6Vectorb"
 				"windows" "\x55\x8B\xEC\x53\x33\xDB\x56\x57"
-			}
-
-			"CTFPlayer::OnTakeDamage_Alive" {
-				"linux" "@_ZN9CTFPlayer18OnTakeDamage_AliveERK15CTakeDamageInfo"
 			}
 		}
 	}
