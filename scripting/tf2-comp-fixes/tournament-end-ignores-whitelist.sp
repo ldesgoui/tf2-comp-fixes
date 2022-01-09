@@ -47,8 +47,8 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 }
 
 static void EnableHook() {
-    g_hook_id_pre =
-        DHookGamerules(g_detour_CTeamplayRoundBasedRules_RestartTournament, HOOK_PRE, _, Hook_RestartTournament_Pre);
+    g_hook_id_pre = DHookGamerules(g_detour_CTeamplayRoundBasedRules_RestartTournament, HOOK_PRE, _,
+                                   Hook_RestartTournament_Pre);
 
     if (g_hook_id_pre == -1) {
         SetFailState("Failed to hook CTeamplayRoundBasedRules::RestartTournament");
