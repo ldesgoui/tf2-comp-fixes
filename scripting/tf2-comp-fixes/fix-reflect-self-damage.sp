@@ -1,10 +1,10 @@
 static Handle g_detour_CTFFlameThrower_DeflectEntity;
 
-void FixAirblastSelfDamage_Setup(Handle game_config) {
+void FixReflectSelfDamage_Setup(Handle game_config) {
     g_detour_CTFFlameThrower_DeflectEntity =
         CheckedDHookCreateFromConf(game_config, "CTFFlameThrower::DeflectEntity");
 
-    CreateBoolConVar("sm_fix_airblast_explosive_selfdamage", WhenConVarChange);
+    CreateBoolConVar("sm_fix_reflect_self_damage", WhenConVarChange);
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {

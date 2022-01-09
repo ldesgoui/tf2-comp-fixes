@@ -4,7 +4,7 @@ static int g_offset_CTakeDamageInfo_m_hAttacker;
 static int g_offset_CTakeDamageInfo_m_flDamage;
 static int g_offset_CTakeDamageInfo_m_bitsDamageType;
 
-void SoldierGroundedSelfDamageResistance_Setup(Handle game_config) {
+void GroundedRjResistance_Setup(Handle game_config) {
     g_detour_CTFPlayer_OnTakeDamage_Alive =
         CheckedDHookCreateFromConf(game_config, "CTFPlayer::OnTakeDamage_Alive");
 

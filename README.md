@@ -23,6 +23,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 0     | 0   | 1   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
+| sm_fix_reflect_self_damage               | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
@@ -32,6 +33,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
 |                                          |     |       |      |      |       |     |     |
+| sm_grounded_rj_resistance                | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 | sm_prevent_respawning                    | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 | sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
@@ -59,10 +61,10 @@ _Presets were updated on 2021-12-09._
 
   When enabled with `sm_empty_active_ubercharges_when_dropped 1`, mediguns that
   are dropped while the ubercharge is active will be emptied.  
-  This prevents the exploit of swapping mediguns while ubercharged to conserve
+  This prevents the trick of swapping mediguns while ubercharged to conserve
   some of the charge.
 
-- **Fixes Ghost Crossbow Bolts**
+- **Fix Ghost Crossbow Bolts**
 
   When enabled with `sm_fix_ghost_crossbow_bolts 1`, crossbow bolts will no
   longer pass through teammates when in close range.
@@ -75,14 +77,21 @@ _Presets were updated on 2021-12-09._
 
   - Medigun ubercharge
 
-- **Fixes Slope Bugs**
+- **Fix self-damage on reflects**
+
+  When enabled with `sm_fix_reflect_self_damage 1`, reflected projectile damage
+  calculation will properly take into account that it is self-inflicted.
+
+  Credits for implementing go to [@kingofings]
+
+- **Fix Slope Bugs**
 
   When enabled with `sm_fix_slope_bug 1`, players won't stop while sliding on
   slopes anymore.
 
   Credits to the existing plugin https://github.com/laurirasanen/groundfix
 
-- **Fixes Sticky Delay**
+- **Fix Sticky Delay**
 
   When enabled with `sm_fix_sticky_delay 1`, stickies will no longer fail to
   detonate when swapping weapons.
@@ -105,7 +114,7 @@ _Presets were updated on 2021-12-09._
   The size of official pipes is 4.0, except for Iron Bomber, which is 8.75 wide
   and 7.71424 tall.
 
-  Credits for implementing go to https://github.com/bodolaz146
+  Credits for implementing go to [@bodolaz146]
 
 - **Projectiles Ignore Teammates**
 
@@ -135,15 +144,21 @@ _Presets were updated on 2021-12-09._
 
 #### Gameplay Changes
 
-- **Gunboats Always Apply**
+- **Apply Soldier's base resistance to grounded rocket jumps**
+
+  When enabled with `sm_grounded_rj_resistance 1`, self-damage from rocket jumps
+  while touching the ground will take into account Soldier's base self-damage
+  resistance.
+
+- **Gunboats apply when hurting an enemy**
 
   When enabled with `sm_gunboats_always_apply 1`, gunboats resistance will apply
-  even if hitting an enemy.
+  even if the explosion hurts an enemy.
 
 - **Prevent Respawning**
 
   When enabled with `sm_prevent_respawning 1`, players cannot force a respawn in
-  the spawn room by switching classes or loadouts..
+  the spawn room by switching classes or loadouts.
 
 - **Removes Medic Attach Speed**
 
@@ -174,6 +189,10 @@ _Presets were updated on 2021-12-09._
   minutes are left on the map timer.  
   ATTENTION: This only really works for 5CP maps and *needs* to be disabled on
   other map types.
+
+
+[@bodolaz146]: Credits for implementing go to https://github.com/bodolaz146
+[@kingofings]: Credits for implementing go to https://github.com/kingofings
 
 #### Note
 

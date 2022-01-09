@@ -17,12 +17,13 @@
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
-#include "tf2-comp-fixes/fix-airblast-explosive-self-damage.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-post-pause-state.sp"
+#include "tf2-comp-fixes/fix-reflect-self-damage.sp"
 #include "tf2-comp-fixes/fix-slope-bug.sp"
 #include "tf2-comp-fixes/fix-sticky-delay.sp"
 #include "tf2-comp-fixes/ghostify-soldier-statue.sp"
+#include "tf2-comp-fixes/grounded-rj-resistance.sp"
 #include "tf2-comp-fixes/gunboats-always-apply.sp"
 #include "tf2-comp-fixes/inhibit-extendfreeze.sp"
 #include "tf2-comp-fixes/override-pipe-size.sp"
@@ -31,7 +32,6 @@
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
-#include "tf2-comp-fixes/soldier-grounded-self-damage-resistance.sp"
 #include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
@@ -72,12 +72,13 @@ void OnPluginStart() {
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     EmptyActiveUberchargesWhenDropped_Setup(game_config);
-    FixAirblastSelfDamage_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixPostPauseState_Setup();
+    FixReflectSelfDamage_Setup(game_config);
     FixSlopeBug_Setup(game_config);
     FixStickyDelay_Setup(game_config);
     GhostifySoldierStatue_Setup();
+    GroundedRjResistance_Setup(game_config);
     GunboatsAlwaysApply_Setup(game_config);
     InhibitExtendfreeze_Setup();
     OverridePipeSize_Setup(game_config);
@@ -86,7 +87,6 @@ void OnPluginStart() {
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
-    SoldierGroundedSelfDamageResistance_Setup(game_config);
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
@@ -138,9 +138,9 @@ Action Command_Cf(int client, int args) {
         ReplyToCommand(client, "--- Fixes");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
-        ReplyDiffConVar(client, "sm_fix_airblast_explosive_selfdamage");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
         ReplyDiffConVar(client, "sm_fix_post_pause_state");
+        ReplyDiffConVar(client, "sm_fix_reflect_self_damage");
         ReplyDiffConVar(client, "sm_fix_slope_bug");
         ReplyDiffConVar(client, "sm_fix_sticky_delay");
         ReplyDiffConVar(client, "sm_inhibit_extendfreeze");
@@ -152,10 +152,10 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_tournament_end_ignores_whitelist");
 
         ReplyToCommand(client, "--- Balance changes");
+        ReplyDiffConVar(client, "sm_grounded_rj_resistance");
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
-        ReplyDiffConVar(client, "sm_soldier_grounded_self_damage_resistance");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
 
@@ -195,13 +195,13 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_empty_active_ubercharges_when_dropped")
         .SetBool(all || fixes);
 
-    FindConVar("sm_fix_airblast_explosive_selfdamage")
-        .SetBool(all || fixes);
-
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_fix_post_pause_state")
+        .SetBool(all || fixes);
+
+    FindConVar("sm_fix_reflect_self_damage")
         .SetBool(all || fixes);
 
     FindConVar("sm_fix_slope_bug")
@@ -230,6 +230,9 @@ Action Command_Cf(int client, int args) {
 
     ///
 
+    FindConVar("sm_grounded_rj_resistance")
+        .SetBool(all);
+
     FindConVar("sm_gunboats_always_apply")
         .SetBool(all || etf2l);
 
@@ -237,9 +240,6 @@ Action Command_Cf(int client, int args) {
         .SetBool(all);
 
     FindConVar("sm_remove_medic_attach_speed")
-        .SetBool(all);
-
-    FindConVar("sm_soldier_grounded_self_damage_resistance")
         .SetBool(all);
 
     FindConVar("sm_solid_buildings")
