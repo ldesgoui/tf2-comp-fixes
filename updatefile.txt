@@ -28,6 +28,7 @@
 		"Source" "Path_SM/scripting/tf2-comp-fixes/inhibit-extendfreeze.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/override-pipe-size.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/prevent-respawning.sp"
+		"Source" "Path_SM/scripting/tf2-comp-fixes/projectiles-collide-with-cylinders.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/projectiles-ignore-teammates.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-halloween-souls.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/remove-medic-attach-speed.sp"

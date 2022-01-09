@@ -28,6 +28,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_override_pipe_size                    | 4.0 | 4.0   | 0    |  0   | 0     | 0   | 0   |
+| sm_projectiles_collide_with_cylinders    | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_projectiles_ignore_teammates          | 1   | 1     | 0    |  1   | 1     | 0   | 0   |
 | sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
@@ -115,6 +116,13 @@ _Presets were updated on 2021-12-09._
   and 7.71424 tall.
 
   Credits for implementing go to [@bodolaz146]
+
+- **Projectiles Collide With Cylinder Player Hitboxes**
+
+  When enabled with `sm_projectiles_collide_with_cylinders 1`, projectiles will
+  only collide on players if the horizontal distance is equal or less than
+  the width of the projectile and the projectile combined.  
+  This effectively means that players have cylinder hitboxes for projectiles.
 
 - **Projectiles Ignore Teammates**
 

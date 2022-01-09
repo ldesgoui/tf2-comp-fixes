@@ -189,6 +189,21 @@
 				}
 			}
 
+			"PassServerEntityFilter" {
+				// bool PassServerEntityFilter( const IHandleEntity *pTouch, const IHandleEntity *pPass )
+				"signature" "PassServerEntityFilter"
+				"callconv" "cdecl"
+				"return" "bool"
+				"arguments" {
+					"touch" {
+						"type" "cbaseentity"
+					}
+					"pass" {
+						"type" "cbaseentity"
+					}
+				}
+			}
+
 			"PointInRespawnRoom" {
 				// bool PointInRespawnRoom( const CBaseEntity *pTarget, const Vector &vecOrigin, bool bTouching_SameTeamOnly /*= false*/ )
 				"signature" "PointInRespawnRoom"
@@ -325,6 +340,10 @@
 			"GEconItemSchema" {
 				"linux" "@_Z15GEconItemSchemav"
 				"windows" "\xE8\x2A\x2A\x2A\x2A\x83\xC0\x04\xC3"
+			}
+
+			"PassServerEntityFilter" {
+				"linux" "@_Z22PassServerEntityFilterPK13IHandleEntityS1_"
 			}
 
 			"PointInRespawnRoom" {
