@@ -1,7 +1,7 @@
 static ConVar g_cvar;
 
 void Debug_Setup() {
-    g_cvar = CreateConVar("sm_cf_debug", "0", "Print debug statements in chat", FCVAR_REPLICATED,
+    g_cvar = CreateConVar("sm_cf_debug", "0", "Print debug statements in chat", FCVAR_NOTIFY,
                           true, 0.0, true, 2.0);
 }
 
