@@ -1,6 +1,4 @@
-void InhibitExtendfreeze_Setup() {
-    CreateBoolConVar("sm_inhibit_extendfreeze", WhenConVarChange);
-}
+void InhibitExtendfreeze_Setup() { CreateBoolConVar("sm_inhibit_extendfreeze", WhenConVarChange); }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {

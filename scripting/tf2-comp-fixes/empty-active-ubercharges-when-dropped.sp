@@ -12,8 +12,8 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
         return;
     }
 
-    if (!DHookToggleDetour(g_detour_CTFDroppedWeapon_InitDroppedWeapon, HOOK_PRE,
-                           Detour_Pre, cvar.BoolValue)) {
+    if (!DHookToggleDetour(g_detour_CTFDroppedWeapon_InitDroppedWeapon, HOOK_PRE, Detour_Pre,
+                           cvar.BoolValue)) {
         SetFailState("Failed to toggle detour on CTFDroppedWeapon::InitDroppedWeapon");
     }
 }
@@ -26,10 +26,8 @@ static MRESReturn Detour_Pre(int self, Handle params) {
 
     if (StrEqual(classname, "tf_weapon_medigun")
         && GetEntProp(weapon, Prop_Send, "m_bChargeRelease", 1)) {
-        LogDebug(
-            "Emptying active ubercharge of %N's dropped medigun with index %d",
-            DHookGetParam(params, 1), weapon
-        );
+        LogDebug("Emptying active ubercharge of %N's dropped medigun with index %d",
+                 DHookGetParam(params, 1), weapon);
 
         SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.0);
 

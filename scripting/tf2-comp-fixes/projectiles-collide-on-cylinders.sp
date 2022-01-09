@@ -18,9 +18,8 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 static void WhenEntityCreated(int entity, const char[] classname) {
     if (StrEqual(classname, "tf_projectile_rocket")) {
         LogDebug("Hooking a rocket with index %d", entity);
-        if (INVALID_HOOK_ID == DHookEntity(g_detour_CTFBaseRocket_RocketTouch,
-                                           HOOK_PRE, entity, _,
-                                           Hook_Touch)) {
+        if (INVALID_HOOK_ID
+            == DHookEntity(g_detour_CTFBaseRocket_RocketTouch, HOOK_PRE, entity, _, Hook_Touch)) {
             SetFailState("Failed to hook CTFBaseRocket::RocketTouch");
         }
     }
@@ -57,11 +56,9 @@ static MRESReturn Hook_Touch(int self, Handle params) {
     GetEntPropVector(self, Prop_Send, "m_vecOrigin", self_pos);
     GetEntPropVector(other, Prop_Send, "m_vecOrigin", other_pos);
 
-    float radius = 10.0,
-          dx = self_pos[X] - other_pos[X],
-          dz = self_pos[Z] - other_pos[Z];
+    float radius = 10.0, dx = self_pos[X] - other_pos[X], dz = self_pos[Z] - other_pos[Z];
 
-    if (dx*dx + dz*dz > radius*radius) {
+    if (dx * dx + dz * dz > radius * radius) {
         LogDebug("Projectile is in AABB but not cylinder");
         return MRES_Supercede;
     }

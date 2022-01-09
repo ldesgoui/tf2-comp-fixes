@@ -1,8 +1,8 @@
 static Handle g_detour_CTFFlameThrower_DeflectEntity;
 
-void FixAirblastSelfDamage_Setup(Handle game_config)
-{
-    g_detour_CTFFlameThrower_DeflectEntity = CheckedDHookCreateFromConf(game_config, "CTFFlameThrower::DeflectEntity");
+void FixAirblastSelfDamage_Setup(Handle game_config) {
+    g_detour_CTFFlameThrower_DeflectEntity =
+        CheckedDHookCreateFromConf(game_config, "CTFFlameThrower::DeflectEntity");
 
     CreateBoolConVar("sm_fix_airblast_explosive_selfdamage", WhenConVarChange);
 }
@@ -27,8 +27,10 @@ static MRESReturn Detour_CTFFlameThrower_DeflectEntity(int entity, Handle hRetur
     char class[64];
     GetEdictClassname(projectile, class, sizeof(class));
 
-    if (StrEqual(class, "tf_projectile_flare", false) || StrEqual(class, "tf_projectile_pipe", false)) {
-        SetEntPropEnt(projectile, Prop_Send, "m_hLauncher", GetEntPropEnt(projectile, Prop_Send, "m_hOriginalLauncher"));
+    if (StrEqual(class, "tf_projectile_flare", false)
+        || StrEqual(class, "tf_projectile_pipe", false)) {
+        SetEntPropEnt(projectile, Prop_Send, "m_hLauncher",
+                      GetEntPropEnt(projectile, Prop_Send, "m_hOriginalLauncher"));
         return MRES_Handled;
     }
 

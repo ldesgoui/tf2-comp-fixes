@@ -19,7 +19,9 @@ void SoldierGroundedSelfDamageResistance_Setup(Handle game_config) {
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
-    if (cvar.BoolValue == TruthyConVar(before)) return;
+    if (cvar.BoolValue == TruthyConVar(before)) {
+        return;
+    }
 
     if (!DHookToggleDetour(g_detour_CTFPlayer_OnTakeDamage_Alive, HOOK_PRE,
                            Detour_CTFPlayer_OnTakeDamage_Alive, cvar.BoolValue)) {
@@ -27,16 +29,21 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
-static MRESReturn Detour_CTFPlayer_OnTakeDamage_Alive(int pVictim, Handle hReturn, DHookParam hParams) {
-    int pAttacker = DHookGetParamObjectPtrVar(hParams, 1, g_offset_CTakeDamageInfo_m_hAttacker,
-                                              ObjectValueType_Ehandle);
+static MRESReturn Detour_CTFPlayer_OnTakeDamage_Alive(int victim, Handle hReturn,
+                                                      DHookParam hParams) {
+    int attacker = DHookGetParamObjectPtrVar(hParams, 1, g_offset_CTakeDamageInfo_m_hAttacker,
+                                             ObjectValueType_Ehandle);
 
-    if (pVictim != pAttacker || TF2_GetPlayerClass(pAttacker) != TFClass_Soldier ||
-        !(GetEntityFlags(pAttacker) & FL_ONGROUND)) return MRES_Ignored;
+    if (victim != attacker || TF2_GetPlayerClass(attacker) != TFClass_Soldier
+        || !(GetEntityFlags(victim) & (FL_ONGROUND | FL_INWATER))) {
+        return MRES_Ignored;
+    }
 
-    int damage_type = DHookGetParamObjectPtrVar(hParams, 1, g_offset_CTakeDamageInfo_m_bitsDamageType,
-                                                ObjectValueType_Int);
-    if (!(damage_type & DMG_BLAST)) return MRES_Ignored;
+    int damage_type = DHookGetParamObjectPtrVar(
+        hParams, 1, g_offset_CTakeDamageInfo_m_bitsDamageType, ObjectValueType_Int);
+    if (!(damage_type & DMG_BLAST)) {
+        return MRES_Ignored;
+    }
 
     float damage = DHookGetParamObjectPtrVar(hParams, 1, g_offset_CTakeDamageInfo_m_flDamage,
                                              ObjectValueType_Float);

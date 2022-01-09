@@ -1,8 +1,8 @@
 static ConVar g_convar_pausable;
 static bool   g_paused = false;
 
-static float  g_ubercharge[MAXPLAYERS + 1];
-static int    g_medigun[MAXPLAYERS + 1];
+static float g_ubercharge[MAXPLAYERS + 1];
+static int   g_medigun[MAXPLAYERS + 1];
 
 void FixPostPauseState_Setup() {
     g_convar_pausable = FindConVar("sv_pausable");
@@ -14,9 +14,7 @@ void FixPostPauseState_Setup() {
     CreateBoolConVar("sm_fix_post_pause_state", WhenConVarChange);
 }
 
-void FixPostPauseState_OnMapStart() {
-    g_paused = false;
-}
+void FixPostPauseState_OnMapStart() { g_paused = false; }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
@@ -37,7 +35,7 @@ static Action WhenPause(int author, const char[] command, int argc) {
 
     if (!g_paused) {
         for (int client = 1; client <= MaxClients; client++) {
-            g_medigun[client] = -1;
+            g_medigun[client]    = -1;
             g_ubercharge[client] = 0.0;
         }
     }
@@ -59,14 +57,15 @@ static Action WhenPause(int author, const char[] command, int argc) {
         }
 
         if (!g_paused) {
-            g_medigun[client] = medigun;
+            g_medigun[client]    = medigun;
             g_ubercharge[client] = GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
             LogDebug("Saving %N's ubercharge as %.0f%", client, g_ubercharge[client] * 100);
         } else if (medigun == g_medigun[client]) {
             SetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel", g_ubercharge[client]);
             LogDebug("Restoring %N's ubercharge to %.0f%", client, g_ubercharge[client] * 100);
         } else {
-            LogDebug("Ignoring %N's ubercharge because the medigun has changed (was %d, now is %d)", client, g_medigun[client], medigun);
+            LogDebug("Ignoring %N's ubercharge because the medigun has changed (was %d, now is %d)",
+                     client, g_medigun[client], medigun);
         }
     }
 

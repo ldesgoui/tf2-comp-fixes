@@ -30,8 +30,8 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 
     if (cvar.BoolValue) {
         int entity = -1;
-        while ((entity = FindEntityByClassname(entity, "tf_weapon_handgun_scout_secondary")) !=
-               -1) {
+        while ((entity = FindEntityByClassname(entity, "tf_weapon_handgun_scout_secondary"))
+               != -1) {
             Hook_WeaponCanUse(0, entity);
         }
     } else {

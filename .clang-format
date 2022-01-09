@@ -1,8 +1,9 @@
 ---
 IndentWidth: 4
-AlignConsecutiveMacros: true
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
+AlignConsecutiveMacros: true
+BreakBeforeBinaryOperators: NonAssignment
 BreakStringLiterals: false
 ColumnLimit: 100
 ...

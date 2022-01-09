@@ -107,9 +107,7 @@ void OnLibraryAdded(const char[] name) {
 }
 
 public
-void OnMapStart() {
-    FixPostPauseState_OnMapStart();
-}
+void OnMapStart() { FixPostPauseState_OnMapStart(); }
 
 public
 void OnClientPutInServer(int client) {
@@ -181,17 +179,19 @@ Action Command_Cf(int client, int args) {
     } else {
         ReplyToCommand(client, "TF2 Competitive Fixes");
         ReplyToCommand(client, "Version: %s", PLUGIN_VERSION);
-        ReplyToCommand(client, "Usage: sm_cf (list | all | fixes | none | asf | etf2l | ozf | rgl)");
+        ReplyToCommand(client,
+                       "Usage: sm_cf (list | all | fixes | none | asf | etf2l | ozf | rgl)");
         return Plugin_Handled;
     }
 
-    if (client != 0 &&
-        !(GetUserFlagBits(client) & (ADMFLAG_CONVARS | ADMFLAG_RCON | ADMFLAG_ROOT))) {
+    if (client != 0
+        && !(GetUserFlagBits(client) & (ADMFLAG_CONVARS | ADMFLAG_RCON | ADMFLAG_ROOT))) {
         ReplyToCommand(client, "You do not have permissions to edit ConVars");
         return Plugin_Handled;
     }
 
     // Here
+    // clang-format off
     FindConVar("sm_deterministic_fall_damage")
         .SetBool(all || fixes || asf || etf2l || rgl);
 
@@ -200,7 +200,7 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_fix_airblast_explosive_selfdamage")
         .SetBool(all || fixes);
-        
+
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
@@ -246,13 +246,14 @@ Action Command_Cf(int client, int args) {
         .SetBool(all);
 
     FindConVar("sm_soldier_grounded_self_damage_resistance")
-        .SetBool(all);    
+        .SetBool(all);
 
     FindConVar("sm_solid_buildings")
         .SetBool(all);
 
     FindConVar("sm_winger_jump_bonus_when_fully_deployed")
         .SetBool(all || etf2l);
+    // clang-format on
 
     PrintToChatAll("[TF2 Competitive Fixes] Successfully applied '%s' preset", full);
 
