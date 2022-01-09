@@ -220,6 +220,19 @@
 					}
 				}
 			}
+
+			"CTFPlayer::OnTakeDamage_Alive" {
+				// int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
+				"signature" "CTFPlayer::OnTakeDamage_Alive"
+				"callconv" "thiscall"
+				"return" "int"
+				"this" "entity"
+				"arguments" {
+					"info" {
+						"type" "objectptr"
+					}
+				}
+			}
 		}
 
 		"Keys" {
@@ -231,6 +244,9 @@
 
 			"CBaseTrace::plane::normal" "24"
 			"CGameMovement::player" "4"
+			"CTakeDamageInfo::m_hAttacker" "40"
+			"CTakeDamageInfo::m_flDamage" "48"
+			"CTakeDamageInfo::m_bitsDamageType" "60"
 			"CTakeDamageInfo::m_iDamagedOtherPlayers" "76"
 		}
 
@@ -356,6 +372,10 @@
 			"PointInRespawnRoom" {
 				"linux" "@_Z18PointInRespawnRoomPK11CBaseEntityRK6Vectorb"
 				"windows" "\x55\x8B\xEC\x53\x33\xDB\x56\x57"
+			}
+
+			"CTFPlayer::OnTakeDamage_Alive" {
+				"linux" "@_ZN9CTFPlayer18OnTakeDamage_AliveERK15CTakeDamageInfo"
 			}
 		}
 	}
