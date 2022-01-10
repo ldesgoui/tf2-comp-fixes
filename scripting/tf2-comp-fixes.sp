@@ -196,13 +196,13 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || asf || etf2l || rgl);
 
     FindConVar("sm_empty_active_ubercharges_when_dropped")
-        .SetBool(all || fixes);
+        .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_fix_ghost_crossbow_bolts")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_fix_post_pause_state")
-        .SetBool(all || fixes);
+        .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_fix_reflect_self_damage")
         .SetBool(all || fixes);
@@ -214,10 +214,10 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_inhibit_extendfreeze")
-        .SetBool(all || fixes);
+        .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_override_pipe_size")
-        .SetFloat(all || fixes ? 4.0 : 0.0);
+        .SetFloat(all || fixes || etf2l ? 4.0 : 0.0);
 
     FindConVar("sm_projectiles_collide_with_cylinders")
         .SetBool(all || fixes);
