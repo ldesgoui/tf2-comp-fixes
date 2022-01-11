@@ -15,7 +15,7 @@ void GroundedRjResistance_Setup(Handle game_config) {
     g_offset_CTakeDamageInfo_m_bitsDamageType =
         CheckedGameConfGetKeyValueInt(game_config, "CTakeDamageInfo::m_bitsDamageType");
 
-    CreateBoolConVar("sm_soldier_grounded_self_damage_resistance", WhenConVarChange);
+    CreateBoolConVar("sm_grounded_rj_resistance", WhenConVarChange);
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
