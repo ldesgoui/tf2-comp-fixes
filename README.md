@@ -102,9 +102,7 @@ _Presets were updated on 2022-01-10._
   When enabled with `sm_inhibit_extendfreeze 1`, clients will not be able to use
   the `extendfreeze` command.  
   This prevents some information leak, players can use this command after dying
-  to spectate their killer in third person.  
-  This slightly alters the handling of freezecams and may result in reduced
-  spawn timers of at most 2 seconds across the board.
+  to spectate their killer in third person.
 
   [Demonstration of the info leak in this video](https://youtu.be/WHGVAJgHMX8?t=371)
 
