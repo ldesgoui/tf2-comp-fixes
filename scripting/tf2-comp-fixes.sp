@@ -10,6 +10,17 @@
 #include <sdktools>
 #include <tf2_stocks>
 
+// clang-format off
+enum struct Globals {
+    StringMap cvars;
+    StringMap detours;
+    StringMap hooks;
+    StringMap offsets;
+}
+// clang-format on
+
+static Globals g;
+
 #include "tf2-comp-fixes/common.sp"
 
 // Here
@@ -52,11 +63,57 @@ Plugin myinfo = {
 
 public
 void OnPluginStart() {
-    Handle game_config = LoadGameConfigFile("tf2-comp-fixes.games");
+    GameData  gd       = new GameData("tf2-comp-fixes.games");
+    KeyValues kv       = new KeyValues("tf2-comp-fixes.games");
+    bool      imported = kv.ImportFromFile("tf2-comp-fixes.games.txt");
 
-    if (game_config == INVALID_HANDLE) {
+    if (gd == INVALID_HANDLE || !imported) {
         SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
+
+    g.detours = new StringMap();
+    g.hooks = new StringMap();
+
+    bool success = kv.JumpToKey("Games") && kv.JumpToKey("tf") && kv.JumpToKey("Functions")
+                   && kv.GotoFirstSubKey();
+
+    // TODO: check success
+
+    char buf[256];
+    do {
+        kv.GetSectionName(buf, sizeof(buf));
+
+        if (kv.JumpToKey("address") || kv.JumpToKey("signature")) {
+            kv.GoBack();
+
+            DynamicDetour detour = DynamicDetour.FromConf(gd, buf);
+
+            if (detour == INVALID_HANDLE) {
+                LogError("Failed to load DynamicDetour '%s'", buf);
+            } else {
+                g.detours.SetValue(buf, detour);
+            }
+
+            continue;
+        }
+
+        if (kv.JumpToKey("offset")) {
+            kv.GoBack();
+
+            DynamicHook hook = DynamicHook.FromConf(gd, buf);
+
+            if (hook == INVALID_HANDLE) {
+                LogError("Failed to load DynamicHook '%s'", buf);
+            } else {
+                g.hooks.SetValue(buf, hook);
+            }
+
+            continue;
+        }
+
+    } while (kv.GotoNextKey());
+
+    Handle game_config = gd;
 
     // clang-format off
     switch (GetOs(game_config)) {

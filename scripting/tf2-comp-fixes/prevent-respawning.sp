@@ -2,7 +2,8 @@ static Handle g_detour_PointInRespawnRoom;
 
 void PreventRespawning_Setup(Handle game_config) {
     if (GetOs(game_config) == Windows) {
-        CreateConVar("sm_prevent_respawning", "0", "NOT SUPPORTED ON WINDOWS", FCVAR_NOTIFY, true, 0.0, true, 0.0);
+        CreateConVar("sm_prevent_respawning", "0", "NOT SUPPORTED ON WINDOWS", FCVAR_NOTIFY, true,
+                     0.0, true, 0.0);
         return;
     }
 
