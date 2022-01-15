@@ -58,11 +58,23 @@ void OnPluginStart() {
         SetFailState("Failed to load addons/sourcemod/gamedata/tf2-comp-fixes.games.txt");
     }
 
-    OperatingSystem Os = GetOs(game_config);
-
-    if (Os != Linux && Os != Windows) {
-        SetFailState("The server's operating system is not supported");
+    // clang-format off
+    switch (GetOs(game_config)) {
+        case Windows: {
+            LogMessage("Support for the server's operating system has been deprecated, "
+                       ... "some features are disabled");
+        }
+        case Mac: {
+            delete game_config;
+            SetFailState("The server's operating system is not supported");
+        }
+        case Unknown: {
+            delete game_config;
+            SetFailState("SourceMod is returning garbage data from addons/sourcemod/gamedata/tf2-comp-fixes.games.txt, "
+                         ... "please try reloading the plugin, SourceMod itself or restart the server");
+        }
     }
+    // clang-format on
 
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
@@ -92,6 +104,8 @@ void OnPluginStart() {
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
+
+    delete game_config;
 
     if (LibraryExists("updater")) {
         OnLibraryAdded("updater");
