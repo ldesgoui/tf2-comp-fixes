@@ -276,9 +276,8 @@ Action Command_Cf(int client, int args) {
 
 void ReplyDiffConVar(int client, const char[] name) {
     ConVar cvar = FindConVar(name);
-    char   current[128], def[128];
+    char   current[128];
     cvar.GetString(current, sizeof(current));
-    cvar.GetDefault(def, sizeof(def));
 
-    ReplyToCommand(client, "%s %s (default: %s)", name, current, def);
+    ReplyToCommand(client, "%s %s", name, current);
 }
