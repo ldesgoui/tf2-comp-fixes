@@ -33,6 +33,7 @@
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
+#include "tf2-comp-fixes/remove-pipes-spread.sp"
 #include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
@@ -79,7 +80,7 @@ void OnPluginStart() {
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     Common_Setup(game_config);
-    Debug_Setup();
+    Debug_Setup(game_config);
 
     // Here
     Concede_Setup();
@@ -101,6 +102,7 @@ void OnPluginStart() {
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
+    RemovePipesSpread_Setup(game_config);
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
@@ -173,6 +175,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_remove_pipes_spread");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
 
@@ -243,6 +246,9 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_remove_pipe_spin")
+        .SetBool(all);
+
+    FindConVar("sm_remove_pipes_spread")
         .SetBool(all);
 
     FindConVar("sm_rest_in_peace_rick_may")

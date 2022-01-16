@@ -122,6 +122,42 @@
 				}
 			}
 
+			"CTFGrenadePipebombProjectile::Create" {
+				/* CTFGrenadePipebombProjectile* CTFGrenadePipebombProjectile::Create( const Vector &position, const QAngle &angles,
+																	const Vector &velocity, const AngularImpulse &angVelocity,
+																	CBaseCombatCharacter *pOwner, const CTFWeaponInfo &weaponInfo,
+																	int iPipeBombType, float flMultDmg ) */
+				"signature" "CTFGrenadePipebombProjectile::Create"
+				"callconv" "cdecl"
+				"return" "cbaseentity"
+				"arguments" {
+					"position" {
+						"type" "vectorptr"
+					}
+					"angles" {
+						"type" "vectorptr"
+					}
+					"velocity" {
+						"type" "vectorptr"
+					}
+					"angVelocity" {
+						"type" "vectorptr"
+					}
+					"pOwner" {
+						"type" "objectptr"
+					}
+					"weaponInfo" {
+						"type" "objectptr"
+					}
+					"iPipeBombType" {
+						"type" "int"
+					}
+					"flMultDmg" {
+						"type" "float"
+					}
+				}
+			}
+
 			"CTFFlameThrower::DeflectEntity" {
 				// virtual bool DeflectEntity( CBaseEntity *pTarget, CTFPlayer *pOwner, Vector &vecForward, Vector &vecCenter, Vector &vecSize )
 				"signature" "CTFFlameThrower::DeflectEntity"
@@ -178,13 +214,26 @@
 				"signature" "CTFWeaponBaseGun::FirePipeBomb"
 				"callconv" "thiscall"
 				"return" "cbaseentity"
-				"this" "ignore"
+				"this" "entity"
 				"arguments" {
 					"player" {
 						"type" "objectptr"
 					}
 					"pipe_type" {
 						"type" "int"
+					}
+				}
+			}
+
+			"CTFWeaponBaseGun::FireProjectile" {
+				// CBaseEntity *CTFWeaponBaseGun::FireProjectile( CTFPlayer *pPlayer )
+				"signature" "CTFWeaponBaseGun::FireProjectile"
+				"callconv" "thiscall"
+				"return" "cbaseentity"
+				"this" "ignore"
+				"arguments" {
+					"player" {
+						"type" "objectptr"
 					}
 				}
 			}
@@ -321,6 +370,15 @@
 				"windows" "\x55\x8B\xEC\x83\xEC\x0C\x56\x6A\x00\x8D\x45\x2A"
 			}
 
+
+			"CTFGrenadeLauncher::GetProjectileSpeed" {
+				"linux" "@_ZN18CTFGrenadeLauncher18GetProjectileSpeedEv"
+			}
+
+			"CTFGrenadePipebombProjectile::Create" {
+				"linux" "@_ZN28CTFGrenadePipebombProjectile6CreateERK6VectorRK6QAngleS2_S2_P20CBaseCombatCharacterRK13CTFWeaponInfoif"
+			}
+
 			"CTFPlayer::OnTakeDamage_Alive" {
 				"linux" "@_ZN9CTFPlayer18OnTakeDamage_AliveERK15CTakeDamageInfo"
 			}
@@ -335,6 +393,10 @@
 			"CTFWeaponBaseGun::FirePipeBomb" {
 				"linux" "@_ZN16CTFWeaponBaseGun12FirePipeBombEP9CTFPlayeri"
 				"windows" "\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\x58\x01\x00\x00\x56\x8B\xF1\x57\x8B\x06"
+			}
+
+			"CTFWeaponBaseGun::FireProjectile" {
+				"linux" "@_ZN16CTFWeaponBaseGun14FireProjectileEP9CTFPlayer"
 			}
 
 			"GEconItemSchema" {
