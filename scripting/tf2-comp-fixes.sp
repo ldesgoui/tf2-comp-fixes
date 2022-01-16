@@ -216,7 +216,7 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_fix_post_pause_state")
-        .SetBool(all || fixes || etf2l || rgl);
+        .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_fix_reflect_self_damage")
         .SetBool(all || fixes);
