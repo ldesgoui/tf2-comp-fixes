@@ -103,11 +103,15 @@ static MRESReturn Detour_CTFGrenadePipebombProjectile_Create(Handle hReturn, DHo
     float ang_velocity[3];
     hParams.GetVector(4, ang_velocity);
 
+    LogDebug("Angular velocity before: { %.2f, %.2f, %.2f }", ang_velocity[0], ang_velocity[1], ang_velocity[2]);
+
     //if the x-component is nonzero, then the y-component is randomized
     if (ang_velocity[0] != 0) {
         ang_velocity[1] = ANGULAR_VELOCITY_Y;
         hParams.SetVector(4, ang_velocity);
     }
+
+    LogDebug("Angular velocity after: { %.2f, %.2f, %.2f }", ang_velocity[0], ang_velocity[1], ang_velocity[2]);
 
     return MRES_ChangedHandled;
 }
