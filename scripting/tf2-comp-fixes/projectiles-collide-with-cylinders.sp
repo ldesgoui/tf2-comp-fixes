@@ -1,6 +1,11 @@
 static Handle g_detour_PassServerEntityFilter;
 
 void ProjectilesCollideWithCylinders_Setup(Handle game_config) {
+    if (GetOs(game_config) == Windows) {
+        CreateConVar("sm_projectiles_collide_with_cylinders", "0", "NOT SUPPORTED ON WINDOWS", FCVAR_NOTIFY, true, 0.0, true, 0.0);
+        return;
+    }
+
     g_detour_PassServerEntityFilter =
         CheckedDHookCreateFromConf(game_config, "PassServerEntityFilter");
 
