@@ -37,7 +37,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.16.5"
+#define PLUGIN_VERSION "1.16.6"
 
 // clang-format off
 public
@@ -207,7 +207,7 @@ Action Command_Cf(int client, int args) {
     // Here
     // clang-format off
     FindConVar("sm_deterministic_fall_damage")
-        .SetBool(all || fixes || asf || etf2l || rgl);
+        .SetBool(all || fixes || asf || etf2l || ozf || rgl);
 
     FindConVar("sm_empty_active_ubercharges_when_dropped")
         .SetBool(all || fixes || etf2l);
@@ -228,10 +228,10 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_inhibit_extendfreeze")
-        .SetBool(all || fixes || etf2l || rgl);
+        .SetBool(all || fixes || etf2l || ozf || rgl);
 
     FindConVar("sm_override_pipe_size")
-        .SetFloat(all || fixes || etf2l ? 4.0 : 0.0);
+        .SetFloat(all || fixes || etf2l || ozf ? 4.0 : 0.0);
 
     FindConVar("sm_projectiles_collide_with_cylinders")
         .SetBool(all || fixes);
