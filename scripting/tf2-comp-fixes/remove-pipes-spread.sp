@@ -4,8 +4,7 @@
 #define MASK 31 //0b11111
 #define MASK_SIZE 5
 
-//Not the final value!
-#define ANGULAR_VELOCITY_Y 1084.3
+#define ANGULAR_VELOCITY_Y -1125.89
 
 static Handle g_call_CTFGrenadeLauncher_GetProjectileSpeed;
 
