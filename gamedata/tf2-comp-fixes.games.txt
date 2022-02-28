@@ -295,6 +295,7 @@
 
 			"CTFFlameThrower::DeflectEntity" {
 				"linux" "@_ZN15CTFFlameThrower13DeflectEntityEP11CBaseEntityP9CTFPlayerR6Vector"
+				"windows" "\x55\x8B\xEC\x53\x56\x6A\x01"
 			}
 
 			// contains string "BumperCar.JumpLand"
