@@ -125,6 +125,7 @@ void OnMapStart() { FixPostPauseState_OnMapStart(); }
 
 public
 void OnClientPutInServer(int client) {
+    FixReflectSelfDamage_OnClientPutInServer(client);
     RemovePipeSpin_OnClientPutInServer(client);
     WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
 }

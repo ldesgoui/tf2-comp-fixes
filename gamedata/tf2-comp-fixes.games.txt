@@ -123,9 +123,9 @@
 			}
 
 			"CTFFlameThrower::DeflectEntity" {
-				// virtual bool DeflectEntity( CBaseEntity *pTarget, CTFPlayer *pOwner, Vector &vecForward, Vector &vecCenter, Vector &vecSize )
-				"signature" "CTFFlameThrower::DeflectEntity"
-				"callconv" "thiscall"
+				// virtual bool DeflectEntity( CBaseEntity *pTarget, CTFPlayer *pOwner, Vector &vecForward )
+				"offset" "CTFFlameThrower::DeflectEntity"
+				"hooktype" "entity"
 				"return" "bool"
 				"this" "entity"
 				"arguments" {
@@ -136,12 +136,6 @@
 						"type" "cbaseentity"
 					}
 					"forward" {
-						"type" "vectorptr"
-					}
-					"center" {
-						"type" "vectorptr"
-					}
-					"size" {
 						"type" "vectorptr"
 					}
 				}
@@ -259,6 +253,11 @@
 				"windows" "160"
 			}
 
+			"CTFFlameThrower::DeflectEntity" {
+				"linux" "424"
+				"windows" "417"
+			}
+
 			"CTFWeaponBase::SecondaryAttack" {
 				"linux" "290"
 				"windows" "284"
@@ -291,11 +290,6 @@
 			"CTFDroppedWeapon::InitDroppedWeapon" {
 				"linux" "@_ZN16CTFDroppedWeapon17InitDroppedWeaponEP9CTFPlayerP13CTFWeaponBasebb"
 				"windows" "\x55\x8B\xEC\x83\xEC\x24\x56\x57\x8B\xF9\x8B\x4D\x08"
-			}
-
-			"CTFFlameThrower::DeflectEntity" {
-				"linux" "@_ZN15CTFFlameThrower13DeflectEntityEP11CBaseEntityP9CTFPlayerR6Vector"
-				"windows" "\x55\x8B\xEC\x53\x56\x6A\x01"
 			}
 
 			// contains string "BumperCar.JumpLand"
