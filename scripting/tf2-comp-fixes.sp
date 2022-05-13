@@ -37,7 +37,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.16.7"
+#define PLUGIN_VERSION "1.16.8"
 
 // clang-format off
 public
@@ -125,6 +125,7 @@ void OnMapStart() { FixPostPauseState_OnMapStart(); }
 
 public
 void OnClientPutInServer(int client) {
+    FixReflectSelfDamage_OnClientPutInServer(client);
     RemovePipeSpin_OnClientPutInServer(client);
     WingerJumpBonusWhenFullyDeployed_OnClientPutInServer(client);
 }
