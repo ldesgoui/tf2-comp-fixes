@@ -23,7 +23,6 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
-
 static MRESReturn Detour_PassServerEntityFilter(Handle ret, Handle params) {
     // Not colliding
     if (!DHookGetReturn(ret)) {
