@@ -23,6 +23,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
+
 static MRESReturn Detour_PassServerEntityFilter(Handle ret, Handle params) {
     // Not colliding
     if (!DHookGetReturn(ret)) {
@@ -39,16 +40,39 @@ static MRESReturn Detour_PassServerEntityFilter(Handle ret, Handle params) {
     bool touch_is_player = touch_ent > 0 && touch_ent <= MaxClients && IsPlayerAlive(touch_ent);
     bool pass_is_player  = pass_ent > 0 && pass_ent <= MaxClients && IsPlayerAlive(pass_ent);
 
+    // this is two players colliding
     if (touch_is_player && pass_is_player) {
         return MRES_Ignored;
     }
 
+    // which ent is our possible projectile?
+    int projectile_ent;
+    if (touch_is_player)
+    {
+        projectile_ent = pass_ent;
+    }
+    else
+    {
+        projectile_ent = touch_ent;
+    }
+
     char classname[64];
-    GetEntityClassname(touch_is_player ? pass_ent : touch_ent, classname, sizeof(classname));
+    GetEntityClassname(projectile_ent, classname, sizeof(classname));
 
     if (strncmp(classname, "tf_projectile_", 14) != 0) {
         return MRES_Ignored;
     }
+
+    if (StrEqual(classname, "tf_projectile_pipe_remote"))
+    {
+        int isStuck = GetEntProp(projectile_ent, Prop_Send, "m_bTouched");
+
+        if (isStuck)
+        {
+            return MRES_Ignored;
+        }
+    }
+
 
     float touch_pos[3], touch_mins[3], touch_maxs[3];
     float pass_pos[3], pass_mins[3], pass_maxs[3];
