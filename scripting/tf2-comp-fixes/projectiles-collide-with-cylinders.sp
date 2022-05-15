@@ -43,10 +43,17 @@ static MRESReturn Detour_PassServerEntityFilter(Handle ret, Handle params) {
         return MRES_Ignored;
     }
 
+    int projectile_ent = touch_is_player ? pass_ent : touch_ent;
+
     char classname[64];
-    GetEntityClassname(touch_is_player ? pass_ent : touch_ent, classname, sizeof(classname));
+    GetEntityClassname(projectile_ent, classname, sizeof(classname));
 
     if (strncmp(classname, "tf_projectile_", 14) != 0) {
+        return MRES_Ignored;
+    }
+
+    if (StrEqual(classname, "tf_projectile_pipe_remote")
+        && GetEntProp(projectile_ent, Prop_Send, "m_bTouched")) {
         return MRES_Ignored;
     }
 
