@@ -6,7 +6,8 @@ static int g_offset_CTakeDamageInfo_m_bitsDamageType;
 
 void GroundedRjResistance_Setup(Handle game_config) {
     if (GetOs(game_config) == Windows) {
-        CreateConVar("sm_grounded_rj_resistance", "0", "NOT SUPPORTED ON WINDOWS", FCVAR_NOTIFY, true, 0.0, true, 0.0);
+        CreateConVar("sm_grounded_rj_resistance", "0", "NOT SUPPORTED ON WINDOWS", FCVAR_NOTIFY,
+                     true, 0.0, true, 0.0);
         return;
     }
 
