@@ -17,7 +17,6 @@ void FixReflectSelfDamage_OnClientPutInServer(int client) {
     SDKHook(client, SDKHook_WeaponCanUse, Hook_WeaponCanUse);
 }
 
-
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
@@ -25,8 +24,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 
     if (cvar.BoolValue) {
         int entity = -1;
-        while ((entity = FindEntityByClassname(entity, "tf_weapon_flamethrower"))
-               != -1) {
+        while ((entity = FindEntityByClassname(entity, "tf_weapon_flamethrower")) != -1) {
             Hook_WeaponCanUse(0, entity);
         }
     } else {
@@ -63,8 +61,8 @@ static Action Hook_WeaponCanUse(int client, int weapon) {
     }
 
     LogDebug("Fixing reflect self-damage for Flamethrower with index %d", weapon);
-    g_hook_ids[weapon] = DHookEntity(g_hook_CTFFlameThrower_DeflectEntity, HOOK_POST, weapon, HookRemoved,
-                                     Hook_CTFFlameThrower_DeflectEntity);
+    g_hook_ids[weapon] = DHookEntity(g_hook_CTFFlameThrower_DeflectEntity, HOOK_POST, weapon,
+                                     HookRemoved, Hook_CTFFlameThrower_DeflectEntity);
 
     return Plugin_Continue;
 }
