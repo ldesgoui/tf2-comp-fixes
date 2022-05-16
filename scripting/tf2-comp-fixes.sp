@@ -37,7 +37,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.16.9"
+#define PLUGIN_VERSION "1.16.10"
 
 // clang-format off
 public
@@ -220,7 +220,7 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_fix_reflect_self_damage")
-        .SetBool(all || fixes);
+        .SetBool(all || fixes || rgl);
 
     FindConVar("sm_fix_slope_bug")
         .SetBool(all || fixes || asf || etf2l || ozf || rgl);
