@@ -220,7 +220,7 @@ Action Command_Cf(int client, int args) {
         .SetBool(all || fixes || etf2l);
 
     FindConVar("sm_fix_reflect_self_damage")
-        .SetBool(all || fixes);
+        .SetBool(all || fixes || rgl);
 
     FindConVar("sm_fix_slope_bug")
         .SetBool(all || fixes || asf || etf2l || ozf || rgl);

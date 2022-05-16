@@ -23,7 +23,7 @@ these servers. It changes cvars in bulk according to the following:
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
-| sm_fix_reflect_self_damage               | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
+| sm_fix_reflect_self_damage               | 1   | 1     | 0    |  0   | 0     | 0   | 1   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
@@ -44,7 +44,7 @@ these servers. It changes cvars in bulk according to the following:
 **Leagues should not rely on presets as part of their server configurations,
 except for `none`**
 
-_Presets were updated on 2022-01-18._
+_Presets were updated on 2022-05-16._
 
 ### Features
 
@@ -197,8 +197,8 @@ _Presets were updated on 2022-01-18._
   other map types.
 
 
-[@bodolaz146]: Credits for implementing go to https://github.com/bodolaz146
-[@kingofings]: Credits for implementing go to https://github.com/kingofings
+[@bodolaz146]: https://github.com/bodolaz146
+[@kingofings]: https://github.com/kingofings
 
 #### Note
 
