@@ -36,6 +36,7 @@
 #include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
+#include "tf2-comp-fixes/fix-spy-disguise-blockbullets.sp"
 
 #define PLUGIN_VERSION "1.16.10"
 
@@ -104,6 +105,7 @@ void OnPluginStart() {
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
+    SpyBlockbulletFix_Setup();
 
     delete game_config;
 
@@ -138,6 +140,13 @@ Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], floa
 
     return Plugin_Continue;
 }
+
+public
+void OnEntityCreated(int entity, const char[] classname)
+{
+    SpyBlockbulletFix_OnEntityCreated(entity, classname);
+}
+
 
 Action Command_Cf(int client, int args) {
     char full[256];
@@ -248,6 +257,9 @@ Action Command_Cf(int client, int args) {
 
     FindConVar("sm_rest_in_peace_rick_may")
         .SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
+
+    FindConVar("sm_fix_spy_disguise_blockbullets")
+        .SetBool(all || fixes);
 
     ///
 
