@@ -23,16 +23,20 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
 public
 void ResupCritheals_OnEntityCreated(int entity, const char[] classname)
 {
-    if (!g_convar.BoolValue)
-    {
+    if (!g_convar.BoolValue) {
         return;
     }
-    if (!StrEqual(classname, "func_regenerate"))
-    {
+    if (!StrEqual(classname, "func_regenerate")) {   
         return;
     }
-    if (entity < 1 || !IsValidEntity(entity))
-    {
+
+    // A lot of entities are invalid until the frame after they spawn
+    RequestFrame(WaitAFrame, entity);
+}
+
+void WaitAFrame(int entity)
+{
+    if (entity < 1 || !IsValidEntity(entity)) {
         return;
     }
     SDKHook(entity, SDKHook_EndTouchPost, Hook_Resup_EndTouchPost);
@@ -40,8 +44,8 @@ void ResupCritheals_OnEntityCreated(int entity, const char[] classname)
 
 void Hook_Resup_EndTouchPost(int entity, int other)
 {
-    if (other < 1 || other > MaxClients)
-    {
+    // not a valid client index
+    if (other < 1 || other > MaxClients) {
         return;
     }
     PrintToServer("%i touched resup %i", other, entity);
