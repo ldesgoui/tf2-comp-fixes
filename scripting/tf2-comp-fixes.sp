@@ -182,9 +182,9 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_resup_gives_critheals");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
-        ReplyDiffConVar(client, "sm_resup_gives_critheals");
 
         return Plugin_Handled;
     } else if (StrEqual(full, "all")) {
@@ -270,6 +270,9 @@ Action Command_Cf(int client, int args) {
         .SetBool(all);
 
     FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_resup_gives_critheals")
         .SetBool(all);
 
     FindConVar("sm_solid_buildings")

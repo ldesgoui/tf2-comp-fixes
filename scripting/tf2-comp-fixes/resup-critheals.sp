@@ -12,7 +12,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     int entity = -1;
     while ((entity = FindEntityByClassname(entity, "func_regenerate")) != -1) {      
         if (cvar.BoolValue) {
-            SDKHook(entity, SDKHook_EndTouchPost, Hook_Resup_EndTouchPost);
+            ResupCritheals_ReqFrame(entity);
         } else {
             SDKUnhook(entity, SDKHook_EndTouchPost, Hook_Resup_EndTouchPost);
         }   
@@ -31,10 +31,10 @@ void ResupCritheals_OnEntityCreated(int entity, const char[] classname)
     }
 
     // A lot of entities are invalid until the frame after they spawn
-    RequestFrame(WaitAFrame, entity);
+    RequestFrame(ResupCritheals_ReqFrame, entity);
 }
 
-void WaitAFrame(int entity)
+void ResupCritheals_ReqFrame(int entity)
 {
     if (entity < 1 || !IsValidEntity(entity)) {
         return;
