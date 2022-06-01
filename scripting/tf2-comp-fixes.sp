@@ -38,7 +38,7 @@
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 #include "tf2-comp-fixes/fix-spy-disguise-blockbullets.sp"
 
-#define PLUGIN_VERSION "1.16.10"
+#define PLUGIN_VERSION "1.16.11
 
 // clang-format off
 public
