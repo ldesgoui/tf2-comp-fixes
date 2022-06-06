@@ -105,7 +105,7 @@ void OnPluginStart() {
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
-    ResupCritheals_Setup();
+    ResupCritheals_Setup(game_config);
 
     delete game_config;
 

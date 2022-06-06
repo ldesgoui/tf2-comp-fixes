@@ -1,21 +1,24 @@
 static ConVar g_convar;
 
-void ResupCritheals_Setup() {
+int lastDamageTimeOffs;
+void ResupCritheals_Setup(Handle game_config) {
     g_convar = CreateBoolConVar("sm_resup_gives_critheals", WhenConVarChange);
+
+    lastDamageTimeOffs = GameConfGetOffset(game_config, "CTFPlayer::m_flLastDamageTime");
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
-    }   
+    }
 
     int entity = -1;
-    while ((entity = FindEntityByClassname(entity, "func_regenerate")) != -1) {      
+    while ((entity = FindEntityByClassname(entity, "func_regenerate")) != -1) {
         if (cvar.BoolValue) {
             ResupCritheals_ReqFrame(entity);
         } else {
-            SDKUnhook(entity, SDKHook_EndTouchPost, Hook_Resup_EndTouchPost);
-        }   
+            SDKHook(entity, SDKHook_Touch, Hook_Resup_Touch);
+        }
     }
 }
 
@@ -26,7 +29,7 @@ void ResupCritheals_OnEntityCreated(int entity, const char[] classname)
     if (!g_convar.BoolValue) {
         return;
     }
-    if (!StrEqual(classname, "func_regenerate")) {   
+    if (!StrEqual(classname, "func_regenerate")) {
         return;
     }
 
@@ -39,15 +42,17 @@ void ResupCritheals_ReqFrame(int entity)
     if (entity < 1 || !IsValidEntity(entity)) {
         return;
     }
-    SDKHook(entity, SDKHook_EndTouchPost, Hook_Resup_EndTouchPost);
+    SDKHook(entity, SDKHook_Touch, Hook_Resup_Touch);
 }
 
-void Hook_Resup_EndTouchPost(int entity, int other)
+Action Hook_Resup_Touch(int entity, int other)
 {
     // not a valid client index
     if (other < 1 || other > MaxClients) {
-        return;
+        return Plugin_Continue;
     }
-    PrintToServer("%i touched resup %i", other, entity);
-    SetEntPropFloat(other, Prop_Send, "m_flLastDamageTime", 0.0);
+
+    SetEntDataFloat(other, lastDamageTimeOffs, 0.0);
+
+    return Plugin_Continue;
 }

@@ -262,6 +262,28 @@
 				"linux" "290"
 				"windows" "284"
 			}
+			// string: "bleeding_duration"
+			// CTFPlayer::OnTakeDamage_Alive
+			// Look for (int)fminf(fmaxf ... in ida psuedo
+			// It's like right after that
+			// Also just a bit after "lifeleech_on_damage"
+			// Linux:
+			// loc_F06C48:
+			//    mov     eax, ds:gpGlobals
+			//    mov     edx, ds:g_pGameRules
+			//    movss   xmm0, dword ptr [eax+0Ch]
+			//    movss   dword ptr [ebx+2150h], xmm0
+			// 2150h = 8528
+			// Win:
+			// loc_1049F870:
+			//    mov     eax, dword_1098C5A8
+			//    fld     dword ptr [eax+0Ch]
+			//    fstp    dword ptr [edi+214Ch]
+			// 214Ch = 8524
+			"CTFPlayer::m_flLastDamageTime" {
+				"linux" "8528"
+				"windows" "8524"
+			}
 		}
 
 		"Signatures" {
