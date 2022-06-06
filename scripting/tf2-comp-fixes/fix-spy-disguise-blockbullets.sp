@@ -7,15 +7,15 @@ void SpyBlockbulletFix_Setup() {
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
     if (cvar.BoolValue == TruthyConVar(before)) {
         return;
-    }   
+    }
 
     int entity = -1;
-    while ((entity = FindEntityByClassname(entity, "tf_weapon_*")) != -1) {      
+    while ((entity = FindEntityByClassname(entity, "tf_weapon_*")) != -1) {
         if (cvar.BoolValue) {
             SpyBlockbulletFix_ReqFrame(entity);
         } else {
             //
-        }   
+        }
     }
 }
 
@@ -44,12 +44,10 @@ void SpyBlockbulletFix_ReqFrame(int entity)
     // grab the weapon's owner entity's id
     int ownerid = GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity");
     // if it's -1, it's almost certainly a spy ghost weapon
-    // todo: whatabout m_bDisguiseWeapon?
+    // annoyingly, m_bDisguiseWeapon is not always set to 1 on these ghosts.
     if (ownerid == -1)
     {
         // yeet it.
         TeleportEntity(entity, view_as<float>({0.0, 0.0, -5000.0}), NULL_VECTOR, NULL_VECTOR);
-        // we could set the collision here but it's finnicky and depends on sm1.11 technology -
-        // SetEntityCollisionGroup()
     }
 }
