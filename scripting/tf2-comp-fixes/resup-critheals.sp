@@ -17,7 +17,7 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
         if (cvar.BoolValue) {
             ResupCritheals_ReqFrame(entity);
         } else {
-            SDKHook(entity, SDKHook_Touch, Hook_Resup_Touch);
+            SDKUnHook(entity, SDKHook_Touch, Hook_Resup_Touch);
         }
     }
 }
