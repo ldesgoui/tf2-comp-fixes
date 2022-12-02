@@ -36,6 +36,7 @@
 #include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
+#include "tf2-comp-fixes/resup-critheals.sp"
 
 #define PLUGIN_VERSION "1.16.11"
 
@@ -104,6 +105,7 @@ void OnPluginStart() {
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
+    ResupCritheals_Setup(game_config);
 
     delete game_config;
 
@@ -137,6 +139,12 @@ Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], floa
     FixStickyDelay_OnPlayerRunCmd(client, buttons);
 
     return Plugin_Continue;
+}
+
+public
+void OnEntityCreated(int entity, const char[] classname)
+{
+    ResupCritheals_OnEntityCreated(entity, classname);
 }
 
 Action Command_Cf(int client, int args) {
@@ -174,6 +182,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
+        ReplyDiffConVar(client, "sm_resup_gives_critheals");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
 
@@ -261,6 +270,9 @@ Action Command_Cf(int client, int args) {
         .SetBool(all);
 
     FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_resup_gives_critheals")
         .SetBool(all);
 
     FindConVar("sm_solid_buildings")
