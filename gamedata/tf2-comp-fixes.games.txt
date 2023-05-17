@@ -254,8 +254,8 @@
 			}
 
 			"CTFFlameThrower::DeflectEntity" {
-				"linux" "427"
-				"windows" "420"
+				"linux" "428"
+				"windows" "421"
 			}
 
 			"CTFWeaponBase::SecondaryAttack" {
