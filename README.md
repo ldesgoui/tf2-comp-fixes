@@ -19,7 +19,6 @@ these servers. It changes cvars in bulk according to the following:
 
 |                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
-| sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
@@ -49,14 +48,6 @@ _Presets were updated on 2022-05-16._
 ### Features
 
 #### Fixes
-
-- **Deterministic Fall Damage**
-
-  When enabled with `sm_deterministic_fall_damage 1`, the random variable in
-  fall damage calculation will be removed.
-
-  Credits to the existing plugin
-  https://github.com/stephanieLGBT/tf2-FallDamageFixer
 
 - **Empty active ubercharges when the medigun is dropped**
 

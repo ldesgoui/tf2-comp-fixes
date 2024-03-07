@@ -15,7 +15,6 @@
 		"Source" "Path_SM/scripting/tf2-comp-fixes/common.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/concede.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/debug.sp"
-		"Source" "Path_SM/scripting/tf2-comp-fixes/deterministic-fall-damage.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 		"Source" "Path_SM/scripting/tf2-comp-fixes/fix-post-pause-state.sp"
