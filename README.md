@@ -20,13 +20,11 @@ these servers. It changes cvars in bulk according to the following:
 |                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
-| sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_fix_post_pause_state                  | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
 | sm_fix_reflect_self_damage               | 1   | 1     | 0    |  0   | 0     | 0   | 1   |
 | sm_fix_slope_bug                         | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_fix_sticky_delay                      | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
 | sm_inhibit_extendfreeze                  | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
-| sm_override_pipe_size                    | 4.0 | 4.0   | 0    |  0   | 4.0   | 4.0 | 0   |
 | sm_projectiles_collide_with_cylinders    | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_projectiles_ignore_teammates          | 1   | 1     | 0    |  1   | 1     | 0   | 0   |
 | sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
@@ -56,11 +54,6 @@ _Presets were updated on 2022-05-16._
   This prevents the trick of swapping mediguns while ubercharged to conserve
   some of the charge.
 
-- **Fix Ghost Crossbow Bolts**
-
-  When enabled with `sm_fix_ghost_crossbow_bolts 1`, crossbow bolts will no
-  longer pass through teammates when in close range.
-
 - **Revert state after unpausing**
 
   When enabled with `sm_fix_post_pause_state 1`, gameplay state that changed
@@ -87,24 +80,6 @@ _Presets were updated on 2022-05-16._
 
   When enabled with `sm_fix_sticky_delay 1`, stickies will no longer fail to
   detonate when swapping weapons.
-
-- **Inhibit `extendfreeze`**
-
-  When enabled with `sm_inhibit_extendfreeze 1`, clients will not be able to use
-  the `extendfreeze` command.  
-  This prevents some information leak, players can use this command after dying
-  to spectate their killer in third person.
-
-  [Demonstration of the info leak in this video](https://youtu.be/WHGVAJgHMX8?t=371)
-
-- **Override Pipe Collider Size**
-
-  When enabled with `sm_override_pipe_size [1 .. ]`, all pipes will have their
-  collider resized to that value in Hammer Units.  
-  The size of official pipes is 4.0, except for Iron Bomber, which is 8.75 wide
-  and 7.71424 tall.
-
-  Credits for implementing go to [@bodolaz146]
 
 - **Projectiles Collide With Cylinder Player Hitboxes**
 
@@ -197,8 +172,6 @@ Every feature is active immediately when the cvar is enabled except for features
 that hook short-lived entities, in which case the feature will apply if the
 entity was created when the feature was enabled. For now this includes:
 
-- `sm_fix_ghost_crossbow_bolts`
-- `sm_override_pipe_size`
 - `sm_projectiles_ignore_teammates`
 - `sm_remove_pipe_spin`
 
