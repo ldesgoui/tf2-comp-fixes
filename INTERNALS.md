@@ -87,7 +87,7 @@ parameter is set to true. Obviously, this applies to all mediguns, the Quick-Fix
 included. The Quick-Fix still benefits from the speed boost while a demoman is
 charging.
 
-## Fix Ghost Crossbow Bolts & Projectiles Ignore Teammates
+## Fix Projectiles Ignore Teammates
 
 The virtual method `bool CBaseProjectile::CanCollideWithTeammates(*this)`
 returns the field `m_bCanCollideWithTeammates` which is initialized to false and
@@ -95,25 +95,3 @@ updated to true during `CollideWithTeammatesThink`. `CBaseProjectile::Spawn()`
 schedules this `Think` to execute after
 `gpGlobals->curtime + GetCollideWithTeammatesDelay()`, the latter returning
 250ms by default. The file concerned is `game/shared/baseprojectile.cpp`.
-
-`CTFProjectile_HealingBolt` overrides `GetCollideWithTeammatesDelay` to always
-return 0ms, however the projectile obviously doesn't collide with teammates as
-soon as it spawns. I believe this behavior to not be expected, the intent seems
-to want it collide as soon as possible but it seems that `Think`s are only
-precise over a few server ticks.
-
-One could argue that developers were aware of the effects of both methods as
-`CTFProjectile_GrapplingHook`, which is just below and shares its mother class
-with `CTFProjectile_HealingBolt`, and simply overrides `CanCollideWithTeammates`
-to always return false. I don't believe this to be a fair assessment. Grappling
-hooks were added later on, and the only way to implement the logic to ignore
-teammates would have been by overriding `CanCollideWithTeammates` (or
-`CollideWithTeammatesThink`), possibly creating the need for a virtual method
-altogether. In this case, as the behaviors are different and as the Crossbow's
-current implementation was probably not known to be an issue, it was overlooked
-and was not updated. The file concerned is
-`game/server/tf/tf_projectile_arrow.cpp`.
-
-On entity creation, we can simply hook this virtual method to always return true
-when the classname is `tf_projectile_healing_bolt`, or otherwise false if it
-starts with `tf_projectile_`.
