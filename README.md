@@ -4,6 +4,10 @@ Various technical or gameplay changes catered towards competitive play
 
 [_Release notes_](https://github.com/ldesgoui/tf2-comp-fixes/releases)
 
+
+**For now, it's incompatible with the 64 bit version of the game server.**
+
+
 ### Usage
 
 `sm_cf` (or `!cf` in chat) displays the current running version.
