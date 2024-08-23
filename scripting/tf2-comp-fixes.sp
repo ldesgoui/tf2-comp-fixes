@@ -15,7 +15,6 @@
 // Here
 #include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
-#include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
 #include "tf2-comp-fixes/fix-ghost-crossbow-bolts.sp"
 #include "tf2-comp-fixes/fix-post-pause-state.sp"
@@ -37,7 +36,7 @@
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
 
-#define PLUGIN_VERSION "1.16.14"
+#define PLUGIN_VERSION "1.16.15"
 
 // clang-format off
 public
@@ -83,7 +82,6 @@ void OnPluginStart() {
 
     // Here
     Concede_Setup();
-    DeterministicFallDamage_Setup(game_config);
     EmptyActiveUberchargesWhenDropped_Setup(game_config);
     FixGhostCrossbowBolts_Setup();
     FixPostPauseState_Setup();
