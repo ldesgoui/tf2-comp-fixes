@@ -121,7 +121,7 @@ void OnLibraryAdded(const char[] name) {
 }
 
 public
-void OnMapStart() { FixPostPauseState_OnMapStart(); }
+void OnGameFrame() { FixPostPauseState_OnGameFrame(); }
 
 public
 void OnClientPutInServer(int client) {
