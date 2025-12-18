@@ -14,6 +14,7 @@
 
 // Here
 #include "tf2-comp-fixes/concede.sp"
+#include "tf2-comp-fixes/class-ordered-spawnpoints.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
@@ -82,6 +83,7 @@ void OnPluginStart() {
     Debug_Setup();
 
     // Here
+    ClassOrderedSpawnpoints_Setup();
     Concede_Setup();
     DeterministicFallDamage_Setup(game_config);
     EmptyActiveUberchargesWhenDropped_Setup(game_config);
