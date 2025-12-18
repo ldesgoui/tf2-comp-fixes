@@ -15,15 +15,11 @@ jobs:
       - uses: rumblefrog/setup-sp@v1.0.1
 
       - run: |
-          mkdir -p addons/sourcemod/plugins include
+          mkdir -p addons/sourcemod/plugins
 
           cp -r scripting gamedata addons/sourcemod/
 
-          curl -o include/dhooks.inc \
-            https://raw.githubusercontent.com/peace-maker/DHooks2/dynhooks/sourcemod_files/scripting/include/dhooks.inc
-
           spcomp \
-            -i include \
             addons/sourcemod/scripting/tf2-comp-fixes.sp \
             -o addons/sourcemod/plugins/tf2-comp-fixes.smx
 
