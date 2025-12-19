@@ -23,6 +23,7 @@ these servers. It changes cvars in bulk according to the following:
 
 |                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
+| sm_class_ordered_spawnpoints             | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
 | sm_fix_ghost_crossbow_bolts              | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
@@ -48,11 +49,21 @@ these servers. It changes cvars in bulk according to the following:
 **Leagues should not rely on presets as part of their server configurations,
 except for `none`**
 
-_Presets were updated on 2022-05-16._
+_Presets were updated on 2022-05-16. I have abandonned this feature_
 
 ### Features
 
 #### Fixes
+
+- **Class Ordered Spawnpoints**
+
+  When enabled with `sm_class_ordered_spawnpoints 1`, the spawnpoints on last
+  will each have a class assigned. This will make Medic and Demoman always
+  spawn in the same location, while Soldier or Scout always spawn in one of
+  two locations, and which location should not change during the match unless
+  either reconnect.
+
+  For now, only 6v6 classes are assigned.
 
 - **Deterministic Fall Damage**
 

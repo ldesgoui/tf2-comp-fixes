@@ -155,6 +155,7 @@ Action Command_Cf(int client, int args) {
     if (StrEqual(full, "list")) {
         // Here
         ReplyToCommand(client, "--- Fixes");
+        ReplyDiffConVar(client, "sm_class_ordered_spawnpoints");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
         ReplyDiffConVar(client, "sm_fix_ghost_crossbow_bolts");
@@ -209,6 +210,9 @@ Action Command_Cf(int client, int args) {
 
     // Here
     // clang-format off
+    FindConVar("sm_class_ordered_spawnpoints")
+        .SetBool(all || fixes);
+
     FindConVar("sm_deterministic_fall_damage")
         .SetBool(all || fixes || asf || etf2l || ozf || rgl);
 
