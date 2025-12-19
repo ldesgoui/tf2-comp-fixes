@@ -29,6 +29,8 @@ static void UnsetAll() {
     int entity;
 
     while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
+        int old = GetEntProp(entity, Prop_Data, "m_spawnflags");
+        LogDebug("- It was %d before", old);
         SetEntProp(entity, Prop_Data, "m_spawnflags", 0x1ff); // 9 bits all high
     }
 }
@@ -42,14 +44,17 @@ static void PresetBase() {
     int blu = 0;
 
     while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
-        int team = GetEntProp(entity, Prop_Send, "m_iTeamNum");
+        int team = GetEntProp(entity, Prop_Data, "m_iTeamNum");
 
         if (team != 2 && team != 3) continue;
 
         LogDebug("Found a RED/BLU spawn point: %d", entity);
 
+        int wrote = 0;
         char control_point_name[64];
-        int wrote = GetEntPropString(entity, Prop_Send, "m_iszControlPointName", control_point_name, sizeof(control_point_name));
+        if (HasEntProp(entity, Prop_Data, "m_iszControlPointName")) {
+            wrote = GetEntPropString(entity, Prop_Data, "m_iszControlPointName", control_point_name, sizeof(control_point_name));
+        }
 
         if (wrote == 0) {
             LogDebug("- It's not attached to a control point");
@@ -65,7 +70,7 @@ static void PresetBase() {
                 continue;
             }
 
-            int index = GetEntProp(control_point, Prop_Send, "m_iPointIndex");
+            int index = GetEntProp(control_point, Prop_Data, "m_iPointIndex");
 
             if (index == 4) {
                 red_last = control_point_name;
@@ -98,7 +103,7 @@ static int FindControlPointByName(const char[] target) {
     char name[64];
 
     while ((entity = FindEntityByClassname(entity, "team_control_point")) != -1) {
-        if (!GetEntPropString(entity, Prop_Send, "m_iName", name, sizeof(name))) {
+        if (!GetEntPropString(entity, Prop_Data, "m_iName", name, sizeof(name))) {
             continue;
         }
 
@@ -119,5 +124,7 @@ static void SetSpawnClass(int entity, TFClassType cls) {
         flags = 1 << view_as<int>(cls) - 1;
     }
 
+    int old = GetEntProp(entity, Prop_Data, "m_spawnflags");
+    LogDebug("- It was %d before", old);
     SetEntProp(entity, Prop_Data, "m_spawnflags", flags);
 }
