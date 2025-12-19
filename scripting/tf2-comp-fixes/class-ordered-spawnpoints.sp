@@ -1,3 +1,4 @@
+static ConVar g_convar;
 
 #define ORDER_LEN 6
 static const TFClassType ORDER[ORDER_LEN] = {
@@ -10,7 +11,9 @@ static const TFClassType ORDER[ORDER_LEN] = {
 };
 
 void ClassOrderedSpawnpoints_Setup() {
-    CreateBoolConVar("sm_class_ordered_spawnpoints", WhenConVarChange);
+    g_convar = CreateBoolConVar("sm_class_ordered_spawnpoints", WhenConVarChange);
+    HookEvent("game_start", WhenGameStart);
+    HookEvent("player_team", WhenPlayerTeam);
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
@@ -23,6 +26,38 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     } else {
         UnsetAll();
     }
+}
+
+static void WhenGameStart(Event event, const char[] name, bool dontBroadcast) {
+    if (g_convar.BoolValue) {
+        PresetBase();
+    }
+}
+
+static void WhenPlayerTeam(Event event, const char[] name, bool dontBroadcast) {
+    if (!g_convar.BoolValue) {
+        return;
+    }
+
+    // TODO: This seems to happen too soon
+    if (AllUnset()) {
+        LogDebug("Found that none of the spawns had class filters, reapplying");
+        PresetBase();
+    } else {
+        LogDebug("OK");
+    }
+}
+
+static bool AllUnset() {
+    int entity;
+
+    while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
+        if (0x1ff != GetEntProp(entity, Prop_Data, "m_spawnflags")) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 static void UnsetAll() {
@@ -119,7 +154,8 @@ static void SetSpawnClass(int entity, TFClassType cls) {
     int flags;
 
     if (cls == TFClass_Unknown) {
-        flags = 0; // allow nothing
+        flags = 0x200; // toggle the tenth bit, it will not match any class, but it is not zero
+                       // we don't want it to be zero because the game skips the check if it is
     } else {
         flags = 1 << view_as<int>(cls) - 1;
     }
