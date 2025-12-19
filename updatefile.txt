@@ -1,7 +1,7 @@
 "Updater" {
 	"Information" {
 		"Version" {
-			"Latest" "1.16.19"
+			"Latest" "1.17.0"
 		}
 
 		"Notes" "Patch notes: https://github.com/ldesgoui/tf2-comp-fixes/releases"
