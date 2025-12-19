@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: rumblefrog/setup-sp@v1.0.1
+      - uses: rumblefrog/setup-sp@v1.2.4
 
       - run: |
           mkdir -p addons/sourcemod/plugins
@@ -47,9 +47,9 @@ jobs:
       - id: check_prerelease
         run: |
           if echo '${{ github.event.ref }}' | grep -P '^refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+(?:-((?:[0-9]+|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:[0-9]+|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'; then
-            echo ::set-output name=match::true
+            echo match=true >> $GITHUB_OUTPUT
           else
-            echo ::set-output name=match::false
+            echo match=false >> $GITHUB_OUTPUT
           fi
 
       - uses: peaceiris/actions-gh-pages@v3
