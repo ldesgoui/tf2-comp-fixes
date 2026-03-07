@@ -34,7 +34,7 @@ void RemovePipeSpread_Setup(Handle game_config) {
         CheckedDHookCreateFromConf(game_config, "CTFGrenadePipebombProjectile::Create");
 
     CreateBoolConVar("sm_remove_pipe_spread", OnConVarChange);
-    CreateConVar("sm_remove_pipe_spread_pitch_speed", "-1125.89",
+    g_convar_pitch_speed = CreateConVar("sm_remove_pipe_spread_pitch_speed", "-1125.89",
                     "Rotation speed in the forward direction to give to pipes after their spread has been fixed",
                      FCVAR_NOTIFY, true, -10000.0, true, 10000.0);
 }
