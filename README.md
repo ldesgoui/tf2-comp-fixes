@@ -23,6 +23,7 @@ these servers. It changes cvars in bulk according to the following:
 
 |                                          | all | fixes | none |  asf | etf2l | ozf | rgl |
 | ---------------------------------------- | --- | ----- | ---- |  --- | ----- | --- | --- |
+| sm_cabinet_resets_crit_heals             | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_class_ordered_spawnpoints             | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_deterministic_fall_damage             | 1   | 1     | 0    |  1   | 1     | 1   | 1   |
 | sm_empty_active_ubercharges_when_dropped | 1   | 1     | 0    |  0   | 1     | 0   | 0   |
@@ -36,13 +37,14 @@ these servers. It changes cvars in bulk according to the following:
 | sm_projectiles_collide_with_cylinders    | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_projectiles_ignore_teammates          | 1   | 1     | 0    |  1   | 1     | 0   | 0   |
 | sm_remove_halloween_souls                | 1   | 1     | 0    |  0   | 1     | 1   | 1   |
-| sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
+| sm_remove_pipe_spread                    | 1   | 1     | 0    |  0   | 0     | 0   | 0   |
 | sm_rest_in_peace_rick_may                | 128 | 128   | 0    |  0   | 0     | 255 | 128 |
 |                                          |     |       |      |      |       |     |     |
 | sm_grounded_rj_resistance                | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_gunboats_always_apply                 | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 | sm_prevent_respawning                    | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_remove_medic_attach_speed             | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
+| sm_remove_pipe_spin                      | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_solid_buildings                       | 1   | 0     | 0    |  0   | 0     | 0   | 0   |
 | sm_winger_jump_bonus_when_fully_deployed | 1   | 0     | 0    |  0   | 1     | 0   | 0   |
 
@@ -55,6 +57,14 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
 
 #### Fixes
 
+- **Resupply Cabinet Resets Crit Heals**
+
+  When enabled with `sm_cabinet_resets_crit_heals 1`, activating a resupply
+  cabinet will reset the player's damage taken timestamp and grant them
+  "crit heals", similarly to when respawning.
+
+  Credits for implementing go to [@sapphonie]
+
 - **Class Ordered Spawnpoints**
 
   When enabled with `sm_class_ordered_spawnpoints 1`, the spawnpoints on last
@@ -63,9 +73,9 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
   two locations, and which location should not change during the match unless
   either reconnect.
 
-  For now, only 6v6 classes are assigned.
-
 - **Deterministic Fall Damage**
+
+  _This command is deprecated and will be removed in a future update._
 
   When enabled with `sm_deterministic_fall_damage 1`, the random variable in
   fall damage calculation will be removed.
@@ -81,6 +91,8 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
   some of the charge.
 
 - **Fix Ghost Crossbow Bolts**
+
+  _This command is deprecated and will be removed in a future update._
 
   When enabled with `sm_fix_ghost_crossbow_bolts 1`, crossbow bolts will no
   longer pass through teammates when in close range.
@@ -114,6 +126,8 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
 
 - **Inhibit `extendfreeze`**
 
+  _This command is deprecated and will be removed in a future update._
+
   When enabled with `sm_inhibit_extendfreeze 1`, clients will not be able to use
   the `extendfreeze` command.  
   This prevents some information leak, players can use this command after dying
@@ -122,6 +136,8 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
   [Demonstration of the info leak in this video](https://youtu.be/WHGVAJgHMX8?t=371)
 
 - **Override Pipe Collider Size**
+
+  _This command is deprecated and will be removed in a future update._
 
   When enabled with `sm_override_pipe_size [1 .. ]`, all pipes will have their
   collider resized to that value in Hammer Units.  
@@ -147,10 +163,13 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
   When enabled with `sm_remove_halloween_souls 1`, no souls will be spawned
   during the Halloween holiday events.
 
-- **Remove Pipe Spin**
+- **Remove Pipe Spread**
 
-  When enabled with `sm_remove_pipe_spin 1`, pipes will not spawn with a random
-  rotation, similarly to Loch-n-Load pipes
+  When enabled with `sm_remove_pipe_spread 1`, the random spread applied to
+  pipes (but not stickies) will be neutralized, and a preset spin will be applied.
+  You can customize said preset spin with `sm_remove_pipe_spread_pitch_speed`.
+
+  Credits for implementing go to [@bodolaz146]
 
 - **Ghostify Soldier Statues**
 
@@ -160,7 +179,9 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
 
 - **Tournament Match End Ignores Whitelist**
 
-  _Enabled by default_ with `sm_tournament_end_ignores_whitelist 1`, the whitelist
+  _This command is deprecated and will be removed in a future update._
+
+  When enabled with `sm_tournament_end_ignores_whitelist 1`, the whitelist
   will not be executed at the end of a `mp_tournament` match.
 
 #### Gameplay Changes
@@ -185,6 +206,13 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
 
   When enabled with `sm_remove_medic_attach_speed 1`, the Medic will not run as
   fast as its target if the target is faster.
+
+- **Remove Pipe Spin**
+
+  _This command is deprecated and will be removed in a future update._
+
+  When enabled with `sm_remove_pipe_spin 1`, pipes will not spawn with a random
+  rotation, similarly to Loch-n-Load pipes
 
 - **Make Engineer buildings solid**
 
