@@ -13,8 +13,9 @@
 #include "tf2-comp-fixes/common.sp"
 
 // Here
-#include "tf2-comp-fixes/concede.sp"
+#include "tf2-comp-fixes/cabinet-resets-crit-heals.sp"
 #include "tf2-comp-fixes/class-ordered-spawnpoints.sp"
+#include "tf2-comp-fixes/concede.sp"
 #include "tf2-comp-fixes/debug.sp"
 #include "tf2-comp-fixes/deterministic-fall-damage.sp"
 #include "tf2-comp-fixes/empty-active-ubercharges-when-dropped.sp"
@@ -103,6 +104,7 @@ void OnPluginStart() {
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
+    CabinetResetsCritHeals_Setup(game_config);
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
@@ -141,6 +143,12 @@ Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], floa
     return Plugin_Continue;
 }
 
+public
+void OnEntityCreated(int entity, const char[] classname)
+{
+    CabinetResetsCritHeals_OnEntityCreated(entity, classname);
+}
+
 Action Command_Cf(int client, int args) {
     char full[256];
     bool all   = false;
@@ -155,6 +163,7 @@ Action Command_Cf(int client, int args) {
     if (StrEqual(full, "list")) {
         // Here
         ReplyToCommand(client, "--- Fixes");
+        ReplyDiffConVar(client, "sm_cabinet_resets_crit_heals");
         ReplyDiffConVar(client, "sm_class_ordered_spawnpoints");
         ReplyDiffConVar(client, "sm_deterministic_fall_damage");
         ReplyDiffConVar(client, "sm_empty_active_ubercharges_when_dropped");
@@ -210,6 +219,9 @@ Action Command_Cf(int client, int args) {
 
     // Here
     // clang-format off
+    FindConVar("sm_cabinet_resets_crit_heals")
+        .SetBool(all || fixes);
+
     FindConVar("sm_class_ordered_spawnpoints")
         .SetBool(all || fixes);
 
