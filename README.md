@@ -242,6 +242,7 @@ _Presets were updated on 2022-05-16. I have abandonned this feature_
 
 [@bodolaz146]: https://github.com/bodolaz146
 [@kingofings]: https://github.com/kingofings
+[@sapphonie]: https://github.com/sapphonie
 
 #### Note
 
