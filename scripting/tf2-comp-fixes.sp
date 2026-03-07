@@ -35,7 +35,7 @@
 #include "tf2-comp-fixes/remove-halloween-souls.sp"
 #include "tf2-comp-fixes/remove-medic-attach-speed.sp"
 #include "tf2-comp-fixes/remove-pipe-spin.sp"
-#include "tf2-comp-fixes/remove-pipes-spread.sp"
+#include "tf2-comp-fixes/remove-pipe-spread.sp"
 #include "tf2-comp-fixes/solid-buildings.sp"
 #include "tf2-comp-fixes/tournament-end-ignores-whitelist.sp"
 #include "tf2-comp-fixes/winger-jump-bonus-when-fully-deployed.sp"
@@ -106,7 +106,7 @@ void OnPluginStart() {
     RemoveHalloweenSouls_Setup(game_config);
     RemoveMedicAttachSpeed_Setup(game_config);
     RemovePipeSpin_Setup();
-    RemovePipesSpread_Setup(game_config);
+    RemovePipeSpread_Setup(game_config);
     SolidBuildings_Setup();
     TournamentEndIgnoresWhitelist_Setup(game_config);
     WingerJumpBonusWhenFullyDeployed_Setup(game_config);
@@ -188,7 +188,7 @@ Action Command_Cf(int client, int args) {
         ReplyDiffConVar(client, "sm_gunboats_always_apply");
         ReplyDiffConVar(client, "sm_prevent_respawning");
         ReplyDiffConVar(client, "sm_remove_medic_attach_speed");
-        ReplyDiffConVar(client, "sm_remove_pipes_spread");
+        ReplyDiffConVar(client, "sm_remove_pipe_spread");
         ReplyDiffConVar(client, "sm_solid_buildings");
         ReplyDiffConVar(client, "sm_winger_jump_bonus_when_fully_deployed");
 
@@ -264,11 +264,8 @@ Action Command_Cf(int client, int args) {
     FindConVar("sm_remove_halloween_souls")
         .SetBool(all || fixes || etf2l || ozf || rgl);
 
-    FindConVar("sm_remove_pipe_spin")
-        .SetBool(all);
-
-    FindConVar("sm_remove_pipes_spread")
-        .SetBool(all);
+    FindConVar("sm_remove_pipe_spread")
+        .SetBool(all || fixes);
 
     FindConVar("sm_rest_in_peace_rick_may")
         .SetInt(all || fixes || rgl ? 128 : ozf ? 255 : 0);
@@ -279,12 +276,15 @@ Action Command_Cf(int client, int args) {
         .SetBool(all);
 
     FindConVar("sm_gunboats_always_apply")
-        .SetBool(all || etf2l);
+        .SetBool(all);
 
     FindConVar("sm_prevent_respawning")
         .SetBool(all);
 
     FindConVar("sm_remove_medic_attach_speed")
+        .SetBool(all);
+
+    FindConVar("sm_remove_pipe_spin")
         .SetBool(all);
 
     FindConVar("sm_solid_buildings")

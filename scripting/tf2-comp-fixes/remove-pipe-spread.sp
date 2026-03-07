@@ -1,17 +1,23 @@
-#define PIPEBOMB_REMOTE 4 //sticky bomb launcher
-#define PIPEBOMB_REMOTE_PRACTICE 14 //sticky jumper
+#define PIPEBOMB_REMOTE 4 // sticky bomb launcher
+#define PIPEBOMB_REMOTE_PRACTICE 14 // sticky jumper
 
-#define MASK 31 //0b11111
+#define MASK 31 // 0b11111
 #define MASK_SIZE 5
 
-#define ANGULAR_VELOCITY_Y -1125.89
+static ConVar g_convar_pitch_speed;
 
 static Handle g_call_CTFGrenadeLauncher_GetProjectileSpeed;
 
 static Handle g_detour_CTFWeaponBaseGun_FirePipeBomb;
 static Handle g_detour_CTFGrenadePipebombProjectile_Create;
 
-void RemovePipesSpread_Setup(Handle game_config) {
+void RemovePipeSpread_Setup(Handle game_config) {
+    if (GetOs(game_config) == Windows) {
+        CreateConVar("sm_remove_pipe_spread", "0", "NOT SUPPORTED ON WINDOWS",
+                     FCVAR_NOTIFY, true, 0.0, true, 0.0);
+        return;
+    }
+
     StartPrepSDKCall(SDKCall_Entity);
 
     if (!PrepSDKCall_SetFromConf(game_config, SDKConf_Signature,
@@ -27,7 +33,10 @@ void RemovePipesSpread_Setup(Handle game_config) {
     g_detour_CTFGrenadePipebombProjectile_Create =
         CheckedDHookCreateFromConf(game_config, "CTFGrenadePipebombProjectile::Create");
 
-    CreateBoolConVar("sm_remove_pipes_spread", OnConVarChange);
+    CreateBoolConVar("sm_remove_pipe_spread", OnConVarChange);
+    CreateConVar("sm_remove_pipe_spread_pitch_speed", "-1125.89",
+                    "Rotation speed in the forward direction to give to pipes after their spread has been fixed",
+                     FCVAR_NOTIFY, true, -10000.0, true, 10000.0);
 }
 
 static void OnConVarChange(ConVar cvar, const char[] before, const char[] after) {
@@ -53,7 +62,7 @@ static MRESReturn Detour_CTFWeaponBaseGun_FirePipeBomb(int weapon, Handle hRetur
         return MRES_Ignored;
     }
 
-    //The fractional part of the speed is always zero, so we don't lose anything by using RoundToFloor
+    // The fractional part of the speed is always zero, so we don't lose anything by using RoundToFloor
     int speed = RoundToFloor(SDKCall(g_call_CTFGrenadeLauncher_GetProjectileSpeed, weapon));
 
     LogDebug("Projectile speed: %d, type: %d", speed, projectile_type);
@@ -72,7 +81,7 @@ static MRESReturn Detour_CTFWeaponBaseGun_FirePipeBomb(int weapon, Handle hRetur
 }
 
 static MRESReturn Detour_CTFGrenadePipebombProjectile_Create(Handle hReturn, DHookParam hParams) {
-    //now we need to "unpack" the projectile speed and type from iPipeBombType
+    // Now we need to "unpack" the projectile speed and type from iPipeBombType
     int param = hParams.Get(7);
     int projectile_type = param & MASK;
 
@@ -92,7 +101,7 @@ static MRESReturn Detour_CTFGrenadePipebombProjectile_Create(Handle hReturn, DHo
     hParams.GetVector(2, eye_angles);
     GetAngleVectors(eye_angles, fwd, NULL_VECTOR, up);
 
-    //velocity: launchSpeed * forward + 200 * up;
+    // Velocity: launchSpeed * forward + 200 * up;
     ScaleVector(fwd, launchSpeed);
     ScaleVector(up, 200.0);
     AddVectors(fwd, up, velocity);
@@ -104,9 +113,9 @@ static MRESReturn Detour_CTFGrenadePipebombProjectile_Create(Handle hReturn, DHo
 
     LogDebug("Angular velocity before: { %.2f, %.2f, %.2f }", ang_velocity[0], ang_velocity[1], ang_velocity[2]);
 
-    //if the x-component is nonzero, then the y-component is randomized
+    // If the x-component is nonzero, then the y-component is randomized
     if (ang_velocity[0] != 0) {
-        ang_velocity[1] = ANGULAR_VELOCITY_Y;
+        ang_velocity[1] = g_convar_pitch_speed.FloatValue;
         hParams.SetVector(4, ang_velocity);
     }
 
