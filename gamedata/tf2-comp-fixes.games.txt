@@ -219,19 +219,6 @@
 				}
 			}
 
-			"CTFWeaponBaseGun::FireProjectile" {
-				// CBaseEntity *CTFWeaponBaseGun::FireProjectile( CTFPlayer *pPlayer )
-				"signature" "CTFWeaponBaseGun::FireProjectile"
-				"callconv" "thiscall"
-				"return" "cbaseentity"
-				"this" "ignore"
-				"arguments" {
-					"player" {
-						"type" "objectptr"
-					}
-				}
-			}
-
 			"PassServerEntityFilter" {
 				// bool PassServerEntityFilter( const IHandleEntity *pTouch, const IHandleEntity *pPass )
 				"signature" "PassServerEntityFilter"
@@ -425,10 +412,6 @@
 			"CTFWeaponBaseGun::FirePipeBomb" {
 				"linux" "@_ZN16CTFWeaponBaseGun12FirePipeBombEP9CTFPlayeri"
 				"windows" "\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\x68\x01\x00\x00\x56\x8B\xF1"
-			}
-
-			"CTFWeaponBaseGun::FireProjectile" {
-				"linux" "@_ZN16CTFWeaponBaseGun14FireProjectileEP9CTFPlayer"
 			}
 
 			"GEconItemSchema" {

@@ -82,7 +82,7 @@ void OnPluginStart() {
     RegConsoleCmd("sm_cf", Command_Cf, "Batch update of TF2 Competitive Fixes cvars");
 
     Common_Setup(game_config);
-    Debug_Setup(game_config);
+    Debug_Setup();
 
     // Here
     CabinetResetsCritHeals_Setup(game_config);
