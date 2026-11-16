@@ -53,6 +53,14 @@ static void WhenSpawnPointSpawned(int entity) {
     g_last_tick = tick;
 
     PresetBase();
+
+    for (int client = 1; client <= MaxClients; client++) {
+        if (IsClientInGame(client) && IsPlayerAlive(client)) {
+            SetEntityCollisionGroup(client, COLLISION_GROUP_IN_VEHICLE);
+        }
+    }
+
+    RequestFrame(RestoreCollisionGroups);
 }
 
 static void UnsetAll() {
@@ -162,4 +170,13 @@ static void SetSpawnClass(int entity, TFClassType cls) {
     int old = GetEntProp(entity, Prop_Data, "m_spawnflags");
     LogDebug("- It was %d before", old);
     SetEntProp(entity, Prop_Data, "m_spawnflags", flags);
+}
+
+static void RestoreCollisionGroups() {
+    for (int client = 1; client <= MaxClients; client++) {
+        if (IsClientInGame(client)
+            && GetEntProp(client, Prop_Send, "m_CollisionGroup") == COLLISION_GROUP_IN_VEHICLE) {
+            SetEntityCollisionGroup(client, COLLISION_GROUP_PLAYER);
+        }
+    }
 }
