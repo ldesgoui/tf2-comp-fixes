@@ -1,5 +1,3 @@
-static ConVar g_convar;
-
 #define ORDER_LEN 11
 static const TFClassType ORDER[ORDER_LEN] = {
     TFClass_DemoMan,
@@ -15,10 +13,20 @@ static const TFClassType ORDER[ORDER_LEN] = {
     TFClass_Spy,
 };
 
+#define COLLISION_GROUP_PLAYER 5
+#define COLLISION_GROUP_IN_VEHICLE 10
+
+static ConVar g_convar;
+static int g_last_tick = -1;
+
 void ClassOrderedSpawnpoints_Setup() {
     g_convar = CreateBoolConVar("sm_class_ordered_spawnpoints", WhenConVarChange);
-    HookEvent("game_start", WhenGameStart);
-    HookEvent("player_team", WhenPlayerTeam);
+}
+
+void ClassOrderedSpawnpoints_OnEntityCreated(int entity, const char[] classname) {
+    if (StrEqual(classname, "info_player_teamspawn")) {
+        SDKHook(entity, SDKHook_SpawnPost, WhenSpawnPointSpawned);
+    }
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
@@ -33,36 +41,18 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
-static void WhenGameStart(Event event, const char[] name, bool dontBroadcast) {
-    if (g_convar.BoolValue) {
-        PresetBase();
-    }
-}
-
-static void WhenPlayerTeam(Event event, const char[] name, bool dontBroadcast) {
+static void WhenSpawnPointSpawned(int entity) {
     if (!g_convar.BoolValue) {
         return;
     }
 
-    // TODO: This seems to happen too soon
-    if (AllUnset()) {
-        LogDebug("Found that none of the spawns had class filters, reapplying");
-        PresetBase();
-    } else {
-        LogDebug("OK");
+    int tick = GetGameTickCount();
+    if (tick == g_last_tick) {
+        return;
     }
-}
+    g_last_tick = tick;
 
-static bool AllUnset() {
-    int entity;
-
-    while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
-        if (0x1ff != GetEntProp(entity, Prop_Data, "m_spawnflags")) {
-            return false;
-        }
-    }
-
-    return true;
+    PresetBase();
 }
 
 static void UnsetAll() {
@@ -85,6 +75,10 @@ static void PresetBase() {
 
     while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
         int team = GetEntProp(entity, Prop_Data, "m_iTeamNum");
+
+        if (team == 0) {
+            team = GetEntProp(entity, Prop_Data, "m_iInitialTeamNum");
+        }
 
         if (team != 2 && team != 3) continue;
 
