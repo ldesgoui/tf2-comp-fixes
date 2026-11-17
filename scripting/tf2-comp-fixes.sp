@@ -149,7 +149,6 @@ public
 void OnEntityCreated(int entity, const char[] classname)
 {
     CabinetResetsCritHeals_OnEntityCreated(entity, classname);
-    ClassOrderedSpawnpoints_OnEntityCreated(entity, classname);
 }
 
 Action Command_Cf(int client, int args) {

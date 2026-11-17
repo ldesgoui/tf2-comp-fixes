@@ -17,16 +17,10 @@ static const TFClassType ORDER[ORDER_LEN] = {
 #define COLLISION_GROUP_IN_VEHICLE 10
 
 static ConVar g_convar;
-static int g_last_tick = -1;
 
 void ClassOrderedSpawnpoints_Setup() {
     g_convar = CreateBoolConVar("sm_class_ordered_spawnpoints", WhenConVarChange);
-}
-
-void ClassOrderedSpawnpoints_OnEntityCreated(int entity, const char[] classname) {
-    if (StrEqual(classname, "info_player_teamspawn")) {
-        SDKHook(entity, SDKHook_SpawnPost, WhenSpawnPointSpawned);
-    }
+    HookEvent("recalculate_holidays", WhenRoundSetup, EventHookMode_Pre);
 }
 
 static void WhenConVarChange(ConVar cvar, const char[] before, const char[] after) {
@@ -41,16 +35,10 @@ static void WhenConVarChange(ConVar cvar, const char[] before, const char[] afte
     }
 }
 
-static void WhenSpawnPointSpawned(int entity) {
+static void WhenRoundSetup(Event event, const char[] name, bool dontBroadcast) {
     if (!g_convar.BoolValue) {
         return;
     }
-
-    int tick = GetGameTickCount();
-    if (tick == g_last_tick) {
-        return;
-    }
-    g_last_tick = tick;
 
     PresetBase();
 
