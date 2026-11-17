@@ -16,10 +16,16 @@ static const TFClassType ORDER[ORDER_LEN] = {
 #define COLLISION_GROUP_PLAYER 5
 #define COLLISION_GROUP_IN_VEHICLE 10
 
+#define MAX_LAST_SPAWNS 64
+
 static ConVar g_convar;
+
+static int g_labels[MAX_LAST_SPAWNS * 2];
+static int g_label_count = 0;
 
 void ClassOrderedSpawnpoints_Setup() {
     g_convar = CreateBoolConVar("sm_class_ordered_spawnpoints", WhenConVarChange);
+    CreateBoolConVar("cf_spawn_order", WhenDebugConVarChange);
     HookEvent("recalculate_holidays", WhenRoundSetup, EventHookMode_Pre);
 }
 
@@ -167,4 +173,110 @@ static void RestoreCollisionGroups() {
             SetEntityCollisionGroup(client, COLLISION_GROUP_PLAYER);
         }
     }
+}
+
+static void WhenDebugConVarChange(ConVar cvar, const char[] before, const char[] after) {
+    if (cvar.BoolValue == TruthyConVar(before)) {
+        return;
+    }
+
+    if (cvar.BoolValue) {
+        CreateLabels();
+    } else {
+        DestroyLabels();
+    }
+}
+
+static void CreateLabels() {
+    char red_last[64] = "";
+    char blu_last[64] = "";
+
+    int entity;
+    int red = 0;
+    int blu = 0;
+
+    while ((entity = FindEntityByClassname(entity, "info_player_teamspawn")) != -1) {
+        int team = GetEntProp(entity, Prop_Data, "m_iTeamNum");
+
+        if (team == 0) {
+            team = GetEntProp(entity, Prop_Data, "m_iInitialTeamNum");
+        }
+
+        if (team != 2 && team != 3) continue;
+
+        int wrote = 0;
+        char control_point_name[64];
+        if (HasEntProp(entity, Prop_Data, "m_iszControlPointName")) {
+            wrote = GetEntPropString(entity, Prop_Data, "m_iszControlPointName", control_point_name, sizeof(control_point_name));
+        }
+
+        if (wrote == 0) {
+        } else if (team == 2 && StrEqual(control_point_name, red_last)) {
+        } else if (team == 3 && StrEqual(control_point_name, blu_last)) {
+        } else {
+            int control_point = FindControlPointByName(control_point_name);
+            if (control_point == -1) {
+                continue;
+            }
+
+            int index = GetEntProp(control_point, Prop_Data, "m_iPointIndex");
+
+            if (index == 4) {
+                red_last = control_point_name;
+            } else if (index == 0) {
+                blu_last = control_point_name;
+            } else {
+                continue;
+            }
+        }
+
+        if (team == 2) {
+            CreateLabel(entity, team, red);
+            red += 1;
+        } else if (team == 3) {
+            CreateLabel(entity, team, blu);
+            blu += 1;
+        }
+    }
+}
+
+static void CreateLabel(int spawn, int team, int slot) {
+    if (g_label_count == sizeof(g_labels)) {
+        return;
+    }
+
+    int label = CreateEntityByName("point_worldtext");
+
+    if (label == -1) {
+        LogDebug("Failed to create point_worldtext");
+        return;
+    }
+
+    char text[4];
+    Format(text, sizeof(text), "%d", slot);
+
+    float origin[3];
+    GetEntPropVector(spawn, Prop_Data, "m_vecAbsOrigin", origin);
+    origin[2] += 10.0;
+
+    DispatchKeyValue(label, "message", text);
+    DispatchKeyValue(label, "color", team == 2 ? "255 100 100 255" : "120 170 255 255");
+    DispatchKeyValue(label, "textsize", "12");
+    DispatchKeyValue(label, "orientation", "2");
+    DispatchKeyValueVector(label, "origin", origin);
+    DispatchSpawn(label);
+
+    g_labels[g_label_count++] = EntIndexToEntRef(label);
+}
+
+void DestroyLabels() {
+    for (int i = 0; i < g_label_count; i++) {
+        int label = EntRefToEntIndex(g_labels[i]);
+
+        if (label != INVALID_ENT_REFERENCE) {
+            RemoveEntity(label);
+        }
+    }
+
+    g_label_count = 0;
 }
